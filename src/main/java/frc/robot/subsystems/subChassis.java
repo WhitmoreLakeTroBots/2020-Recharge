@@ -18,6 +18,7 @@ import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
@@ -52,6 +53,36 @@ public class subChassis extends Subsystem {
   private Joystick leftStick;
   private Joystick rightStick;
 
+  public subChassis() {
+    
+    leftDrive = new CANSparkMax(Settings.CANID_subChassisLeftMaster, MotorType.kBrushless);
+    rightDrive = new CANSparkMax(Settings.CANID_subChassisRightMaster, MotorType.kBrushless);
+    leftStick = new Joystick(0);
+    rightStick = new Joystick(1);
+    leftDrive.restoreFactoryDefaults();
+    rightDrive.restoreFactoryDefaults();
+    
+    leftDrive.setInverted(true);
+    
+    leftDrive.setIdleMode(IdleMode.kBrake);
+    rightDrive.setIdleMode(IdleMode.kBrake);
+
+    leftEncoder = leftDrive.getEncoder();
+    rightEncoder = rightDrive.getEncoder();
+
+    robotDrive = new DifferentialDrive(leftDrive, rightDrive);
+
+    rightPidC = rightDrive.getPIDController();
+    leftPidC = leftDrive.getPIDController();
+
+    configureSmartMotion();
+    configureTeleOptMotion();
+    
+    // burn in the values so they stay during a brown out.
+    rightDrive.burnFlash();
+    leftDrive.burnFlash();
+
+  }
 
   public static class smartMotionKs {
     public final static int slot = 0;
@@ -63,38 +94,36 @@ public class subChassis extends Subsystem {
     public final static double kMaxOutput = 1;
     public final static double kMinOutput = -1;
     public final static int maxRPM = 5700;
+    public final static int minRPM = 0;
+    // allow .5 seconds to reach max RPM
+    public final static int maxAcc = maxRPM * 2;
+    public final static int allowedErr = maxRPM /10;
+
   }
   public static class teleOpMotionKs {
     public final static int slot = 1;
-    public final static double kP = 5e-5;
-    public final static double kI = 1e-6;
+    public final static double kP = 5e-4;
+    public final static double kI = 1e-5;
     public final static double kD = 0;
     public final static double kIz = 0;
     public final static double kFF = 0.000156;
     public final static double kMaxOutput = 1;
     public final static double kMinOutput = -1;
     public final static int maxRPM = 5700;
+    public final static int minRPM = 0;
+    // allow .5 seconds to reach max RPM
+    public final static int maxAcc = maxRPM * 2;
+    public final static int allowedErr = maxRPM /10;
+
   }
+
   public void Drive(Joystick stick) {
 
-    double joyX = CommonLogic.joyDeadBand(leftStick.getX(), joyDriveDeadband);
-    double joyY = CommonLogic.joyDeadBand(leftStick.getY(), joyDriveDeadband);
+    double joyX = CommonLogic.joyDeadBand(stick.getX(), joyDriveDeadband);
+    double joyY = CommonLogic.joyDeadBand(stick.getY(), joyDriveDeadband);
+    leftPidC.setReference((joyY + joyX) * teleOpMotionKs.maxRPM, ControlType.kVelocity, teleOpMotionKs.slot);
+    rightPidC.setReference((joyY - joyX) * teleOpMotionKs.maxRPM, ControlType.kVelocity, teleOpMotionKs.slot);
 
-    double rightMotorThrottle;
-    double leftMotorThrottle;
-    rightMotorThrottle = (joyX - joyY) * chassisRightSideScalar;
-    leftMotorThrottle = (joyX + joyY) * chassisLeftSideScalar;
-
-    setLeftMotors(leftMotorThrottle);
-    setRightMotors(rightMotorThrottle);
-  }
-
-  public void setLeftMotors(double throttle) {
-    leftDrive.set(throttle);
-  }
-
-  public void setRightMotors(double throttle) {
-    rightDrive.set(throttle);
   }
 
   private void configureSmartMotion() {
@@ -121,8 +150,7 @@ public class subChassis extends Subsystem {
   }
 
   private void configureTeleOptMotion() {
-    // configures smart motion for the drive train sparks
-
+    // configures TeleOp motion for the drive train sparks
     leftPidC.setP(teleOpMotionKs.kP, teleOpMotionKs.slot);
     rightPidC.setP(teleOpMotionKs.kP, teleOpMotionKs.slot);
 
@@ -133,52 +161,47 @@ public class subChassis extends Subsystem {
     rightPidC.setI(teleOpMotionKs.kI, teleOpMotionKs.slot);
 
     leftPidC.setIZone(teleOpMotionKs.kIz, teleOpMotionKs.slot);
-    leftPidC.setIZone(teleOpMotionKs.kIz, teleOpMotionKs.slot);
+    rightPidC.setIZone(teleOpMotionKs.kIz, teleOpMotionKs.slot);
 
     leftPidC.setFF(teleOpMotionKs.kFF, teleOpMotionKs.slot);
-    leftPidC.setFF(teleOpMotionKs.kFF, teleOpMotionKs.slot);
+    rightPidC.setFF(teleOpMotionKs.kFF, teleOpMotionKs.slot);
 
     leftPidC.setOutputRange(teleOpMotionKs.kMinOutput, teleOpMotionKs.kMaxOutput, teleOpMotionKs.slot);
-    leftPidC.setOutputRange(teleOpMotionKs.kMinOutput, teleOpMotionKs.kMaxOutput, teleOpMotionKs.slot);
+    rightPidC.setOutputRange(teleOpMotionKs.kMinOutput, teleOpMotionKs.kMaxOutput, teleOpMotionKs.slot);
+
+    leftPidC.setSmartMotionMaxVelocity(teleOpMotionKs.maxRPM, teleOpMotionKs.slot);
+    rightPidC.setSmartMotionMaxVelocity(teleOpMotionKs.maxRPM, teleOpMotionKs.slot);
+
+    leftPidC.setSmartMotionMinOutputVelocity(teleOpMotionKs.minRPM, teleOpMotionKs.slot);
+    rightPidC.setSmartMotionMinOutputVelocity(teleOpMotionKs.minRPM, teleOpMotionKs.slot);
+
+    leftPidC.setSmartMotionMaxAccel(teleOpMotionKs.maxAcc, teleOpMotionKs.slot);
+    rightPidC.setSmartMotionMaxAccel(teleOpMotionKs.maxAcc, teleOpMotionKs.slot);
+    
+    leftPidC.setSmartMotionAllowedClosedLoopError(teleOpMotionKs.allowedErr, teleOpMotionKs.slot);
+    rightPidC.setSmartMotionAllowedClosedLoopError(teleOpMotionKs.allowedErr, teleOpMotionKs.slot);
 
   }
 
   public void activateSmartMotion() {
     
-    leftPidC.setReference(smartMotionKs.slot, ControlType.kPosition);
-    rightPidC.setReference(smartMotionKs.slot, ControlType.kPosition);
+    rightEncoder.setPosition(0);
+    rightPidC.setReference(0, ControlType.kSmartMotion, smartMotionKs.slot);
+
+    leftEncoder.setPosition(0);
+    leftPidC.setReference(0,ControlType.kSmartMotion, smartMotionKs.slot);
 
   }
 
   public void activateTeleOpMotion() {
-    // puts the sparks into a drive mode where we can set throttle percentages
-    leftPidC.setReference(teleOpMotionKs.slot, ControlType.kVelocity);
-    rightPidC.setReference(teleOpMotionKs.slot, ControlType.kVelocity);
+    
+    // puts the sparks into a drive mode where we can set Velocity percentages
+    leftPidC.setReference(0, ControlType.kVelocity, teleOpMotionKs.slot);
+    rightPidC.setReference(0, ControlType.kVelocity, teleOpMotionKs.slot);
+
   }
 
-  public subChassis() {
-    
-    leftDrive = new CANSparkMax(Settings.CANID_subChassisLeftMaster, MotorType.kBrushless);
-    rightDrive = new CANSparkMax(Settings.CANID_subChassisRightMaster, MotorType.kBrushless);
-    leftStick = new Joystick(0);
-    rightStick = new Joystick(1);
-    leftDrive.restoreFactoryDefaults();
-    rightDrive.restoreFactoryDefaults();
-    
-    leftDrive.setInverted(true);
-    
-    leftEncoder = leftDrive.getEncoder();
-    rightEncoder = rightDrive.getEncoder();
-
-    robotDrive = new DifferentialDrive(leftDrive, rightDrive);
-
-    rightPidC = rightDrive.getPIDController();
-    leftPidC = leftDrive.getPIDController();
-
-    configureSmartMotion();
-    configureTeleOptMotion();
-
-  }
+  
 
   @Override
   public void initDefaultCommand() {
@@ -187,7 +210,7 @@ public class subChassis extends Subsystem {
 
   @Override
   public void periodic() {
-
+    Drive(leftStick);
   }
 
 }
