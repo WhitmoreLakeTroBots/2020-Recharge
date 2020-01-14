@@ -7,7 +7,7 @@ public class CommonLogic extends Object {
         if (Math.abs(retValue) < Math.abs(deadband)) {
             retValue = 0;
         }
-        return Math.pow(retValue,2);
+        return Math.pow(retValue,2) * Math.signum(joy);
     }
 
 }
