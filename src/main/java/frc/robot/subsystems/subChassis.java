@@ -14,19 +14,11 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.ColorMatch;
-import com.revrobotics.ColorMatchResult;
-import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
-import frc.robot.Robot;
 import frc.robot.CommonLogic;
 import frc.robot.Settings;
 
@@ -44,21 +36,17 @@ public class subChassis extends Subsystem {
   public static CANPIDController leftPidC = null;
   public static CANPIDController rightPidC = null;
 
-  public static final double joyDriveDeadband = 0.1;
-  public static final double chassisLeftSideScalar = 1;
-  public static final double chassisRightSideScalar = 1;
-  public final boolean chassisSquareJoyInput = true;
-
-  private DifferentialDrive robotDrive;
+  public static final double joyDriveDeadband = 0.05;
+  public static final double driveStraightGyroKp = 0.05;
+  public static final double wheelDiameter = 6.0;
+  public static final double gearBoxRatio = 8.45;
   private Joystick leftStick;
-  private Joystick rightStick;
 
   public subChassis() {
     
     leftDrive = new CANSparkMax(Settings.CANID_subChassisLeftMaster, MotorType.kBrushless);
     rightDrive = new CANSparkMax(Settings.CANID_subChassisRightMaster, MotorType.kBrushless);
     leftStick = new Joystick(0);
-    rightStick = new Joystick(1);
     leftDrive.restoreFactoryDefaults();
     rightDrive.restoreFactoryDefaults();
     
@@ -69,8 +57,6 @@ public class subChassis extends Subsystem {
 
     leftEncoder = leftDrive.getEncoder();
     rightEncoder = rightDrive.getEncoder();
-
-    robotDrive = new DifferentialDrive(leftDrive, rightDrive);
 
     rightPidC = rightDrive.getPIDController();
     leftPidC = leftDrive.getPIDController();
@@ -100,6 +86,7 @@ public class subChassis extends Subsystem {
     public final static int allowedErr = maxRPM /10;
 
   }
+
   public static class teleOpMotionKs {
     public final static int slot = 1;
     public final static double kP = 5e-4;
@@ -183,22 +170,52 @@ public class subChassis extends Subsystem {
 
   }
 
-  public void activateSmartMotion() {
-    
+  public void smartMotion_activate(double inches) {
+    // sets the motion type to SmartMotion
     rightEncoder.setPosition(0);
-    rightPidC.setReference(0, ControlType.kSmartMotion, smartMotionKs.slot);
+    double revs = inches2MotorRevs(inches);
+    rightPidC.setReference(revs, ControlType.kSmartMotion, smartMotionKs.slot);
 
     leftEncoder.setPosition(0);
-    leftPidC.setReference(0,ControlType.kSmartMotion, smartMotionKs.slot);
+    leftPidC.setReference(revs, ControlType.kSmartMotion, smartMotionKs.slot);
 
   }
+
+  public double inches2MotorRevs (double inches) {
+    // convert inches to motor Revs
+    return (inches / wheelDiameter / Math.PI * gearBoxRatio);
+    // 72 / 6 / Math.P * 8.45 = 32.2766224
+  }
+
+  public void smartMotion_steerStraight(){
+
+    // sets max and min motion velocity to steer while driving to position
+    /* leftPidC.setSmartMotionMaxVelocity(leftVel * 1.01, smartMotionKs.slot);
+    rightPidC.setSmartMotionMaxVelocity(rightVel * 1.01, smartMotionKs.slot);
+
+    leftPidC.setSmartMotionMinOutputVelocity(leftVel * .99, smartMotionKs.slot);
+    rightPidC.setSmartMotionMinOutputVelocity(rightVel * .99, smartMotionKs.slot);
+    */
+  }
+
+  public boolean smartMotion_isDone() {
+
+    double leftPos = leftEncoder.getPosition();
+    double rightPos = rightEncoder.getPosition();
+    double average = (Math.abs(leftPos) + Math.abs(rightPos)) /2;
+    
+    if (average > .99) {
+
+    }
+    return false;
+  }
+
 
   public void activateTeleOpMotion() {
     
     // puts the sparks into a drive mode where we can set Velocity percentages
     leftPidC.setReference(0, ControlType.kVelocity, teleOpMotionKs.slot);
     rightPidC.setReference(0, ControlType.kVelocity, teleOpMotionKs.slot);
-
   }
 
   
