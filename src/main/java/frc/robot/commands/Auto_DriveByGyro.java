@@ -21,15 +21,23 @@ import frc.robot.Robot;
 
     
     double inches = 0;
-    public Auto_DriveByGyro(double dist_inches, int heading_deg) {
-        inches = dist_inches;
+    double Revs = 0;
+    double RPMS = 0;
+    double RPM_tol = .01;
+    double Revs_tol = .05;
+
+    public Auto_DriveByGyro(double dist_inches, double velInches_sec, int heading_deg) {
+        Revs = Robot.subChassis.inches2MotorRevs(dist_inches);
+        RPMS = Robot.subChassis.inches_sec2RPM(velInches_sec);
 
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-      Robot.subChassis.smartMotion_activate(inches);
+      
+      Robot.subChassis.setSmartPosition_LeftDrive(Revs);
+      Robot.subChassis.setSmartPosition_RightDrive(Revs);
 
     }
 
@@ -37,13 +45,15 @@ import frc.robot.Robot;
     @Override
     protected void execute() {
 
-        Robot.subChassis.smartMotion_steerStraight();
+        // Read gyro and diff the left and right to stear straight
+        double gyroAdjust = 0;
+        Robot.subChassis.smartPosition_steerStraight(RPMS + gyroAdjust, RPMS- gyroAdjust, RPM_tol);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return Robot.subChassis.smartPosition_LR_isDone(Revs, Revs_tol);
     }
 
     // Called once after isFinished returns true

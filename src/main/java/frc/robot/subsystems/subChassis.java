@@ -108,8 +108,9 @@ public class subChassis extends Subsystem {
 
     double joyX = CommonLogic.joyDeadBand(stick.getX(), joyDriveDeadband);
     double joyY = CommonLogic.joyDeadBand(stick.getY(), joyDriveDeadband);
-    leftPidC.setReference((joyY + joyX) * teleOpMotionKs.maxRPM, ControlType.kVelocity, teleOpMotionKs.slot);
-    rightPidC.setReference((joyY - joyX) * teleOpMotionKs.maxRPM, ControlType.kVelocity, teleOpMotionKs.slot);
+    setVelocity_RightDrive((joyY - joyX) * teleOpMotionKs.maxRPM);
+    setVelocity_LeftDrive((joyY + joyX) * teleOpMotionKs.maxRPM);
+
 
   }
 
@@ -135,7 +136,9 @@ public class subChassis extends Subsystem {
     leftPidC.setOutputRange(smartMotionKs.kMinOutput, smartMotionKs.kMaxOutput, smartMotionKs.slot);
 
   }
-
+  /****************************************************************************
+    Velocity Settings & Methods
+  ****************************************************************************/
   private void configureTeleOptMotion() {
     // configures TeleOp motion for the drive train sparks
     leftPidC.setP(teleOpMotionKs.kP, teleOpMotionKs.slot);
@@ -170,15 +173,27 @@ public class subChassis extends Subsystem {
 
   }
 
-  public void smartMotion_activate(double inches) {
-    // sets the motion type to SmartMotion
-    rightEncoder.setPosition(0);
-    double revs = inches2MotorRevs(inches);
-    rightPidC.setReference(revs, ControlType.kSmartMotion, smartMotionKs.slot);
+  public void setVelocity_LeftDrive (double velRPM) {
+    leftPidC.setReference(velRPM, ControlType.kVelocity, teleOpMotionKs.slot);
+  }
 
+  public void setVelocity_RightDrive (double velRPM) {
+    rightPidC.setReference(velRPM, ControlType.kVelocity, teleOpMotionKs.slot);
+  }
+
+  /****************************************************************************
+    Position Settings & Methods
+  ****************************************************************************/
+  public void setSmartPosition_LeftDrive(double ref_Revs){
+    // sets left motor to run to position
     leftEncoder.setPosition(0);
-    leftPidC.setReference(revs, ControlType.kSmartMotion, smartMotionKs.slot);
+    leftPidC.setReference(ref_Revs, ControlType.kSmartMotion, smartMotionKs.slot);
+  }
 
+  public  void setSmartPosition_RightDrive (double ref_Revs) {
+    // sets right motor to run to position
+    rightEncoder.setPosition(0);
+    rightPidC.setReference(ref_Revs, ControlType.kSmartMotion, smartMotionKs.slot);
   }
 
   public double inches2MotorRevs (double inches) {
@@ -187,38 +202,43 @@ public class subChassis extends Subsystem {
     // 72 / 6 / Math.P * 8.45 = 32.2766224
   }
 
-  public void smartMotion_steerStraight(){
+  public double inches_sec2RPM (double inches_sec) {
+    // converts inches/sec to Revs/minute
+    return inches2MotorRevs(inches_sec) * 60;
+  }
+
+  public void smartPosition_steerStraight(double leftRPM, double rightRPM, double tol){
+    // steer the robot by changing the smartMotion velocity of the left and right sides of the chassis
+    double loTol = 1 - tol;
+    double hiTol = 1 + tol;
 
     // sets max and min motion velocity to steer while driving to position
-    /* leftPidC.setSmartMotionMaxVelocity(leftVel * 1.01, smartMotionKs.slot);
-    rightPidC.setSmartMotionMaxVelocity(rightVel * 1.01, smartMotionKs.slot);
+    leftPidC.setSmartMotionMaxVelocity(leftRPM * hiTol, smartMotionKs.slot);
+    rightPidC.setSmartMotionMaxVelocity(rightRPM * hiTol, smartMotionKs.slot);
 
-    leftPidC.setSmartMotionMinOutputVelocity(leftVel * .99, smartMotionKs.slot);
-    rightPidC.setSmartMotionMinOutputVelocity(rightVel * .99, smartMotionKs.slot);
-    */
-  }
-
-  public boolean smartMotion_isDone() {
-
-    double leftPos = leftEncoder.getPosition();
-    double rightPos = rightEncoder.getPosition();
-    double average = (Math.abs(leftPos) + Math.abs(rightPos)) /2;
+    leftPidC.setSmartMotionMinOutputVelocity(leftRPM * loTol, smartMotionKs.slot);
+    rightPidC.setSmartMotionMinOutputVelocity(rightRPM * loTol, smartMotionKs.slot);
     
-    if (average > .99) {
-
-    }
-    return false;
   }
 
-
-  public void activateTeleOpMotion() {
+  public boolean smartPosition_isDoneLeft (double desired_Revs, double Tol) {
     
-    // puts the sparks into a drive mode where we can set Velocity percentages
-    leftPidC.setReference(0, ControlType.kVelocity, teleOpMotionKs.slot);
-    rightPidC.setReference(0, ControlType.kVelocity, teleOpMotionKs.slot);
+    double currPos = leftEncoder.getPosition();
+    return CommonLogic.isInRange(currPos, desired_Revs, Tol);
   }
-
   
+  public boolean smartPosition_isDoneRight (double desired_Revs, double Tol) {
+    
+    double currPos = rightEncoder.getPosition();
+    return CommonLogic.isInRange(currPos, desired_Revs, Tol);
+  }
+
+  public boolean smartPosition_LR_isDone(double desired_Revs, double Tol) {
+
+    return (smartPosition_isDoneRight(desired_Revs, Tol) && 
+            smartPosition_isDoneLeft(desired_Revs, Tol) );
+   
+  }
 
   @Override
   public void initDefaultCommand() {
