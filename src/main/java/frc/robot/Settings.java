@@ -13,9 +13,9 @@ package frc.robot;
 public class Settings {
 
     // CANIDs
-    public static final int CANID_subChassisRightMaster = 1;
+    public static final int CANID_subChassisRightMaster = 2;
     public static final int CANID_subChassisRightFollower = 2;
-    public static final int CANID_subChassisLeftMaster = 3;
+    public static final int CANID_subChassisLeftMaster = 7;
     public static final int CANID_subChassisLeftFollower = 4;
 
 

@@ -31,6 +31,7 @@ public class subChassis extends Subsystem {
   public static final double wheelDiameter = 6.0;
   public static final double gearBoxRatio = 8.45;
   private Joystick leftStick;
+  
 
   public subChassis() {
     
@@ -39,6 +40,7 @@ public class subChassis extends Subsystem {
     leftStick = new Joystick(0);
     leftDrive.restoreFactoryDefaults();
     rightDrive.restoreFactoryDefaults();
+    
     
     leftDrive.setInverted(true);
     
@@ -79,17 +81,17 @@ public class subChassis extends Subsystem {
 
   public static class teleOpMotionKs {
     public final static int slot = 1;
-    public final static double kP = 5e-4;
-    public final static double kI = 1e-5;
+    public final static double kP = 1e-4;//5e-4;
+    public final static double kI = 1e-6;//1e-6;//1e-5;
     public final static double kD = 0;
     public final static double kIz = 0;
-    public final static double kFF = 0.000156;
+    public final static double kFF = 0;//0.000156;
     public final static double kMaxOutput = 1;
     public final static double kMinOutput = -1;
-    public final static int maxRPM = 5700;
+    public final static int maxRPM = 5000;
     public final static int minRPM = 0;
     // allow .5 seconds to reach max RPM
-    public final static int maxAcc = maxRPM * 2;
+    public final static int maxAcc = maxRPM * 10;
     public final static int allowedErr = maxRPM /10;
 
   }
@@ -98,8 +100,8 @@ public class subChassis extends Subsystem {
 
     double joyX = CommonLogic.joyDeadBand(stick.getX(), joyDriveDeadband);
     double joyY = CommonLogic.joyDeadBand(stick.getY(), joyDriveDeadband);
-    setVelocity_RightDrive((joyY - joyX) * teleOpMotionKs.maxRPM);
-    setVelocity_LeftDrive((joyY + joyX) * teleOpMotionKs.maxRPM);
+    setVelocity_RightDrive((joyY + joyX) * teleOpMotionKs.maxRPM);
+    setVelocity_LeftDrive((joyY - joyX) * teleOpMotionKs.maxRPM); 
 
 
   }
@@ -164,11 +166,13 @@ public class subChassis extends Subsystem {
   }
 
   public void setVelocity_LeftDrive (double velRPM) {
-    leftPidC.setReference(velRPM, ControlType.kVelocity, teleOpMotionKs.slot);
+    double RPM = CommonLogic.CapMotorPower(velRPM, -teleOpMotionKs.maxRPM, teleOpMotionKs.maxRPM);
+    leftPidC.setReference(RPM, ControlType.kVelocity, teleOpMotionKs.slot);
   }
 
   public void setVelocity_RightDrive (double velRPM) {
-    rightPidC.setReference(velRPM, ControlType.kVelocity, teleOpMotionKs.slot);
+    double RPM = CommonLogic.CapMotorPower(velRPM, -teleOpMotionKs.maxRPM, teleOpMotionKs.maxRPM);
+    rightPidC.setReference(RPM, ControlType.kVelocity, teleOpMotionKs.slot);
   }
 
   /****************************************************************************

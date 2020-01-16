@@ -11,6 +11,21 @@ package frc.robot;
  * Add your docs here.
  */
 public class CommonLogic {
+
+    public static double CapMotorPower(double MotorPower, double negCapValue, double posCapValue) {
+        // logic to cap the motor power between a good range
+        double retValue = MotorPower;
+
+        if (MotorPower < negCapValue) {
+            retValue = negCapValue;
+        }
+
+        if (MotorPower > posCapValue) {
+            retValue = posCapValue;
+        }
+
+        return retValue;
+    }
     public static final double joyDeadBand(double joy, double deadband) {
 
         double retValue = joy;
