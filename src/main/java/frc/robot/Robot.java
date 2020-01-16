@@ -122,5 +122,6 @@ subControlPannel = new subControlPannel();
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        subChassis.Drive(subChassis.leftStick);
     }
 }
