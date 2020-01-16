@@ -11,13 +11,24 @@ package frc.robot;
  * Add your docs here.
  */
 public class CommonLogic {
-    public static double joyStickMath(double joyValue){
-        int sign = 1;
-        double retValue = 0;
-        if(joyValue < 0) {
-            sign = -1;
+    public static final double joyDeadBand(double joy, double deadband) {
+
+        double retValue = joy;
+        if (Math.abs(retValue) < Math.abs(deadband)) {
+            retValue = 0;
         }
-        return Math.abs(Math.pow(joyValue, 2)) * sign;
+        return Math.pow(retValue, 2) * Math.signum(joy);
+    }
+    public static final boolean isInRange(double curRevs, double desiredRevs, double Tol) {
+
+        double loVal = desiredRevs - Tol;
+        double hiVal = desiredRevs + Tol;
+        boolean retValue = false;
+
+        if (curRevs > loVal && curRevs < hiVal) {
+            retValue = true;
+        }
+        return retValue;
     }
 
     
