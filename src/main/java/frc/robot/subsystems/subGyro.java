@@ -89,4 +89,30 @@ public class subGyro extends Subsystem {
     }
     return (retValue);
   }
+
+  public double deltaHeading(double currHeading, double targetHeading) {
+
+    // float signumCurrHeading = Math.signum (currHeading);
+    // float signumTargetHeading = Math.signum (targetHeading);
+    double returnValue = 0;
+
+    // Positive value
+    if (currHeading >= 0 && targetHeading >= 0) {
+      returnValue = targetHeading - currHeading;
+    }
+    // one of each
+    else if (currHeading >= 0 && targetHeading <= 0) {
+      returnValue = (targetHeading + currHeading);
+    }
+    // one of each again
+    else if (currHeading <= 0 && targetHeading >= 0) {
+      returnValue = -1 * (targetHeading + currHeading);
+    }
+    // both negative
+    else if (currHeading <= 0 && targetHeading <= 0) {
+      returnValue = targetHeading - currHeading;
+    }
+
+    return returnValue;
+  }
 }
