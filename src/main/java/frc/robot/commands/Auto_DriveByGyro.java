@@ -24,7 +24,7 @@ public class Auto_DriveByGyro extends Command {
   @Override
   protected synchronized void requires(Subsystem subsystem) {
     // TODO Auto-generated method stub
-    super.requires(Robot.subChassis);
+    requires(Robot.subChassis);
   }
 
   double inches = 0;
@@ -43,12 +43,10 @@ public class Auto_DriveByGyro extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    System.err.println("Revs" + Revs);
-    Robot.subChassis.setSmartPosition_LeftDrive(Revs, RPMS);
-    Robot.subChassis.setSmartPosition_RightDrive(Revs, RPMS);
-    //Robot.subChassis.smartPosition_steerStraight(RPMS,RPMS, 1);
-    
-  }
+    Robot.subChassis.resetEncoder_LeftDrive();
+    Robot.subChassis.resetEncoder_RightDrive();
+    //System.err.println("Revs" + Revs);
+   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
@@ -56,6 +54,10 @@ public class Auto_DriveByGyro extends Command {
     //System.err.println("AutoDriveByGyro" + subChassis.leftEncoder.getPosition() + subChassis.leftDrive.getAppliedOutput());
     //subChassis.leftDrive.set(.2);
     // Read gyro and diff the left and right to stear straight
+
+    Robot.subChassis.setSmartPosition_LeftDrive(Revs, RPMS);
+    Robot.subChassis.setSmartPosition_RightDrive(Revs, RPMS);
+
     double curr_heading = Robot.subGyro.getNormaliziedNavxAngle();
     double delta = Robot.subGyro.deltaHeading(curr_heading, targetHeading);
     double gyroAdjust = Settings.chassisDriveStraightGyroKp * delta;
