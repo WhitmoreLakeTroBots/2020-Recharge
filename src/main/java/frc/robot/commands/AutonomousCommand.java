@@ -31,12 +31,14 @@ public class AutonomousCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-      
+      System.err.println("Autonomous Command");
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        System.err.println("End Of Autonomous Command");
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -48,6 +50,7 @@ public class AutonomousCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        System.err.println("End Of Autonomous Command");
     }
 
     // Called when another command which requires one or more of the same

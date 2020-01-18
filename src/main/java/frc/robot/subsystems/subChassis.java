@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANError;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -64,17 +65,17 @@ public class subChassis extends Subsystem {
 
   public static class smartMotionKs {
     public final static int slot = 0;
-    public final static double kP = 5e-5;
+    public final static double kP = 5e-4;
     public final static double kI = 1e-6;
     public final static double kD = 0;
     public final static double kIz = 0;
     public final static double kFF = 0.000156;
     public final static double kMaxOutput = 1;
     public final static double kMinOutput = -1;
-    public final static int maxRPM = 5700;
-    public final static int minRPM = 0;
+    public final static int maxRPM = 4130;
+    public final static int minRPM = -maxRPM;
     // allow .5 seconds to reach max RPM
-    public final static int maxAcc = maxRPM * 2;
+    public final static int maxAcc = maxRPM * 4;
     public final static int allowedErr = maxRPM /10;
 
   }
@@ -108,29 +109,113 @@ public class subChassis extends Subsystem {
 
   private void configureSmartMotion() {
     // configures smart motion for the drive train sparks
+    CANError err = CANError.kOk;
 
-    leftPidC.setP(smartMotionKs.kP, smartMotionKs.slot);
-    rightPidC.setP(smartMotionKs.kP, smartMotionKs.slot);
+    err = leftPidC.setP(smartMotionKs.kP, smartMotionKs.slot);
+    
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = rightPidC.setP(smartMotionKs.kP, smartMotionKs.slot);
 
-    leftPidC.setD(smartMotionKs.kD, smartMotionKs.slot);
-    rightPidC.setD(smartMotionKs.kD, smartMotionKs.slot);
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = leftPidC.setI(smartMotionKs.kI, smartMotionKs.slot);
+    
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = rightPidC.setI(smartMotionKs.kI, smartMotionKs.slot);
 
-    leftPidC.setI(smartMotionKs.kI, smartMotionKs.slot);
-    rightPidC.setI(smartMotionKs.kI, smartMotionKs.slot);
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = leftPidC.setD(smartMotionKs.kD, smartMotionKs.slot);
+    
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = rightPidC.setD(smartMotionKs.kD, smartMotionKs.slot);
 
-    leftPidC.setIZone(smartMotionKs.kIz, smartMotionKs.slot);
-    leftPidC.setIZone(smartMotionKs.kIz, smartMotionKs.slot);
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = leftPidC.setIZone(smartMotionKs.kIz, smartMotionKs.slot);
+    
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = leftPidC.setIZone(smartMotionKs.kIz, smartMotionKs.slot);
 
-    leftPidC.setFF(smartMotionKs.kFF, smartMotionKs.slot);
-    leftPidC.setFF(smartMotionKs.kFF, smartMotionKs.slot);
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = leftPidC.setFF(smartMotionKs.kFF, smartMotionKs.slot);
+    
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = rightPidC.setFF(smartMotionKs.kFF, smartMotionKs.slot);
 
-    leftPidC.setOutputRange(smartMotionKs.kMinOutput, smartMotionKs.kMaxOutput, smartMotionKs.slot);
-    leftPidC.setOutputRange(smartMotionKs.kMinOutput, smartMotionKs.kMaxOutput, smartMotionKs.slot);
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = leftPidC.setOutputRange(smartMotionKs.kMinOutput, smartMotionKs.kMaxOutput, smartMotionKs.slot);
+    
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = rightPidC.setOutputRange(smartMotionKs.kMinOutput, smartMotionKs.kMaxOutput, smartMotionKs.slot);
 
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = rightPidC.setSmartMotionMaxVelocity(smartMotionKs.maxRPM, smartMotionKs.slot);
+    
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = rightPidC.setSmartMotionMinOutputVelocity(smartMotionKs.maxRPM,smartMotionKs.slot);  
+    
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = rightPidC.setSmartMotionMaxAccel(smartMotionKs.maxAcc,smartMotionKs.slot);
+    
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    }  
+    err = leftPidC.setSmartMotionMaxVelocity(smartMotionKs.maxRPM, smartMotionKs.slot);
+    
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = leftPidC.setSmartMotionMinOutputVelocity(smartMotionKs.maxRPM,smartMotionKs.slot);  
+    
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = leftPidC.setSmartMotionMaxAccel(smartMotionKs.maxAcc,smartMotionKs.slot);
+
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = leftPidC.setSmartMotionAllowedClosedLoopError(0, smartMotionKs.slot);
+    
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    err = rightPidC.setSmartMotionAllowedClosedLoopError(0, smartMotionKs.slot);
+
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
   }
   /****************************************************************************
     Velocity Settings & Methods
-  ****************************************************************************/
+  **************************************
+  **************************************/
   private void configureTeleOptMotion() {
     // configures TeleOp motion for the drive train sparks
     leftPidC.setP(teleOpMotionKs.kP, teleOpMotionKs.slot);
@@ -168,26 +253,56 @@ public class subChassis extends Subsystem {
   public void setVelocity_LeftDrive (double velRPM) {
     double RPM = CommonLogic.CapMotorPower(velRPM, -teleOpMotionKs.maxRPM, teleOpMotionKs.maxRPM);
     leftPidC.setReference(RPM, ControlType.kVelocity, teleOpMotionKs.slot);
-  }
+    
+}
 
   public void setVelocity_RightDrive (double velRPM) {
     double RPM = CommonLogic.CapMotorPower(velRPM, -teleOpMotionKs.maxRPM, teleOpMotionKs.maxRPM);
     rightPidC.setReference(RPM, ControlType.kVelocity, teleOpMotionKs.slot);
+    
+
   }
 
   /****************************************************************************
     Position Settings & Methods
   ****************************************************************************/
-  public void setSmartPosition_LeftDrive(double ref_Revs){
+  public void setSmartPosition_LeftDrive(double ref_Revs, double RPM){
     // sets left motor to run to position
     leftEncoder.setPosition(0);
-    leftPidC.setReference(ref_Revs, ControlType.kSmartMotion, smartMotionKs.slot);
+    CANError err = CANError.kOk;
+    err = leftPidC.setReference(ref_Revs, ControlType.kSmartMotion);
+    
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+    
+    err= leftPidC.setSmartMotionMaxVelocity(RPM, smartMotionKs.slot);
+    if (err != CANError.kOk){
+      System.err.println("setSmartMotionMaxVelocity returned " + err);
+    }
+    //leftPidC.setSmartMotionMinOutputVelocity(RPM,smartMotionKs.slot);  
+   
   }
 
-  public  void setSmartPosition_RightDrive (double ref_Revs) {
+  public  void setSmartPosition_RightDrive (double ref_Revs, double RPM) {
     // sets right motor to run to position
-    rightEncoder.setPosition(0);
-    rightPidC.setReference(ref_Revs, ControlType.kSmartMotion, smartMotionKs.slot);
+   rightEncoder.setPosition(0);
+   
+    CANError err = CANError.kOk;
+    err=rightPidC.setReference(ref_Revs, ControlType.kSmartMotion, smartMotionKs.slot);
+    
+    if (err != CANError.kOk){
+      System.err.println("setReference returned" + err);
+    } 
+   
+    err=rightPidC.setSmartMotionMaxVelocity(RPM, smartMotionKs.slot);
+    
+    if (err != CANError.kOk){
+      System.err.println("setSmartMotionMaxVelocity returned " + err);
+    }
+   
+    //rightPidC.setSmartMotionMinOutputVelocity(RPM,smartMotionKs.slot);  
+
   }
 
   public double inches2MotorRevs (double inches) {
@@ -209,7 +324,7 @@ public class subChassis extends Subsystem {
     // sets max and min motion velocity to steer while driving to position
     leftPidC.setSmartMotionMaxVelocity(leftRPM * hiTol, smartMotionKs.slot);
     rightPidC.setSmartMotionMaxVelocity(rightRPM * hiTol, smartMotionKs.slot);
-
+    
     leftPidC.setSmartMotionMinOutputVelocity(leftRPM * loTol, smartMotionKs.slot);
     rightPidC.setSmartMotionMinOutputVelocity(rightRPM * loTol, smartMotionKs.slot);
     

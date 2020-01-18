@@ -11,14 +11,21 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.CommonLogic;
 import frc.robot.Robot;
 import frc.robot.Settings;
+import frc.robot.subsystems.subChassis;
 
 /**
  *
  */
 public class Auto_DriveByGyro extends Command {
+  @Override
+  protected synchronized void requires(Subsystem subsystem) {
+    // TODO Auto-generated method stub
+    super.requires(Robot.subChassis);
+  }
 
   double inches = 0;
   double Revs = 0;
@@ -36,21 +43,24 @@ public class Auto_DriveByGyro extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-
-    Robot.subChassis.setSmartPosition_LeftDrive(Revs);
-    Robot.subChassis.setSmartPosition_RightDrive(Revs);
-
+    System.err.println("Revs" + Revs);
+    Robot.subChassis.setSmartPosition_LeftDrive(Revs, RPMS);
+    Robot.subChassis.setSmartPosition_RightDrive(Revs, RPMS);
+    //Robot.subChassis.smartPosition_steerStraight(RPMS,RPMS, 1);
+    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
+    //System.err.println("AutoDriveByGyro" + subChassis.leftEncoder.getPosition() + subChassis.leftDrive.getAppliedOutput());
+    //subChassis.leftDrive.set(.2);
     // Read gyro and diff the left and right to stear straight
     double curr_heading = Robot.subGyro.getNormaliziedNavxAngle();
     double delta = Robot.subGyro.deltaHeading(curr_heading, targetHeading);
     double gyroAdjust = Settings.chassisDriveStraightGyroKp * delta;
-    Robot.subChassis.smartPosition_steerStraight(RPMS + gyroAdjust, RPMS - gyroAdjust, RPM_tol);
+    //Robot.subChassis.smartPosition_steerStraight(RPMS + gyroAdjust, RPMS - gyroAdjust, RPM_tol);
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()
