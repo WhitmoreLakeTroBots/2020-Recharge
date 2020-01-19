@@ -33,6 +33,8 @@ public class subChassis extends Subsystem {
   public static final double wheelDiameter = 6.0;
   public static final double gearBoxRatio = 8.45;
   
+  private double encoderOffset_left = 0;
+  private double encoderOffset_right = 0;
 
   public subChassis() {
     
@@ -43,7 +45,7 @@ public class subChassis extends Subsystem {
     rightDrive.restoreFactoryDefaults(true);
     
     
-    leftDrive.setInverted(true);
+    
     
     leftDrive.setIdleMode(IdleMode.kBrake);
     rightDrive.setIdleMode(IdleMode.kBrake);
@@ -51,11 +53,16 @@ public class subChassis extends Subsystem {
     leftEncoder = leftDrive.getEncoder();
     rightEncoder = rightDrive.getEncoder();
 
+    encoderOffset_left = leftEncoder.getPosition();
+    encoderOffset_right = rightEncoder.getPosition();
+
+    leftDrive.setInverted(true);
+    
     rightPidC = rightDrive.getPIDController();
     leftPidC = leftDrive.getPIDController();
 
-    configureSmartMotion(rightPidC);
-    configureSmartMotion(leftPidC);
+    configureSmartPosition(rightPidC);
+    configureSmartPosition(leftPidC);
 
     configureTeleOptMotion(rightPidC);
     configureTeleOptMotion(leftPidC);
@@ -89,26 +96,7 @@ public class subChassis extends Subsystem {
 
   }
 
-  private void configureSmartMotion(CANPIDController pidControler) {
-    // configures smart motion for the drive train sparks
-    CANError err = CANError.kOk;
-
-    pidControler.setP(Chassis_smartMotionKs.kP);
-    pidControler.setI(Chassis_smartMotionKs.kI);
-    pidControler.setD(Chassis_smartMotionKs.kD);
-    pidControler.setIZone(Chassis_smartMotionKs.kIz);
-    pidControler.setFF(Chassis_smartMotionKs.kFF);
-    pidControler.setOutputRange(Chassis_smartMotionKs.kMinOutput, Chassis_smartMotionKs.kMaxOutput);
-    pidControler.setSmartMotionMaxVelocity(Chassis_smartMotionKs.maxRPM, Chassis_smartMotionKs.slot);
-    pidControler.setSmartMotionMinOutputVelocity(Chassis_smartMotionKs.maxRPM,Chassis_smartMotionKs.slot);  
-    pidControler.setSmartMotionMaxAccel(Chassis_smartMotionKs.maxAcc,Chassis_smartMotionKs.slot);
-    pidControler.setSmartMotionAllowedClosedLoopError(0, Chassis_smartMotionKs.slot);
   
-
-    //https://github.com/HHS-Team670/2019-Robot/blob/dev/2019-Robot/src/main/java/frc/team670/robot/subsystems/DriveBase.java
-    
-    
-  }
   /****************************************************************************
     Velocity Settings & Methods
   ****************************************************************************/
@@ -142,30 +130,62 @@ public class subChassis extends Subsystem {
   /****************************************************************************
     Position Settings & Methods
   ****************************************************************************/
+  private void configureSmartPosition(CANPIDController pidController) {
+    // configures smart motion for the drive train sparks
+    pidController.setP(Chassis_smartPositionKs.kP);
+    pidController.setI(Chassis_smartPositionKs.kI);
+    pidController.setD(Chassis_smartPositionKs.kD);
+    pidController.setIZone(Chassis_smartPositionKs.kIz);
+    pidController.setFF(Chassis_smartPositionKs.kFF);
+    pidController.setOutputRange(Chassis_smartPositionKs.kMinOutput, Chassis_smartPositionKs.kMaxOutput);
+    pidController.setSmartMotionMaxVelocity(Chassis_smartPositionKs.maxRPM, Chassis_smartPositionKs.slot);
+    pidController.setSmartMotionMinOutputVelocity(Chassis_smartPositionKs.maxRPM,Chassis_smartPositionKs.slot);  
+    pidController.setSmartMotionMaxAccel(Chassis_smartPositionKs.maxAcc,Chassis_smartPositionKs.slot);
+    pidController.setSmartMotionAllowedClosedLoopError(0, Chassis_smartPositionKs.slot);
+   
+    //https://github.com/HHS-Team670/2019-Robot/blob/dev/2019-Robot/src/main/java/frc/team670/robot/subsystems/DriveBase.java
+    
+  }
   
-  
+
+  public double getEncoderPos_LR () {
+    return (getEncoderPosRight() );
+  }
+
+  public double getEncoderPosLeft () {
+    return leftEncoder.getPosition() - encoderOffset_left;
+  }
+
+  public double getEncoderPosRight(){
+    return rightEncoder.getPosition() - encoderOffset_right;
+  }
+
   public void resetEncoder_LeftDrive () {
-    leftEncoder.setPosition(0);
+    
+    //leftEncoder.setPosition(0);
+    encoderOffset_left = -leftEncoder.getPosition();
   }
   
   public void resetEncoder_RightDrive () {
-    rightEncoder.setPosition(0);
+    //rightEncoder.setPosition(0);
+    encoderOffset_right = rightEncoder.getPosition();
   }
 
   public void setSmartPosition_LeftDrive(double ref_Revs, double RPM){
     // sets left motor to run to position
-    configureSmartMotion(leftPidC);
-    leftPidC.setReference(ref_Revs, ControlType.kSmartMotion);
-    leftPidC.setSmartMotionMaxVelocity(RPM, Chassis_smartMotionKs.slot);
+    configureSmartPosition(leftPidC);
+
+    //System.err.println ("leftPidC.kP = " + leftPidC.getP() + " shoud be " + Chassis_smartPositionKs.kP);
+    leftPidC.setReference(ref_Revs + encoderOffset_left, ControlType.kPosition, Chassis_smartPositionKs.slot);
+    leftPidC.setSmartMotionMaxVelocity(RPM, Chassis_smartPositionKs.slot);
   }
 
   public  void setSmartPosition_RightDrive (double ref_Revs, double RPM) {
     // sets right motor to run to position
-    
-    configureSmartMotion(rightPidC);
-    rightPidC.setReference(ref_Revs, ControlType.kSmartMotion);
-    rightPidC.setSmartMotionMaxVelocity(RPM, Chassis_smartMotionKs.slot);
-     
+    configureSmartPosition(rightPidC);
+    //configureSmartPosition(rightPidC);
+    rightPidC.setReference(ref_Revs + encoderOffset_right, ControlType.kPosition, Chassis_smartPositionKs.slot);
+    rightPidC.setSmartMotionMaxVelocity(RPM, Chassis_smartPositionKs.slot);
   }
 
   public void smartPosition_steerStraight(double leftRPM, double rightRPM, double tol){
@@ -174,30 +194,29 @@ public class subChassis extends Subsystem {
     double hiTol = 1 + tol;
 
     // sets max and min motion velocity to steer while driving to position
-    leftPidC.setSmartMotionMaxVelocity(leftRPM * hiTol, Chassis_smartMotionKs.slot);
-    rightPidC.setSmartMotionMaxVelocity(rightRPM * hiTol, Chassis_smartMotionKs.slot);
+    leftPidC.setSmartMotionMaxVelocity(leftRPM * hiTol, Chassis_smartPositionKs.slot);
+    rightPidC.setSmartMotionMaxVelocity(rightRPM * hiTol, Chassis_smartPositionKs.slot);
     
-    //leftPidC.setSmartMotionMinOutputVelocity(leftRPM * loTol, Chassis_smartMotionKs.slot);
-    //rightPidC.setSmartMotionMinOutputVelocity(rightRPM * loTol, Chassis_smartMotionKs.slot);
+    //leftPidC.setSmartMotionMinOutputVelocity(leftRPM * loTol, Chassis_smartPositionKs.slot);
+    //rightPidC.setSmartMotionMinOutputVelocity(rightRPM * loTol, Chassis_smartPositionKs.slot);
     
   }
 
   public boolean smartPosition_isDoneLeft (double desired_Revs, double Tol) {
     
-    double currPos = leftEncoder.getPosition();
+    double currPos = getEncoderPosLeft();
     return CommonLogic.isInRange(currPos, desired_Revs, Tol);
   }
   
   public boolean smartPosition_isDoneRight (double desired_Revs, double Tol) {
     
-    double currPos = rightEncoder.getPosition();
+    double currPos = getEncoderPosRight();
     return CommonLogic.isInRange(currPos, desired_Revs, Tol);
   }
 
   public boolean smartPosition_LR_isDone(double desired_Revs, double Tol) {
 
-    return (smartPosition_isDoneRight(desired_Revs, Tol) && 
-            smartPosition_isDoneLeft(desired_Revs, Tol) );
+    return (CommonLogic.isInRange(getEncoderPos_LR(), desired_Revs, Tol) );
    
   }
 

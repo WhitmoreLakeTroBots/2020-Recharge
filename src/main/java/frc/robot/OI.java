@@ -67,7 +67,7 @@ public class OI {
 
 
         // SmartDashboard Buttons
-        SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
+        SmartDashboard.putData("Autonomous Command", new Auto_DriveByGyro(72,24,0));
         //SmartDashboard.putData("doEverything", new doEverything());
         //SmartDashboard.putData("Command Group 1", new CommandGroup1());
         //SmartDashboard.putData("cmdDelay", new cmdDelay());
