@@ -28,7 +28,7 @@ public class Auto_DriveByGyro extends Command {
   double RPM_tol = .01;
   double Revs_tol = .05;
   double targetHeading = 0.0;
-  
+
   public Auto_DriveByGyro(double dist_inches, double velInches_sec, double heading_deg) {
     requires(Robot.subChassis);
     Revs = Robot.subChassis.inches2MotorRevs(dist_inches);
@@ -47,7 +47,7 @@ public class Auto_DriveByGyro extends Command {
     Robot.subChassis.resetEncoder_RightDrive();
     System.err.println("LPos = " + Robot.subChassis.getEncoderPosLeft());
     System.err.println("RPos = " + Robot.subChassis.getEncoderPosRight());
-    
+
     Robot.subChassis.setSmartPosition_LeftDrive(-Revs, RPMS);
     Robot.subChassis.setSmartPosition_RightDrive(Revs, RPMS);
 
@@ -57,7 +57,7 @@ public class Auto_DriveByGyro extends Command {
   @Override
   protected void execute() {
 
-    System.err.println("CurrPos = " + Robot.subChassis.getEncoderPos_LR()+ " target=" + Revs);
+    System.err.println("CurrPos = " + Robot.subChassis.getEncoderPos_LR() + " target=" + Revs);
     double curr_heading = Robot.subGyro.getNormaliziedNavxAngle();
     double delta = Robot.subGyro.deltaHeading(curr_heading, targetHeading);
     double gyroAdjust = Settings.chassisDriveStraightGyroKp * delta;
@@ -69,13 +69,8 @@ public class Auto_DriveByGyro extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    //System.err.println("Auto_DriveByGyro.isFinished()");
-
-    boolean bDone = Robot.subChassis.smartPosition_LR_isDone(Revs, Revs_tol); 
-    if (bDone) {
-      Robot.subChassis.stop();
-    }
-    return bDone;
+    // System.err.println("Auto_DriveByGyro.isFinished()");
+    return Robot.subChassis.smartPosition_LR_isDone(Revs, Revs_tol);
   }
 
   // Called once after isFinished returns true

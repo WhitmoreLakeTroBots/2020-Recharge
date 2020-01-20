@@ -32,21 +32,18 @@ public class subChassis extends Subsystem {
   public static final double driveStraightGyroKp = 0.05;
   public static final double wheelDiameter = 6.0;
   public static final double gearBoxRatio = 8.45;
-  
+
   private double encoderOffset_left = 0;
   private double encoderOffset_right = 0;
 
   public subChassis() {
-    
+
     leftDrive = new CANSparkMax(Settings.CANID_subChassisLeftMaster, MotorType.kBrushless);
     rightDrive = new CANSparkMax(Settings.CANID_subChassisRightMaster, MotorType.kBrushless);
-	// reset factory defaults and make them persist power cycles
+    // reset factory defaults and make them persist power cycles
     leftDrive.restoreFactoryDefaults(true);
     rightDrive.restoreFactoryDefaults(true);
-    
-    
-    
-    
+
     leftDrive.setIdleMode(IdleMode.kBrake);
     rightDrive.setIdleMode(IdleMode.kBrake);
 
@@ -57,7 +54,7 @@ public class subChassis extends Subsystem {
     encoderOffset_right = rightEncoder.getPosition();
 
     leftDrive.setInverted(true);
-    
+
     rightPidC = rightDrive.getPIDController();
     leftPidC = leftDrive.getPIDController();
 
@@ -79,27 +76,26 @@ public class subChassis extends Subsystem {
     double joyY = CommonLogic.joyDeadBand(stick.getY(), joyDriveDeadband);
 
     double rightDriveValue = joyY + joyX;
-    double leftDriveValue = joyY -joyX;
+    double leftDriveValue = joyY - joyX;
 
     setVelocity_RightDrive(rightDriveValue * Chassis_teleOpMotionKs.maxRPM);
-    setVelocity_LeftDrive(leftDriveValue * Chassis_teleOpMotionKs.maxRPM); 
+    setVelocity_LeftDrive(leftDriveValue * Chassis_teleOpMotionKs.maxRPM);
 
     // kill the iAccumulator if we are setting an entire side of the
     // drivetrain to zero
-    if (CommonLogic.joyDeadBand(rightDriveValue, joyDriveDeadband) == 0.0){
+    if (CommonLogic.joyDeadBand(rightDriveValue, joyDriveDeadband) == 0.0) {
       rightPidC.setIAccum(0.0);
     }
 
-    if (CommonLogic.joyDeadBand(leftDriveValue, joyDriveDeadband) == 0.0){
+    if (CommonLogic.joyDeadBand(leftDriveValue, joyDriveDeadband) == 0.0) {
       leftPidC.setIAccum(0.0);
     }
 
   }
 
-  
   /****************************************************************************
-    Velocity Settings & Methods
-  ****************************************************************************/
+   * Velocity Settings & Methods
+   ****************************************************************************/
   private void configureTeleOptMotion(CANPIDController pidControler) {
     // configures TeleOp motion for the drive train sparks
     pidControler.setP(Chassis_teleOpMotionKs.kP, Chassis_teleOpMotionKs.slot);
@@ -107,29 +103,30 @@ public class subChassis extends Subsystem {
     pidControler.setI(Chassis_teleOpMotionKs.kI, Chassis_teleOpMotionKs.slot);
     pidControler.setIZone(Chassis_teleOpMotionKs.kIz, Chassis_teleOpMotionKs.slot);
     pidControler.setFF(Chassis_teleOpMotionKs.kFF, Chassis_teleOpMotionKs.slot);
-    pidControler.setOutputRange(Chassis_teleOpMotionKs.kMinOutput, Chassis_teleOpMotionKs.kMaxOutput, Chassis_teleOpMotionKs.slot);
+    pidControler.setOutputRange(Chassis_teleOpMotionKs.kMinOutput, Chassis_teleOpMotionKs.kMaxOutput,
+        Chassis_teleOpMotionKs.slot);
     pidControler.setSmartMotionMaxVelocity(Chassis_teleOpMotionKs.maxRPM, Chassis_teleOpMotionKs.slot);
     pidControler.setSmartMotionMinOutputVelocity(Chassis_teleOpMotionKs.minRPM, Chassis_teleOpMotionKs.slot);
     pidControler.setSmartMotionMaxAccel(Chassis_teleOpMotionKs.maxAcc, Chassis_teleOpMotionKs.slot);
     pidControler.setSmartMotionAllowedClosedLoopError(Chassis_teleOpMotionKs.allowedErr, Chassis_teleOpMotionKs.slot);
-    
+
   }
 
-  public void setVelocity_LeftDrive (double velRPM) {
+  public void setVelocity_LeftDrive(double velRPM) {
     double RPM = CommonLogic.CapMotorPower(velRPM, -Chassis_teleOpMotionKs.maxRPM, Chassis_teleOpMotionKs.maxRPM);
-    leftPidC.setReference(RPM, ControlType.kVelocity, Chassis_teleOpMotionKs.slot);
-    
-}
+    leftPidC.setReference(RPM, Chassis_teleOpMotionKs.ctrlType, Chassis_teleOpMotionKs.slot);
 
-  public void setVelocity_RightDrive (double velRPM) {
+  }
+
+  public void setVelocity_RightDrive(double velRPM) {
     double RPM = CommonLogic.CapMotorPower(velRPM, -Chassis_teleOpMotionKs.maxRPM, Chassis_teleOpMotionKs.maxRPM);
-    rightPidC.setReference(RPM, ControlType.kVelocity, Chassis_teleOpMotionKs.slot);
-    
+    rightPidC.setReference(RPM, Chassis_teleOpMotionKs.ctrlType, Chassis_teleOpMotionKs.slot);
+
   }
 
   /****************************************************************************
-    Position Settings & Methods
-  ****************************************************************************/
+   * Position Settings & Methods
+   ****************************************************************************/
   private void configureSmartPosition(CANPIDController pidController) {
     // configures smart motion for the drive train sparks
     pidController.setP(Chassis_smartPositionKs.kP);
@@ -139,102 +136,104 @@ public class subChassis extends Subsystem {
     pidController.setFF(Chassis_smartPositionKs.kFF);
     pidController.setOutputRange(Chassis_smartPositionKs.kMinOutput, Chassis_smartPositionKs.kMaxOutput);
     pidController.setSmartMotionMaxVelocity(Chassis_smartPositionKs.maxRPM, Chassis_smartPositionKs.slot);
-    pidController.setSmartMotionMinOutputVelocity(Chassis_smartPositionKs.maxRPM,Chassis_smartPositionKs.slot);  
-    pidController.setSmartMotionMaxAccel(Chassis_smartPositionKs.maxAcc,Chassis_smartPositionKs.slot);
+    pidController.setSmartMotionMinOutputVelocity(Chassis_smartPositionKs.maxRPM, Chassis_smartPositionKs.slot);
+    pidController.setSmartMotionMaxAccel(Chassis_smartPositionKs.maxAcc, Chassis_smartPositionKs.slot);
     pidController.setSmartMotionAllowedClosedLoopError(0, Chassis_smartPositionKs.slot);
-   
-    //https://github.com/HHS-Team670/2019-Robot/blob/dev/2019-Robot/src/main/java/frc/team670/robot/subsystems/DriveBase.java
-    
-  }
-  
+    // https://github.com/HHS-Team670/2019-Robot/blob/dev/2019-Robot/src/main/java/frc/team670/robot/subsystems/DriveBase.java
 
-  public double getEncoderPos_LR () {
-    return (getEncoderPosRight() );
   }
 
-  public double getEncoderPosLeft () {
+  public double getEncoderPos_LR() {
+    return (getEncoderPosRight());
+  }
+
+  public double getEncoderPosLeft() {
     return leftEncoder.getPosition() - encoderOffset_left;
   }
 
-  public double getEncoderPosRight(){
+  public double getEncoderPosRight() {
     return rightEncoder.getPosition() - encoderOffset_right;
   }
 
-  public void resetEncoder_LeftDrive () {
-    
-    //leftEncoder.setPosition(0);
+  public void resetEncoder_LeftDrive() {
+
+    // leftEncoder.setPosition(0);
     encoderOffset_left = -leftEncoder.getPosition();
   }
-  
-  public void resetEncoder_RightDrive () {
-    //rightEncoder.setPosition(0);
+
+  public void resetEncoder_RightDrive() {
+    // rightEncoder.setPosition(0);
     encoderOffset_right = rightEncoder.getPosition();
   }
 
-  public void setSmartPosition_LeftDrive(double ref_Revs, double RPM){
+  public void setSmartPosition_LeftDrive(double ref_Revs, double RPM) {
     // sets left motor to run to position
     configureSmartPosition(leftPidC);
-
-    //System.err.println ("leftPidC.kP = " + leftPidC.getP() + " shoud be " + Chassis_smartPositionKs.kP);
-    leftPidC.setReference(ref_Revs + encoderOffset_left, ControlType.kPosition, Chassis_smartPositionKs.slot);
+    // Chassis_smartPositionKs.kP);
+    leftPidC.setReference(ref_Revs + encoderOffset_left, Chassis_smartPositionKs.ctrlType,
+        Chassis_smartPositionKs.slot);
     leftPidC.setSmartMotionMaxVelocity(RPM, Chassis_smartPositionKs.slot);
   }
 
-  public  void setSmartPosition_RightDrive (double ref_Revs, double RPM) {
+  public void setSmartPosition_RightDrive(double ref_Revs, double RPM) {
     // sets right motor to run to position
     configureSmartPosition(rightPidC);
-    //configureSmartPosition(rightPidC);
-    rightPidC.setReference(ref_Revs + encoderOffset_right, ControlType.kPosition, Chassis_smartPositionKs.slot);
+    // configureSmartPosition(rightPidC);
+    rightPidC.setReference(ref_Revs + encoderOffset_right, Chassis_smartPositionKs.ctrlType,
+        Chassis_smartPositionKs.slot);
     rightPidC.setSmartMotionMaxVelocity(RPM, Chassis_smartPositionKs.slot);
   }
 
-  public void smartPosition_steerStraight(double leftRPM, double rightRPM, double tol){
-    // steer the robot by changing the smartMotion velocity of the left and right sides of the chassis
+  public void smartPosition_steerStraight(double leftRPM, double rightRPM, double tol) {
+    // steer the robot by changing the smartMotion velocity of the left and right
+    // sides of the chassis
     double loTol = 1 - tol;
     double hiTol = 1 + tol;
 
     // sets max and min motion velocity to steer while driving to position
     leftPidC.setSmartMotionMaxVelocity(leftRPM * hiTol, Chassis_smartPositionKs.slot);
     rightPidC.setSmartMotionMaxVelocity(rightRPM * hiTol, Chassis_smartPositionKs.slot);
-    
-    //leftPidC.setSmartMotionMinOutputVelocity(leftRPM * loTol, Chassis_smartPositionKs.slot);
-    //rightPidC.setSmartMotionMinOutputVelocity(rightRPM * loTol, Chassis_smartPositionKs.slot);
-    
+
+    // leftPidC.setSmartMotionMinOutputVelocity(leftRPM * loTol,
+    // Chassis_smartPositionKs.slot);
+    // rightPidC.setSmartMotionMinOutputVelocity(rightRPM * loTol,
+    // Chassis_smartPositionKs.slot);
+
   }
 
-  public boolean smartPosition_isDoneLeft (double desired_Revs, double Tol) {
-    
+  public boolean smartPosition_isDoneLeft(double desired_Revs, double Tol) {
+
     double currPos = getEncoderPosLeft();
     return CommonLogic.isInRange(currPos, desired_Revs, Tol);
   }
-  
-  public boolean smartPosition_isDoneRight (double desired_Revs, double Tol) {
-    
+
+  public boolean smartPosition_isDoneRight(double desired_Revs, double Tol) {
+
     double currPos = getEncoderPosRight();
     return CommonLogic.isInRange(currPos, desired_Revs, Tol);
   }
 
   public boolean smartPosition_LR_isDone(double desired_Revs, double Tol) {
 
-    return (CommonLogic.isInRange(getEncoderPos_LR(), desired_Revs, Tol) );
-   
+    return (CommonLogic.isInRange(getEncoderPos_LR(), desired_Revs, Tol));
+
   }
 
-  public double inches2MotorRevs (double inches) {
+  public double inches2MotorRevs(double inches) {
     // convert inches to motor Revs
     return (inches / wheelDiameter / Math.PI * gearBoxRatio);
     // 72 / 6 / Math.P * 8.45 = 32.2766224
   }
 
-  public double inches_sec2RPM (double inches_sec) {
+  public double inches_sec2RPM(double inches_sec) {
     // converts inches/sec to Revs/minute
     return inches2MotorRevs(inches_sec) * 60;
   }
 
-  public void stop () {
-    
+  public void stop() {
+
     leftDrive.set(0);
-    rightDrive.set (0);
+    rightDrive.set(0);
     leftPidC.setIAccum(0);
     rightPidC.setIAccum(0);
 
@@ -242,14 +241,13 @@ public class subChassis extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-		setDefaultCommand(new cmdTeleDrive());
+    setDefaultCommand(new cmdTeleDrive());
 
   }
 
-
   @Override
   public void periodic() {
-   
+
   }
 
 }
