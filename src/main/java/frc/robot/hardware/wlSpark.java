@@ -49,7 +49,7 @@ public class wlSpark extends CANSparkMax {
     }
 
     public double getPosition() {
-        return (super.getEncoder().getPosition() * inverted) - encoder_zero_offset;
+      return ((super.getEncoder().getPosition() - encoder_zero_offset) * inverted);
     }
 
     public double getVelocity() {
@@ -83,17 +83,17 @@ public class wlSpark extends CANSparkMax {
     }
 
     public void setReferencePosition(double value, ControlType ctrlType, int pidSlot){
-        double newPos = (value * inverted) + encoder_zero_offset;
+        double newPos = (value + encoder_zero_offset) * inverted;
         super.getPIDController().setReference(newPos, ctrlType, pidSlot);
     }
 
     public void setReferencePosition(double value, ControlType ctrlType, int pidSlot, int arbff){
-        double newPos = (value * inverted) + encoder_zero_offset;
+      double newPos = (value + encoder_zero_offset) * inverted;
         super.getPIDController().setReference(newPos, ctrlType, pidSlot, arbff);
     }
 
     public void setReferencePosition(double value, ControlType ctrlType, int pidSlot, int arbff, ArbFFUnits arbffUnits){
-        double newPos = (value * inverted) + encoder_zero_offset;
-        super.getPIDController().setReference(newPos, ctrlType, pidSlot, arbff, arbffUnits);
+      double newPos = (value + encoder_zero_offset) * inverted;
+      super.getPIDController().setReference(newPos, ctrlType, pidSlot, arbff, arbffUnits);
     }
 }
