@@ -33,7 +33,7 @@ public final class PidConstants {
     public final static double minRPM = 0;
     public final static double maxAcc = maxRPM * 10;
     public final static double allowedErr = 1;
-    public final static ControlType ctrlType = ControlType.kSmartMotion;
+    public final static ControlType ctrlType = ControlType.kPosition;
   }
 
 }
