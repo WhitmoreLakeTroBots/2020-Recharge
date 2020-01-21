@@ -11,89 +11,92 @@ import com.revrobotics.CANSparkMax.IdleMode;
 //import com.revrobotics.*;
 
 public class wlSpark extends CANSparkMax {
-    public double inverted = 1.0;
-    public double encoder_zero_offset = 0.0;
+  public double inverted = 1.0;
+  public double encoder_zero_offset = 0.0;
 
-    public wlSpark(int CAN_ID, MotorType motor_type) {
-        super(CAN_ID, motor_type);
-    }
+  public wlSpark(int CAN_ID, MotorType motor_type) {
+    super(CAN_ID, motor_type);
+  }
 
-    public void invert() {
-        inverted = inverted * -1.0;
-    }
+  public void invert() {
+    inverted = inverted * -1.0;
+  }
 
-    @Override
-    public boolean getInverted() {
-        // Do not call super.getInverted just return our local var
-        if(inverted == 1.0){
-            return false;
-        }
-        else{
-            return true;
-        }
+  @Override
+  public boolean getInverted() {
+    // Do not call super.getInverted just return our local var
+    if (inverted == 1.0) {
+      return false;
+    } else {
+      return true;
     }
-    
-    @Override
-    public void setInverted(boolean newValue) {
-        // do not call super.setInverted... Just set our local var
-        if(newValue == true) {
-            inverted = -1.0;
-        }
-        else{
-            inverted = 1.0;
-        }
-    }
+  }
 
-    public void resetEncoder() {
-        encoder_zero_offset = super.getEncoder().getPosition();
+  @Override
+  public void setInverted(boolean newValue) {
+    // do not call super.setInverted... Just set our local var
+    if (newValue == true) {
+      inverted = -1.0;
+    } else {
+      inverted = 1.0;
     }
+  }
 
-    public double getPosition() {
-      return ((super.getEncoder().getPosition() - encoder_zero_offset) * inverted);
-    }
+  public void resetEncoder() {
+    encoder_zero_offset = super.getEncoder().getPosition();
+  }
 
-    public double getVelocity() {
-        return super.getEncoder().getVelocity() * inverted;
-    }
+  public double getPosition() {
+    return ((super.getEncoder().getPosition() - encoder_zero_offset) * inverted);
+  }
 
-    @Override
-    public void set(double speed) {
-        super.set(speed * inverted);
-    }
-    
-    public void setReferenceVelocity(double value, ControlType ctrlType){
-        super.getPIDController().setReference(value * inverted, ctrlType);
-    }
+  public double getVelocity() {
+    return (super.getEncoder().getVelocity() * inverted);
+  }
 
-    public void setReferenceVelocity(double value, ControlType ctrlType, int pidSlot){
-        super.getPIDController().setReference(value * inverted, ctrlType, pidSlot);
-    }
+  @Override
+  public void set(double speed) {
+    super.set(speed * inverted);
+  }
 
-    public void setReferenceVelocity(double value, ControlType ctrlType, int pidSlot, int arbff){
-        super.getPIDController().setReference(value * inverted, ctrlType, pidSlot, arbff);
-    }
+  @Override
+  public double get() {
+    return (super.get() * inverted);
+  }
 
-    public void setReferenceVelocity(double value, ControlType ctrlType, int pidSlot, int arbff, ArbFFUnits arbffUnits){
-        super.getPIDController().setReference(value * inverted, ctrlType, pidSlot, arbff, arbffUnits);
-    }
+  public void setReferenceVelocity(double value, ControlType ctrlType) {
+    super.getPIDController().setReference(value * inverted, ctrlType);
+  }
 
-    public void setReferencePosition(double value, ControlType ctrlType){
-        double newPos = (value * inverted) + encoder_zero_offset;
-        super.getPIDController().setReference(newPos, ctrlType);
-    }
+  public void setReferenceVelocity(double value, ControlType ctrlType, int pidSlot) {
+    super.getPIDController().setReference(value * inverted, ctrlType, pidSlot);
+  }
 
-    public void setReferencePosition(double value, ControlType ctrlType, int pidSlot){
-        double newPos = (value + encoder_zero_offset) * inverted;
-        super.getPIDController().setReference(newPos, ctrlType, pidSlot);
-    }
+  public void setReferenceVelocity(double value, ControlType ctrlType, int pidSlot, int arbff) {
+    super.getPIDController().setReference(value * inverted, ctrlType, pidSlot, arbff);
+  }
 
-    public void setReferencePosition(double value, ControlType ctrlType, int pidSlot, int arbff){
-      double newPos = (value + encoder_zero_offset) * inverted;
-        super.getPIDController().setReference(newPos, ctrlType, pidSlot, arbff);
-    }
+  public void setReferenceVelocity(double value, ControlType ctrlType, int pidSlot, int arbff, ArbFFUnits arbffUnits) {
+    super.getPIDController().setReference(value * inverted, ctrlType, pidSlot, arbff, arbffUnits);
+  }
 
-    public void setReferencePosition(double value, ControlType ctrlType, int pidSlot, int arbff, ArbFFUnits arbffUnits){
-      double newPos = (value + encoder_zero_offset) * inverted;
-      super.getPIDController().setReference(newPos, ctrlType, pidSlot, arbff, arbffUnits);
-    }
+  public void setReferencePosition(double value, ControlType ctrlType) {
+    double newPos = (value * inverted) + encoder_zero_offset;
+    super.getPIDController().setReference(newPos, ctrlType);
+  }
+
+  public void setReferencePosition(double value, ControlType ctrlType, int pidSlot) {
+    double newPos = (value + encoder_zero_offset) * inverted;
+    super.getPIDController().setReference(newPos, ctrlType, pidSlot);
+  }
+
+  public void setReferencePosition(double value, ControlType ctrlType, int pidSlot, int arbff) {
+    double newPos = (value + encoder_zero_offset) * inverted;
+    super.getPIDController().setReference(newPos, ctrlType, pidSlot, arbff);
+  }
+
+  public void setReferencePosition(double value, ControlType ctrlType, int pidSlot, int arbff, ArbFFUnits arbffUnits) {
+    double newPos = (value + encoder_zero_offset) * inverted;
+    super.getPIDController().setReference(newPos, ctrlType, pidSlot, arbff, arbffUnits);
+  }
 }
