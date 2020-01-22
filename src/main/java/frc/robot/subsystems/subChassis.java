@@ -55,7 +55,7 @@ public class subChassis extends Subsystem {
   public void Drive(Joystick stick) {
 
     double joyX = CommonLogic.joyDeadBand(stick.getX(), joyDriveDeadband);
-    double joyY = CommonLogic.joyDeadBand(stick.getY(), joyDriveDeadband);
+    double joyY = CommonLogic.joyDeadBand(-stick.getY(), joyDriveDeadband);
 
     double rightDriveValue = joyY + joyX;
     double leftDriveValue = joyY - joyX;
