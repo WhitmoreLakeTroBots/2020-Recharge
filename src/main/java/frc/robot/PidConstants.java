@@ -26,7 +26,7 @@ public final class PidConstants {
     public final static double kI = 1e-6;
     public final static double kD = 0;
     public final static double kIz = 0;
-    public final static double kFF = 0; // 0.000156;
+    public final static double kFF = 0;//0.000156;
     public final static double kMaxOutput = 1;
     public final static double kMinOutput = -1;
     public final static double maxRPM = 5000;

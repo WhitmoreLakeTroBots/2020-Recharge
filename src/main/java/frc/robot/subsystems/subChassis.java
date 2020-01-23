@@ -60,6 +60,8 @@ public class subChassis extends Subsystem {
 
     double rightDriveValue = joyY - joyX;
     double leftDriveValue = joyY + joyX;
+    System.err.println("Encoder count: "+ leftDrive.getPosition() + "   " + rightDrive.getPosition());
+    System.err.println("Velocity     : "+ leftDrive.getVelocity() + "   " + rightDrive.getVelocity());
 
     setVelocity_RightDrive(rightDriveValue * Chassis_teleOpMotionKs.maxRPM);
     setVelocity_LeftDrive(leftDriveValue * Chassis_teleOpMotionKs.maxRPM);
@@ -207,6 +209,10 @@ public class subChassis extends Subsystem {
   public double inches_sec2RPM(double inches_sec) {
     // converts inches/sec to Revs/minute
     return inches2MotorRevs(inches_sec) * 60;
+  }
+
+  public double revs2Inches(double Revs){
+    return Revs/gearBoxRatio/Math.PI * 6;
   }
 
   public void stop() {

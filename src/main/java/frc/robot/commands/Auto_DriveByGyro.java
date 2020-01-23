@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.Settings;
 //import frc.robot.subsystems.subChassis;
+import frc.robot.hardware.wlSpark;
 
 /**
  *
@@ -57,12 +58,13 @@ public class Auto_DriveByGyro extends Command {
   @Override
   protected void execute() {
 
-    System.err.println("CurrPos = " + Robot.subChassis.getEncoderPos_LR() + " target=" + Revs);
+    System.err.println("CurrPos = " + Robot.subChassis.revs2Inches( Robot.subChassis.getEncoderPos_LR()) + " target=" + Revs);
     double curr_heading = Robot.subGyro.getNormaliziedNavxAngle();
     double delta = Robot.subGyro.deltaHeading(curr_heading, targetHeading);
     double gyroAdjust = Settings.chassisDriveStraightGyroKp * delta;
     // Robot.subChassis.smartPosition_steerStraight(RPMS + gyroAdjust, RPMS -
     // gyroAdjust, RPM_tol);
+    
 
   }
 
