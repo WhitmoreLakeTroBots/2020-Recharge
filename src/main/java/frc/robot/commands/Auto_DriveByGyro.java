@@ -11,32 +11,68 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.CommonLogic;
+import frc.robot.PidConstants;
 //import edu.wpi.first.wpilibj.command.Subsystem;
 //import frc.robot.CommonLogic;
 import frc.robot.Robot;
 import frc.robot.Settings;
 //import frc.robot.subsystems.subChassis;
 import frc.robot.hardware.wlSpark;
+import frc.robot.motionProfile.*;
 
 /**
  *
  */
 public class Auto_DriveByGyro extends Command {
 
-  double inches = 0;
-  double Revs = 0;
-  double RPMS = 0;
-  double RPM_tol = .01;
-  double Revs_tol = .05;
-  double targetHeading = 0.0;
+  private double _distance;
+  private double _cruiseSpeed;
+  private double _accel;
+	private boolean _isFinished = false;
+	private double _startTime;
+	private double _requestedHeading = 0;
+	private double _distanceSignum;
+	private double _absDistance;
+	private double _abortTime;
+  private double _endTime;
+  
+	private MotionProfiler mp;
+  
 
+/**
+ * Accepting a percenage of the motor velocities for left and right
+ * sides of the robot to allow command to steer the robot using the 
+ * default accelleration.
+ * @param  dist_inces -- distance for the robot to move
+ * @param  velInches_sec -- velocity in inches per sec
+ * @param  heading_deg  -- desired heading in degrees
+ **/
   public Auto_DriveByGyro(double dist_inches, double velInches_sec, double heading_deg) {
     requires(Robot.subChassis);
-    Revs = Robot.subChassis.inches2MotorRevs(dist_inches);
-    RPMS = Robot.subChassis.inches_sec2RPM(velInches_sec);
-    targetHeading = heading_deg;
-
+    _distance = dist_inches;
+    _cruiseSpeed = velInches_sec;
+    _requestedHeading = heading_deg;
+    _accel = Settings.profileDriveAccelration;
   }
+
+/**
+ * Accepting a percenage of the motor velocities for left and right
+ * sides of the robot to allow command to steer the robot
+ * @param  dist_inces -- distance for the robot to move
+ * @param  velInches_sec -- velocity in inches per sec
+ * @param  heading_deg  -- desired heading in degrees
+ * @param  accel_sec_sec -- overide the accel with custom inches/sec/sec
+ **/
+  
+ public Auto_DriveByGyro(double dist_inches, double velInches_sec, double heading_deg, double accel_sec_sec) {
+  requires(Robot.subChassis);
+  _distance = dist_inches;
+  _cruiseSpeed = velInches_sec;
+  _requestedHeading = heading_deg;
+  _accel = accel_sec_sec;
+}
+
 
   // Called just before this Command runs the first time
   @Override
@@ -46,27 +82,53 @@ public class Auto_DriveByGyro extends Command {
     // start the motion
     Robot.subChassis.resetEncoder_LeftDrive();
     Robot.subChassis.resetEncoder_RightDrive();
-    System.err.println("LPos = " + Robot.subChassis.getEncoderPosLeft());
-    System.err.println("RPos = " + Robot.subChassis.getEncoderPosRight());
-
-    //Robot.subChassis.setSmartPosition_LeftDrive(-Revs, RPMS);
-    //Robot.subChassis.setSmartPosition_RightDrive(Revs, RPMS);
-
+    mp = new MotionProfiler(_absDistance, 0, _cruiseSpeed, _accel);
+    _absDistance = Math.abs(_distance);
+    _distanceSignum = Math.signum(_distance);
+    _abortTime = _absDistance / _cruiseSpeed;
+    _endTime = mp._stopTime * Settings.profileEndTimeScalar;
+    _startTime = CommonLogic.getTime();
+    _isFinished = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
-    System.err.println("CurrPos = " + Robot.subChassis.revs2Inches( Robot.subChassis.getEncoderPos_LR()) + " target=" + Revs);
-    double curr_heading = Robot.subGyro.getNormaliziedNavxAngle();
-    double delta = Robot.subGyro.deltaHeading(curr_heading, targetHeading);
-    double gyroAdjust = Settings.chassisDriveStraightGyroKp * delta;
-    // Robot.subChassis.smartPosition_steerStraight(RPMS + gyroAdjust, RPMS -
-    // gyroAdjust, RPM_tol);
     
+    //double encoderVal = Robot.subChassis.getEncoderAvgDistInch();
+		double deltaTime = CommonLogic.getTime() - _startTime;
+		//double profileDist = mp.getTotalDistanceTraveled(deltaTime);
+		double currentHeading = Robot.subGyro.getNormaliziedNavxAngle();
+		double turnValue = calcTurnRate(currentHeading);
+    double profileVelocity = mp.getProfileCurrVelocity(deltaTime);
+    
+    double leftRPM = Robot.subChassis.inches_sec2RPM(profileVelocity - turnValue);
+    double rightRPM = Robot.subChassis.inches_sec2RPM(profileVelocity + turnValue);
+    Robot.subChassis.Drive(leftRPM, rightRPM);
 
+    // see if we are really done with the move... call Tolerance as 1% of _distance
+    if (CommonLogic.isInRange(Robot.subChassis.getEncoder_Inches_LR(), _distance, (_distance * .01))) {
+      _isFinished = true;
+    }
+
+    // fail safe we end if time expires
+    if (deltaTime > _endTime) {
+			_isFinished = true;
+    }
+    
   }
+
+
+  protected double calcTurnRate(double currentHeading) {
+    
+    double turnRate = CommonLogic.calcTurnRate(
+        Robot.subGyro.deltaHeading(Robot.subGyro.getNormaliziedNavxAngle(), _requestedHeading),
+        Robot.subChassis.driveStraightGyroKp);
+    
+        // turn rate must be expressed as RPMs
+    return (turnRate * PidConstants.Chassis_teleOpMotionKs.maxRPM);
+    
+	}
 
   // Make this return true when this Command no longer needs to run execute()
   @Override

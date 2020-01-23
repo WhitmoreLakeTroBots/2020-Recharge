@@ -12,7 +12,7 @@ public class MotionProfiler {
 	public double _cruiseTime = 0;
 	public double _deccelTime = 0;
 	public double _stopTime = 0;
-	private double _xa = 0; //distance travelled during the accellration part
+	private double _xa = 0; //distance travelled during the accellertion part
 	private double _xc = 0; //distance travelled during the cruising part
 	private double _xd = 0; //distance travelled during the deccelleration part
 	

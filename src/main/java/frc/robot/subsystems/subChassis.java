@@ -22,10 +22,10 @@ public class subChassis extends Subsystem {
   private static wlSpark leftDrive;
   private static wlSpark rightDrive;
 
-  public static final double joyDriveDeadband = 0.05;
-  public static final double driveStraightGyroKp = 0.05;
-  public static final double wheelDiameter = 6.0;
-  public static final double gearBoxRatio = 8.45;
+  public final double joyDriveDeadband = 0.05;
+  public final double driveStraightGyroKp = 0.05;
+  public final double wheelDiameter = 6.0;
+  public final double gearBoxRatio = 8.45;
 
   public subChassis() {
 
@@ -42,6 +42,9 @@ public class subChassis extends Subsystem {
 
     configureTeleOptMotion(leftDrive.getPIDController());
     configureTeleOptMotion(rightDrive.getPIDController());
+
+    leftDrive.setSmartCurrentLimit (Settings.REV_NEO_CurrentLimitStalledAmps);
+    rightDrive.setSmartCurrentLimit (Settings.REV_NEO_CurrentLimitStalledAmps);
 
     // burn in the values so they stay during a brown out.
     rightDrive.burnFlash();
@@ -60,29 +63,30 @@ public class subChassis extends Subsystem {
     double joyX = CommonLogic.joyDeadBand(stick.getX(), joyDriveDeadband);
     double joyY = CommonLogic.joyDeadBand(-stick.getY(), joyDriveDeadband);
 
-    Drive (joyY + joyX, joyY - joyX);
+    Drive ((joyY + joyX) * Chassis_teleOpMotionKs.maxRPM, 
+           (joyY - joyX) * Chassis_teleOpMotionKs.maxRPM);
   }
 
 /**
  * Accepting a percenage of the motor velocities for left and right
  * sides of the robot to allow command to steer the robot
- * @param  leftRPMPercent -- percentage of max RPM for the motors
- * @param  rightRPMPercent -- percentage of max RPM for the motors
+ * @param  leftRPM -- percentage of max RPM for the motors
+ * @param  rightRPM -- percentage of max RPM for the motors
  */
-  public void Drive (double leftRPMPercent, double rightRPMPercent) {
+  public void Drive (double leftRPM, double rightRPM) {
     System.err.println("Encoder count: "+ leftDrive.getPosition() + "   " + rightDrive.getPosition());
     System.err.println("Velocity     : "+ leftDrive.getVelocity() + "   " + rightDrive.getVelocity());
 
-    setVelocity_RightDrive(rightRPMPercent * Chassis_teleOpMotionKs.maxRPM);
-    setVelocity_LeftDrive(leftRPMPercent * Chassis_teleOpMotionKs.maxRPM);
+    setVelocity_RightDrive(rightRPM);
+    setVelocity_LeftDrive(leftRPM);
 
     // kill the iAccumulator if we are setting an entire side of the
     // drivetrain to zero
-    if (CommonLogic.joyDeadBand(rightRPMPercent, .01) == 0.0) {
+    if (CommonLogic.joyDeadBand(rightRPM, .01) == 0.0) {
       rightDrive.getPIDController().setIAccum(0.0);
     }
 
-    if (CommonLogic.joyDeadBand(leftRPMPercent, .01) == 0.0) {
+    if (CommonLogic.joyDeadBand(leftRPM, .01) == 0.0) {
       leftDrive.getPIDController().setIAccum(0.0);
     }
   }
@@ -106,12 +110,12 @@ public class subChassis extends Subsystem {
 
   }
 
-  public void setVelocity_LeftDrive(double velRPM) {
+  private void setVelocity_LeftDrive(double velRPM) {
     double RPM = CommonLogic.CapMotorPower(velRPM, -Chassis_teleOpMotionKs.maxRPM, Chassis_teleOpMotionKs.maxRPM);
     leftDrive.setReferenceVelocity(RPM, Chassis_teleOpMotionKs.ctrlType, Chassis_teleOpMotionKs.slot);
   }
 
-  public void setVelocity_RightDrive(double velRPM) {
+  private void setVelocity_RightDrive(double velRPM) {
     double RPM = CommonLogic.CapMotorPower(velRPM, -Chassis_teleOpMotionKs.maxRPM, Chassis_teleOpMotionKs.maxRPM);
     rightDrive.setReferenceVelocity(RPM, Chassis_teleOpMotionKs.ctrlType, Chassis_teleOpMotionKs.slot);
   }
@@ -140,6 +144,11 @@ public class subChassis extends Subsystem {
     rightDrive.resetEncoder();
   }
 
+  public double getEncoder_Inches_LR () {
+
+    return revs2Inches(getEncoderPos_LR()) ;
+  }
+
   public double inches2MotorRevs(double inches) {
     // convert inches to motor Revs
     return (inches / wheelDiameter / Math.PI * gearBoxRatio);
@@ -152,7 +161,7 @@ public class subChassis extends Subsystem {
   }
 
   public double revs2Inches(double Revs){
-    return Revs/gearBoxRatio/Math.PI * 6;
+    return (Revs/gearBoxRatio/Math.PI * wheelDiameter);
   }
 
   public void stop() {
