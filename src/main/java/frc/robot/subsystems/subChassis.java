@@ -38,7 +38,8 @@ public class subChassis extends Subsystem {
 
     leftDrive.setIdleMode(IdleMode.kBrake);
     rightDrive.setIdleMode(IdleMode.kBrake);
-    leftDrive.setInverted(true);
+    leftDrive.setInverted(false);
+    rightDrive.setInverted(true);
 
     configureSmartPosition(leftDrive.getPIDController());
     configureSmartPosition(rightDrive.getPIDController());
@@ -57,8 +58,8 @@ public class subChassis extends Subsystem {
     double joyX = CommonLogic.joyDeadBand(stick.getX(), joyDriveDeadband);
     double joyY = CommonLogic.joyDeadBand(-stick.getY(), joyDriveDeadband);
 
-    double rightDriveValue = joyY + joyX;
-    double leftDriveValue = joyY - joyX;
+    double rightDriveValue = joyY - joyX;
+    double leftDriveValue = joyY + joyX;
 
     setVelocity_RightDrive(rightDriveValue * Chassis_teleOpMotionKs.maxRPM);
     setVelocity_LeftDrive(leftDriveValue * Chassis_teleOpMotionKs.maxRPM);

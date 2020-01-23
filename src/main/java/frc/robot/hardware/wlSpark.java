@@ -81,7 +81,7 @@ public class wlSpark extends CANSparkMax {
   }
 
   public void setReferencePosition(double value, ControlType ctrlType) {
-    double newPos = (value * inverted) + encoder_zero_offset;
+    double newPos = (value  + encoder_zero_offset) * inverted;
     super.getPIDController().setReference(newPos, ctrlType);
   }
 
