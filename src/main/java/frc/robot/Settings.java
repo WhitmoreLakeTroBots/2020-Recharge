@@ -21,4 +21,17 @@ public class Settings {
   // chassis constants
   public static final double chassisDriveStraightGyroKp = 0.05;
 
+
+  // Profile Settings
+  public static final String profileTestLogName = "logs\\motionProfileTestResults";
+  public static final String profileLogName = "//media//sda1//motionProfile";
+  public static final double profileAdditionLoopNumber = 50;
+  public static final String profileLogFileExtension = ".txt";
+  public static final double profileDriveAccelration = 55; // inches/sec/sec
+  public static final double profileAnglarAccelration = 10;
+  public static final double profileInitVelocity = 0.0;
+  public static final double profileMovementThreshold = 0.75;
+  public static final double profileEndTimeScalar = 1.3;
+
+
 }

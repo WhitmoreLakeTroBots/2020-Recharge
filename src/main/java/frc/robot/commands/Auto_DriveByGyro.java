@@ -49,8 +49,8 @@ public class Auto_DriveByGyro extends Command {
     System.err.println("LPos = " + Robot.subChassis.getEncoderPosLeft());
     System.err.println("RPos = " + Robot.subChassis.getEncoderPosRight());
 
-    Robot.subChassis.setSmartPosition_LeftDrive(-Revs, RPMS);
-    Robot.subChassis.setSmartPosition_RightDrive(Revs, RPMS);
+    //Robot.subChassis.setSmartPosition_LeftDrive(-Revs, RPMS);
+    //Robot.subChassis.setSmartPosition_RightDrive(Revs, RPMS);
 
   }
 
@@ -72,7 +72,7 @@ public class Auto_DriveByGyro extends Command {
   @Override
   protected boolean isFinished() {
     // System.err.println("Auto_DriveByGyro.isFinished()");
-    return Robot.subChassis.smartPosition_LR_isDone(Revs, Revs_tol);
+    return true; // Robot.subChassis.smartPosition_LR_isDone(Revs, Revs_tol);
   }
 
   // Called once after isFinished returns true

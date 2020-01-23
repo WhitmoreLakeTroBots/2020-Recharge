@@ -1,6 +1,6 @@
-package org.usfirst.frc3668.TroBot.motionProfile;
+package frc.robot.motionProfile;
 
-import org.usfirst.frc3668.TroBot.Settings;
+import frc.robot.Settings;
 
 public class MotionProfileTester {
 	static Logger log = new Logger(Settings.profileTestLogName);

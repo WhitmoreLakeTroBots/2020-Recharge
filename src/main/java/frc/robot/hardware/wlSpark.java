@@ -80,23 +80,4 @@ public class wlSpark extends CANSparkMax {
     super.getPIDController().setReference(value * inverted, ctrlType, pidSlot, arbff, arbffUnits);
   }
 
-  public void setReferencePosition(double value, ControlType ctrlType) {
-    double newPos = (value  + encoder_zero_offset) * inverted;
-    super.getPIDController().setReference(newPos, ctrlType);
-  }
-
-  public void setReferencePosition(double value, ControlType ctrlType, int pidSlot) {
-    double newPos = (value + encoder_zero_offset) * inverted;
-    super.getPIDController().setReference(newPos, ctrlType, pidSlot);
-  }
-
-  public void setReferencePosition(double value, ControlType ctrlType, int pidSlot, int arbff) {
-    double newPos = (value + encoder_zero_offset) * inverted;
-    super.getPIDController().setReference(newPos, ctrlType, pidSlot, arbff);
-  }
-
-  public void setReferencePosition(double value, ControlType ctrlType, int pidSlot, int arbff, ArbFFUnits arbffUnits) {
-    double newPos = (value + encoder_zero_offset) * inverted;
-    super.getPIDController().setReference(newPos, ctrlType, pidSlot, arbff, arbffUnits);
-  }
 }

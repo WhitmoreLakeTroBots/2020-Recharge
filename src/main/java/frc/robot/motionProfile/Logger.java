@@ -1,4 +1,4 @@
-package org.usfirst.frc3668.TroBot.motionProfile;
+package frc.robot.motionProfile;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import org.usfirst.frc3668.TroBot.Settings;
+import frc.robot.Settings;
 
 public class Logger {
 	// Logger to write data to the hard drive
@@ -16,7 +16,7 @@ public class Logger {
 	String name;
 	BufferedWriter writer = null;
 	static String timeLog = new SimpleDateFormat("_MMddyyyy_HHmmss").format(Calendar.getInstance().getTime());
-	static Logger log = new Logger(org.usfirst.frc3668.TroBot.Settings.profileLogName);
+	static Logger log = new Logger(Settings.profileLogName);
 
 	public Logger(String Name){
 		name = Name;
