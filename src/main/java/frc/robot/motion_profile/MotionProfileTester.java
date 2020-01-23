@@ -1,4 +1,4 @@
-package frc.robot.motionProfile;
+package frc.robot.motion_profile;
 
 import frc.robot.Settings;
 

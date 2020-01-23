@@ -13,13 +13,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.CommonLogic;
 import frc.robot.PidConstants;
-//import edu.wpi.first.wpilibj.command.Subsystem;
-//import frc.robot.CommonLogic;
 import frc.robot.Robot;
 import frc.robot.Settings;
-//import frc.robot.subsystems.subChassis;
-import frc.robot.hardware.wlSpark;
-import frc.robot.motionProfile.*;
+import frc.robot.motion_profile.MotionProfiler;
 
 /**
  *
@@ -41,7 +37,7 @@ public class Auto_DriveByGyro extends Command {
   
 
 /**
- * Accepting a percenage of the motor velocities for left and right
+ * Accepting a the motor velocities for left and right
  * sides of the robot to allow command to steer the robot using the 
  * default accelleration.
  * @param  dist_inces -- distance for the robot to move
@@ -57,7 +53,7 @@ public class Auto_DriveByGyro extends Command {
   }
 
 /**
- * Accepting a percenage of the motor velocities for left and right
+ * Accepting the motor velocities for left and right
  * sides of the robot to allow command to steer the robot
  * @param  dist_inces -- distance for the robot to move
  * @param  velInches_sec -- velocity in inches per sec

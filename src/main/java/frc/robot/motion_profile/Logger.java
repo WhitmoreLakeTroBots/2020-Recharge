@@ -1,4 +1,4 @@
-package frc.robot.motionProfile;
+package frc.robot.motion_profile;
 
 import java.io.BufferedWriter;
 import java.io.File;

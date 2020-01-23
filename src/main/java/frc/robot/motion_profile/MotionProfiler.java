@@ -1,7 +1,7 @@
-package frc.robot.motionProfile;
+package frc.robot.motion_profile;
 
 import frc.robot.Settings;
-import frc.robot.motionProfile.*;
+
 public class MotionProfiler {
 	private double _distance = 0;
 	private double _initVelocity = 0;
