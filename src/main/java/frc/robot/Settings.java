@@ -23,6 +23,10 @@ public class Settings {
 
   // chassis constants
   public static final double chassisDriveStraightGyroKp = 0.05;
+  public static final double Chassis_powerLeftScaler = 1.0;
+  public static final double Chassis_powerRightScaler = 1.0;
+  public static final double chassisMaxInchesPerSec = 212;
+
 
 
   // Profile Settings

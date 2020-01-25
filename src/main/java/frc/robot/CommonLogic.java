@@ -57,4 +57,12 @@ public class CommonLogic {
     double commandedTurnRate = deltaHeading * proportion;
     return commandedTurnRate; // IS ALWAYS POSITIVE!
   }
+  public double deg2Rad(double degrees){
+    return Math.toRadians(degrees);
+  }
+
+  public static double calcArcLength(double degrees, double radius){
+    return (Math.toRadians(degrees) * radius);
+  }
+
 }

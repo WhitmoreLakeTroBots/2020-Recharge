@@ -27,6 +27,8 @@ public class subChassis extends Subsystem {
   public final double wheelDiameter = 6.0;
   public final double wheelCircumference = wheelDiameter * Math.PI;
   public final double gearBoxRatio = 8.45;
+  public final double trackWidth = 24.0;
+  public final double trackRadius = trackWidth / 2;
 
   public subChassis() {
 
@@ -41,9 +43,6 @@ public class subChassis extends Subsystem {
     leftDrive.setInverted(false);
     rightDrive.setInverted(true);
 
-    configureTeleOptMotion(leftDrive.getPIDController());
-    configureTeleOptMotion(rightDrive.getPIDController());
-
     leftDrive.setSmartCurrentLimit (Settings.REV_NEO_CurrentLimitStalledAmps);
     rightDrive.setSmartCurrentLimit (Settings.REV_NEO_CurrentLimitStalledAmps);
 
@@ -52,14 +51,14 @@ public class subChassis extends Subsystem {
     leftDrive.burnFlash();
 
   }
-  private void setVelocity_LeftDrive(double velRPM) {
-    double RPM = CommonLogic.CapMotorPower(velRPM, -Chassis_teleOpMotionKs.maxRPM, Chassis_teleOpMotionKs.maxRPM);
-    leftDrive.setReferenceVelocity(RPM, Chassis_teleOpMotionKs.ctrlType, Chassis_teleOpMotionKs.slot);
+  private void setPower_LeftDrive(double pwrPercent) {
+    double power = CommonLogic.CapMotorPower(pwrPercent * Settings.Chassis_powerLeftScaler, -1, 1);
+    leftDrive.set(power);
   }
 
-  private void setVelocity_RightDrive(double velRPM) {
-    double RPM = CommonLogic.CapMotorPower(velRPM, -Chassis_teleOpMotionKs.maxRPM, Chassis_teleOpMotionKs.maxRPM);
-    rightDrive.setReferenceVelocity(RPM, Chassis_teleOpMotionKs.ctrlType, Chassis_teleOpMotionKs.slot);
+  private void setPower_RightDrive(double pwrPercent) {
+    double power = CommonLogic.CapMotorPower(pwrPercent  * Settings.Chassis_powerRightScaler, -1, 1);
+    rightDrive.set(power);
   }
 /**
  * Accepting a joystick  it will deadband and square the values
@@ -72,8 +71,7 @@ public class subChassis extends Subsystem {
     double joyX = CommonLogic.joyDeadBand(stick.getX(), joyDriveDeadband);
     double joyY = CommonLogic.joyDeadBand(-stick.getY(), joyDriveDeadband);
 
-    Drive ((joyY + joyX) * Chassis_teleOpMotionKs.maxRPM, 
-           (joyY - joyX) * Chassis_teleOpMotionKs.maxRPM);
+    Drive ((joyY + joyX) , (joyY - joyX) );
   }
 
 /**
@@ -82,46 +80,15 @@ public class subChassis extends Subsystem {
  * @param  leftRPM -- percentage of max RPM for the motors
  * @param  rightRPM -- percentage of max RPM for the motors
  */
-  public void Drive (double leftRPM, double rightRPM) {
+  public void Drive (double powerLeft, double powerRight) {
     //System.err.println("Encoder count: "+ leftDrive.getPosition() + "   " + rightDrive.getPosition());
     //System.err.println("Velocity     : "+ leftDrive.getVelocity() + "   " + rightDrive.getVelocity());
 
-    setVelocity_RightDrive(rightRPM );
-    setVelocity_LeftDrive(leftRPM );
-
-    // kill the iAccumulator if we are setting an entire side of the
-    // drivetrain to zero
-   /* if (CommonLogic.joyDeadBand(rightRPM, .01) == 0.0) {
-      rightDrive.getPIDController().setIAccum(0.0);
-    }
-
-    if (CommonLogic.joyDeadBand(leftRPM, .01) == 0.0) {
-      leftDrive.getPIDController().setIAccum(0.0);
-    }*/
-  }
-
-  /****************************************************************************
-   * Velocity Settings & Methods
-   ****************************************************************************/
-  private void configureTeleOptMotion(CANPIDController pidControler) {
-    // configures TeleOp motion for the drive train sparks
-    pidControler.setP(Chassis_teleOpMotionKs.kP, Chassis_teleOpMotionKs.slot);
-    pidControler.setD(Chassis_teleOpMotionKs.kD, Chassis_teleOpMotionKs.slot);
-    pidControler.setI(Chassis_teleOpMotionKs.kI, Chassis_teleOpMotionKs.slot);
-    pidControler.setIZone(Chassis_teleOpMotionKs.kIz, Chassis_teleOpMotionKs.slot);
-    pidControler.setFF(Chassis_teleOpMotionKs.kFF, Chassis_teleOpMotionKs.slot);
-    pidControler.setOutputRange(Chassis_teleOpMotionKs.kMinOutput, Chassis_teleOpMotionKs.kMaxOutput,
-        Chassis_teleOpMotionKs.slot);
-    pidControler.setSmartMotionMaxVelocity(Chassis_teleOpMotionKs.maxRPM, Chassis_teleOpMotionKs.slot);
-    pidControler.setSmartMotionMinOutputVelocity(Chassis_teleOpMotionKs.minRPM, Chassis_teleOpMotionKs.slot);
-    pidControler.setSmartMotionMaxAccel(Chassis_teleOpMotionKs.maxAcc, Chassis_teleOpMotionKs.slot);
-    pidControler.setSmartMotionAllowedClosedLoopError(Chassis_teleOpMotionKs.allowedErr, Chassis_teleOpMotionKs.slot);
-
+    setPower_RightDrive(powerRight);
+    setPower_LeftDrive(powerLeft);
   }
 
  
-
-
   public double getEncoderPos_LR() {
     // average the 2 encoders to get the real robot position
     return ((getEncoderPosRight() + getEncoderPosLeft()) / 2);
@@ -166,12 +133,8 @@ public class subChassis extends Subsystem {
   }
 
   public void stop() {
-
     leftDrive.set(0);
     rightDrive.set(0);
-    leftDrive.getPIDController().setIAccum(0);
-    rightDrive.getPIDController().setIAccum(0);
-
   }
 
   @Override
@@ -184,5 +147,7 @@ public class subChassis extends Subsystem {
   public void periodic() {
 
   }
+
+
 
 }
