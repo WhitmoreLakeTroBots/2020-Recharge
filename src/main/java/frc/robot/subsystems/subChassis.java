@@ -25,6 +25,7 @@ public class subChassis extends Subsystem {
   public final double joyDriveDeadband = 0.06;
   public final double driveStraightGyroKp = 0.05;
   public final double wheelDiameter = 6.0;
+  public final double wheelCircumference = wheelDiameter * Math.PI;
   public final double gearBoxRatio = 8.45;
 
   public subChassis() {
@@ -151,17 +152,17 @@ public class subChassis extends Subsystem {
 
   public double inches2MotorRevs(double inches) {
     // convert inches to motor Revs
-    return (inches / wheelDiameter / Math.PI * gearBoxRatio);
+    return (inches / wheelCircumference * gearBoxRatio);
     // 72 / 6 / Math.P * 8.45 = 32.2766224
   }
 
   public double inches_sec2RPM(double inches_sec) {
     // converts inches/sec to Revs/minute
-    return inches2MotorRevs(inches_sec) / 60;
+    return inches2MotorRevs(inches_sec) * 60;
   }
 
   public double revs2Inches(double Revs){
-    return (Revs/gearBoxRatio/Math.PI * wheelDiameter);
+    return (Revs / gearBoxRatio / wheelCircumference);
   }
 
   public void stop() {
