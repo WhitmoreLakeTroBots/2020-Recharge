@@ -47,7 +47,7 @@ public class MotionProfiler {
 			retvalue = (_cruiseVelocity - _initVelocity) / _acceleration;
 		} catch (ArithmeticException e) {
 			// Uncomment to print error message
-			// e.printStackTrace();
+			e.printStackTrace();
 		}
 		return retvalue;
 	}

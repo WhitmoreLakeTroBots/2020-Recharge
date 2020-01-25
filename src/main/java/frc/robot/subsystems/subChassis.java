@@ -22,7 +22,7 @@ public class subChassis extends Subsystem {
   private static wlSpark leftDrive;
   private static wlSpark rightDrive;
 
-  public final double joyDriveDeadband = 0.05;
+  public final double joyDriveDeadband = 0.06;
   public final double driveStraightGyroKp = 0.05;
   public final double wheelDiameter = 6.0;
   public final double gearBoxRatio = 8.45;
@@ -51,7 +51,15 @@ public class subChassis extends Subsystem {
     leftDrive.burnFlash();
 
   }
+  private void setVelocity_LeftDrive(double velRPM) {
+    double RPM = CommonLogic.CapMotorPower(velRPM, -Chassis_teleOpMotionKs.maxRPM, Chassis_teleOpMotionKs.maxRPM);
+    leftDrive.setReferenceVelocity(RPM, Chassis_teleOpMotionKs.ctrlType, Chassis_teleOpMotionKs.slot);
+  }
 
+  private void setVelocity_RightDrive(double velRPM) {
+    double RPM = CommonLogic.CapMotorPower(velRPM, -Chassis_teleOpMotionKs.maxRPM, Chassis_teleOpMotionKs.maxRPM);
+    rightDrive.setReferenceVelocity(RPM, Chassis_teleOpMotionKs.ctrlType, Chassis_teleOpMotionKs.slot);
+  }
 /**
  * Accepting a joystick  it will deadband and square the values
  * and pass them off to the the auton method to be used to control the 
@@ -74,21 +82,21 @@ public class subChassis extends Subsystem {
  * @param  rightRPM -- percentage of max RPM for the motors
  */
   public void Drive (double leftRPM, double rightRPM) {
-    System.err.println("Encoder count: "+ leftDrive.getPosition() + "   " + rightDrive.getPosition());
-    System.err.println("Velocity     : "+ leftDrive.getVelocity() + "   " + rightDrive.getVelocity());
+    //System.err.println("Encoder count: "+ leftDrive.getPosition() + "   " + rightDrive.getPosition());
+    //System.err.println("Velocity     : "+ leftDrive.getVelocity() + "   " + rightDrive.getVelocity());
 
-    setVelocity_RightDrive(rightRPM);
-    setVelocity_LeftDrive(leftRPM);
+    setVelocity_RightDrive(rightRPM );
+    setVelocity_LeftDrive(leftRPM );
 
     // kill the iAccumulator if we are setting an entire side of the
     // drivetrain to zero
-    if (CommonLogic.joyDeadBand(rightRPM, .01) == 0.0) {
+   /* if (CommonLogic.joyDeadBand(rightRPM, .01) == 0.0) {
       rightDrive.getPIDController().setIAccum(0.0);
     }
 
     if (CommonLogic.joyDeadBand(leftRPM, .01) == 0.0) {
       leftDrive.getPIDController().setIAccum(0.0);
-    }
+    }*/
   }
 
   /****************************************************************************
@@ -110,15 +118,7 @@ public class subChassis extends Subsystem {
 
   }
 
-  private void setVelocity_LeftDrive(double velRPM) {
-    double RPM = CommonLogic.CapMotorPower(velRPM, -Chassis_teleOpMotionKs.maxRPM, Chassis_teleOpMotionKs.maxRPM);
-    leftDrive.setReferenceVelocity(RPM, Chassis_teleOpMotionKs.ctrlType, Chassis_teleOpMotionKs.slot);
-  }
-
-  private void setVelocity_RightDrive(double velRPM) {
-    double RPM = CommonLogic.CapMotorPower(velRPM, -Chassis_teleOpMotionKs.maxRPM, Chassis_teleOpMotionKs.maxRPM);
-    rightDrive.setReferenceVelocity(RPM, Chassis_teleOpMotionKs.ctrlType, Chassis_teleOpMotionKs.slot);
-  }
+ 
 
 
   public double getEncoderPos_LR() {
@@ -157,7 +157,7 @@ public class subChassis extends Subsystem {
 
   public double inches_sec2RPM(double inches_sec) {
     // converts inches/sec to Revs/minute
-    return inches2MotorRevs(inches_sec) * 60;
+    return inches2MotorRevs(inches_sec) / 60;
   }
 
   public double revs2Inches(double Revs){

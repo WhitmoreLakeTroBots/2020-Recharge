@@ -61,14 +61,14 @@ public class Auto_DriveByGyro extends Command {
  * @param  accel_sec_sec -- overide the accel with custom inches/sec/sec
  **/
   
- public Auto_DriveByGyro(double dist_inches, double velInches_sec, double heading_deg, double accel_sec_sec) {
+/* public Auto_DriveByGyro(double dist_inches, double velInches_sec, double heading_deg, double accel_sec_sec) {
   requires(Robot.subChassis);
   _distance = dist_inches;
   _cruiseSpeed = velInches_sec;
   _requestedHeading = heading_deg;
   _accel = accel_sec_sec;
 }
-
+*/
 
   // Called just before this Command runs the first time
   @Override
@@ -78,10 +78,10 @@ public class Auto_DriveByGyro extends Command {
     // start the motion
     Robot.subChassis.resetEncoder_LeftDrive();
     Robot.subChassis.resetEncoder_RightDrive();
-    mp = new MotionProfiler(_absDistance, 0, _cruiseSpeed, _accel);
     _absDistance = Math.abs(_distance);
     _distanceSignum = Math.signum(_distance);
     _abortTime = _absDistance / _cruiseSpeed;
+    mp = new MotionProfiler(_absDistance, 0, _cruiseSpeed, _accel);
     _endTime = mp._stopTime * Settings.profileEndTimeScalar;
     _startTime = CommonLogic.getTime();
     _isFinished = false;
@@ -90,22 +90,23 @@ public class Auto_DriveByGyro extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    
+
     //double encoderVal = Robot.subChassis.getEncoderAvgDistInch();
 		double deltaTime = CommonLogic.getTime() - _startTime;
 		//double profileDist = mp.getTotalDistanceTraveled(deltaTime);
 		double currentHeading = Robot.subGyro.getNormaliziedNavxAngle();
 		double turnValue = calcTurnRate(currentHeading);
     double profileVelocity = mp.getProfileCurrVelocity(deltaTime);
-    
+    System.err.println("Profile Velocity: "+ profileVelocity + " Time " + deltaTime);
+
     double leftRPM = Robot.subChassis.inches_sec2RPM(profileVelocity - turnValue);
     double rightRPM = Robot.subChassis.inches_sec2RPM(profileVelocity + turnValue);
     Robot.subChassis.Drive(leftRPM, rightRPM);
 
     // see if we are really done with the move... call Tolerance as 1% of _distance
-    if (CommonLogic.isInRange(Robot.subChassis.getEncoder_Inches_LR(), _distance, (_distance * .01))) {
-      _isFinished = true;
-    }
+    //if (CommonLogic.isInRange(Robot.subChassis.getEncoder_Inches_LR(), _distance, (_distance * .01))) {
+    //  _isFinished = true;
+    // }
 
     // fail safe we end if time expires
     if (deltaTime > _endTime) {
@@ -129,8 +130,8 @@ public class Auto_DriveByGyro extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    // System.err.println("Auto_DriveByGyro.isFinished()");
-    return true; // Robot.subChassis.smartPosition_LR_isDone(Revs, Revs_tol);
+    System.err.println("Auto_DriveByGyro.isFinished()");
+    return _isFinished;
   }
 
   // Called once after isFinished returns true
