@@ -12,42 +12,52 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class subLimelight extends Subsystem {
+    public static NetworkTableInstance inst = null;
+    //public static NetworkTable highTable = null;
+    public static NetworkTableEntry ltx = null;
+    public static NetworkTableEntry lty = null;
+    public static NetworkTableEntry lta = null;
+    public static NetworkTableEntry ltv = null;
+    public static NetworkTableEntry lts = null;
+    public static NetworkTableEntry ltl = null;
+    public static NetworkTableEntry ltcm = null;
+    public static NetworkTableEntry ltlm = null;
+    public static NetworkTableEntry ltp = null;
 
-    private NetworkTable limeTable = NetworkTableInstance.getDefault().getTable("limelight");
+
+    private NetworkTable highTable = NetworkTableInstance.getDefault().getTable("limelight");
 
     public subLimelight() {
-        limeTable.getEntry("camMode").setNumber(CAM_MODE.VISION_PROCESSING.val);
+        highTable.getEntry("camMode").setNumber(CAM_MODE.VISION_PROCESSING.val);
 
     }
 
-    //Horizontal Offset From Crosshair To Target (-27 degrees to 27 degrees)
     public double getTX() {
-        NetworkTableEntry tx = limeTable.getEntry("tx");
+        NetworkTableEntry tx = highTable.getEntry("tx");
         return tx.getDouble(0);
     }
 
-    //Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees)
     public double getTY() {
-        NetworkTableEntry ty = limeTable.getEntry("ty");
+        NetworkTableEntry ty = highTable.getEntry("ty");
         return ty.getDouble(0);
     }
 
     //Whether the limelight has any valid targets (0 or 1)
     public boolean hasTarget() {
-        NetworkTableEntry tv = limeTable.getEntry("tv");
+        NetworkTableEntry tv = highTable.getEntry("tv");
         return tv.getDouble(0) == 1;
     }
 
     public void setLEDMode(LED_MODE ledMode) {
-        limeTable.getEntry("ledMode").setNumber(ledMode.val);
+        highTable.getEntry("ledMode").setNumber(ledMode.val);
     }
 
     public void setCamMode(CAM_MODE camMode) {
-        limeTable.getEntry("camMode").setNumber(camMode.val);
+        highTable.getEntry("camMode").setNumber(camMode.val);
     }
 
     public void setPipeline(int pipeline) {
-        limeTable.getEntry("pipeline").setNumber(pipeline);
+        highTable.getEntry("pipeline").setNumber(pipeline);
     }
 
     public enum LED_MODE {
