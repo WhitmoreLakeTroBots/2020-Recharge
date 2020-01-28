@@ -81,7 +81,7 @@ public class Auto_DriveByGyro extends Command {
       Chassis_teleOpMotionKs.kI, Chassis_teleOpMotionKs.kD, 
       tpConstraints, .020);
 
-    pPidC.setTolerance(_absDistance * .01);
+    pPidC.setTolerance(Settings.profileEndTol);
 
     pPidC.setGoal(new State(_absDistance, tpConstraints.maxVelocity));
     _isFinished = false;
@@ -107,7 +107,7 @@ public class Auto_DriveByGyro extends Command {
       _isFinished = true;
     }
 
-    else if (CommonLogic.isInRange(measurement, _absDistance,  (.25)) ){
+    else if (CommonLogic.isInRange(measurement, _absDistance, Settings.profileEndTol)){
       // Our own checks on distance traveled says we are done
       System.err.println("isInRange=true");
       _isFinished = true;
