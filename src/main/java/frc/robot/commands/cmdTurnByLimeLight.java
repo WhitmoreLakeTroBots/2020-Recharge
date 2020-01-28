@@ -13,40 +13,41 @@ import frc.robot.PidConstants;
 import frc.robot.Robot;
 import frc.robot.Settings;
 import frc.robot.motion_profile.MotionProfiler;
+import frc.robot.subsystems.subLimelight.LED_MODE;
 
-public class Auto_TurnByGyro extends Command {
-  private double _degrees;
+public class cmdTurnByLimeLight extends Command {
+  public boolean _isFinished = false;
+  private double angleDividend = 0.1;
+  private double angleTol = 0.5;
+  public double angleErr;
+  private double _endTime;
+  private double _turnSignum;
+  //private double _degrees;
   private double _distance;
   private double _cruiseSpeed;
   private double _accel;
-	private boolean _isFinished = false;
 	private double _startTime;
 	private double _requestedHeading = 0;
 	private double _distanceSignum;
-	private double _absDistance;
-	private double _abortTime;
-  private double _endTime;
-  private double _turnSignum;
-
-  private MotionProfiler mp;
-  public Auto_TurnByGyro(double deg, double cruiseSpeed){
-    _degrees = deg;
+  private double _absDistance;
+  private double _abortTime;
+  
+  
+  private MotionProfiler mp;  
+  public cmdTurnByLimeLight() {
+   // _degrees = turnAngle;
     _accel = Settings.profileDriveAccelration;
-    _cruiseSpeed = cruiseSpeed;
-  }
-
-  public Auto_TurnByGyro(double deg, double cruiseSpeed, double accel) {
-    _degrees = deg;
-    _accel = accel;
-    _cruiseSpeed = cruiseSpeed;
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    _cruiseSpeed = 75;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-
+  double _degrees = Robot.subLimelight.getTX() ;
+   //double turnAngle = angleErr * angleDividend;
+   
+    Robot.subLimelight.setLEDMode(LED_MODE.ON);
+    Robot.subLimelight.setPipeline(0);
     System.err.println("Auto_TurnByGyro.initialize()");
     _turnSignum = Math.signum(_degrees);
     // start the motion
@@ -60,16 +61,18 @@ public class Auto_TurnByGyro extends Command {
     _endTime = mp._stopTime * Settings.profileEndTimeScalar;
     _startTime = CommonLogic.getTime();
     _isFinished = false;
+    System.err.println("degrees "  + _degrees + " Distance : " + _distance);
+    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-   //double encoderVal = Robot.subChassis.getEncoderAvgDistInch();
-		double deltaTime = CommonLogic.getTime() - _startTime;
+    
+    double deltaTime = CommonLogic.getTime() - _startTime;
     double currentHeading = Robot.subGyro.getNormaliziedNavxAngle();
     double profileDist = mp.getTotalDistanceTraveled(deltaTime);
-		double turnValue = calcTurnRate(currentHeading);
+		//double turnValue = calcTurnRate(currentHeading);
     double profileVelocity = mp.getProfileCurrVelocity(deltaTime);
     double throttlePos = (profileVelocity / Settings.chassisMaxInchesPerSec);
     System.err.println("Profile Velocity: "+ profileVelocity + " Distance " + _absDistance + "  " + _turnSignum + "  " + deltaTime);
@@ -77,33 +80,22 @@ public class Auto_TurnByGyro extends Command {
     
     double pidVal = 0;
     double finalThrottle = throttlePos + pidVal;
-    Robot.subChassis.Drive(finalThrottle * _turnSignum, -finalThrottle * _turnSignum);
-    //double leftRPM = Robot.subChassis.inches_sec2RPM(profileVelocity - turnValue);
-    //double rightRPM = Robot.subChassis.inches_sec2RPM(profileVelocity + turnValue);
-    // see if we are really done with the move... call Tolerance as 1% of _distance
-    //if (CommonLogic.isInRange(Robot.subChassis.getEncoder_Inches_LR(), _distance, (_distance * .01))) {
-    //  _isFinished = true;
-    // }
 
-    // fail safe we end if time expires
+
+    Robot.subChassis.Drive(finalThrottle * _turnSignum  * 2, -finalThrottle * _turnSignum * 2);;
+    
     if (deltaTime > _endTime) {
 			_isFinished = true;
     }
     
-   
   }
-
-  protected double calcTurnRate(double currentHeading) {
-    
-    double turnRate = CommonLogic.calcTurnRate(
-        Robot.subGyro.deltaHeading(Robot.subGyro.getNormaliziedNavxAngle(), _requestedHeading),
-        Robot.subChassis.driveStraightGyroKp);
-    
+  /*protected double calcTurnRate(double currentHeading) {
+    angleErr = Robot.subLimelight.getTX() - 2;
+      
+    double turnRate = CommonLogic.calcTurnRate(turnAngle, Robot.subChassis.driveStraightGyroKp);
         // turn rate must be expressed as RPMs
     return (turnRate * PidConstants.Chassis_teleOpMotionKs.maxRPM);
-    
-  }
-  
+  }*/
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
@@ -114,6 +106,7 @@ public class Auto_TurnByGyro extends Command {
   @Override
   protected void end() {
     Robot.subChassis.Drive(0, 0);
+
   }
 
   // Called when another command which requires one or more of the same
