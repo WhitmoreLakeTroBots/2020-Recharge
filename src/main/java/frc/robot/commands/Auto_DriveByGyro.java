@@ -15,26 +15,26 @@ import frc.robot.CommonLogic;
 import frc.robot.PidConstants;
 import frc.robot.Robot;
 import frc.robot.Settings;
-import frc.robot.motion_profile.MotionProfiler;
+//import frc.robot.motion_profile.MotionProfiler;
+import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile.State;
+import frc.robot.PidConstants.Chassis_teleOpMotionKs;
 
-/**
- *
- */
 public class Auto_DriveByGyro extends Command {
 
   private double _distance;
-  private double _cruiseSpeed;
-  private double _accel;
-	private boolean _isFinished = false;
-	private double _startTime;
+  private boolean _isFinished = false;
+	//private double _startTime;
 	private double _requestedHeading = 0;
 	private double _distanceSignum;
-	private double _absDistance;
-	private double _abortTime;
-  private double _endTime;
+	//private double _absDistance;
+	//private double _abortTime;
+  //private double _endTime;
   
-  
-	private MotionProfiler mp;
+  private Constraints tpConstraints = new Constraints (0.0, 0.0);
+  private ProfiledPIDController pPidC;
+	//private MotionProfiler mp;
   
 
 /**
@@ -48,9 +48,9 @@ public class Auto_DriveByGyro extends Command {
   public Auto_DriveByGyro(double dist_inches, double velInches_sec, double heading_deg) {
     requires(Robot.subChassis);
     _distance = dist_inches;
-    _cruiseSpeed = velInches_sec;
     _requestedHeading = heading_deg;
-    _accel = Settings.profileDriveAccelration;
+    tpConstraints.maxVelocity = velInches_sec;
+    tpConstraints.maxAcceleration = Settings.profileDriveAccelration;
   }
 
 /**
@@ -62,62 +62,54 @@ public class Auto_DriveByGyro extends Command {
  * @param  accel_sec_sec -- overide the accel with custom inches/sec/sec
  **/
   
-/* public Auto_DriveByGyro(double dist_inches, double velInches_sec, double heading_deg, double accel_sec_sec) {
+ public Auto_DriveByGyro(double dist_inches, double velInches_sec, double heading_deg, double accel_sec_sec) {
   requires(Robot.subChassis);
   _distance = dist_inches;
-  _cruiseSpeed = velInches_sec;
   _requestedHeading = heading_deg;
-  _accel = accel_sec_sec;
+  tpConstraints.maxVelocity = velInches_sec;
+  tpConstraints.maxAcceleration = Settings.profileDriveAccelration;
 }
-*/
 
-  // Called just before this Command runs the first time
+
+// Called just before this Command runs the first time
   @Override
   protected void initialize() {
 
     System.err.println("Auto_DriveByGyro.initialize()");
     // start the motion
+    
     Robot.subChassis.resetEncoder_LeftDrive();
     Robot.subChassis.resetEncoder_RightDrive();
-    _absDistance = Math.abs(_distance);
-    _distanceSignum = Math.signum(_distance);
-    _abortTime = _absDistance / _cruiseSpeed;
-    mp = new MotionProfiler(_absDistance, 0, _cruiseSpeed, _accel);
-    _endTime = mp._stopTime * Settings.profileEndTimeScalar;
-    _startTime = CommonLogic.getTime();
+    pPidC = new ProfiledPIDController(Chassis_teleOpMotionKs.kP, 
+      Chassis_teleOpMotionKs.kI, Chassis_teleOpMotionKs.kD, 
+      tpConstraints, .020);
+
+    pPidC.setTolerance(_distance * .01);
+
+    pPidC.setGoal(new State(_distance, tpConstraints.maxVelocity));
+
     _isFinished = false;
+    System.err.println ("_distance=" + _distance);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
 
-    //double encoderVal = Robot.subChassis.getEncoderAvgDistInch();
-		double deltaTime = CommonLogic.getTime() - _startTime;
-    //double profileDist = mp.getTotalDistanceTraveled(deltaTime);
-    double currentHeading = Robot.subGyro.getNormaliziedNavxAngle();
-    double profileDist = mp.getTotalDistanceTraveled(deltaTime);
-		double turnValue = calcTurnRate(currentHeading);
-    double profileVelocity = mp.getProfileCurrVelocity(deltaTime);
-    double throttlePos = (profileVelocity / Settings.chassisMaxInchesPerSec);
-    System.err.println("Profile Velocity: "+ profileVelocity + " Time " + deltaTime);
+    double measurement = Robot.subChassis.getEncoder_Inches_LR();
+    double finalThrottle = pPidC.calculate(measurement); // Settings.chassisMaxInchesPerSec;
+    System.err.println ("fThrottle:" + finalThrottle + " measurment" + measurement);
 
-    //double leftRPM = Robot.subChassis.inches_sec2RPM(profileVelocity - turnValue);
-    //double rightRPM = Robot.subChassis.inches_sec2RPM(profileVelocity + turnValue);
-    double pidVal = 0;
-    double finalThrottle = throttlePos + pidVal;
     Robot.subChassis.Drive(finalThrottle, finalThrottle);
 
-    // see if we are really done with the move... call Tolerance as 1% of _distance
-    //if (CommonLogic.isInRange(Robot.subChassis.getEncoder_Inches_LR(), _distance, (_distance * .01))) {
-    //  _isFinished = true;
-    // }
-
-    // fail safe we end if time expires
-    if (deltaTime > _endTime) {
-			_isFinished = true;
+    if (pPidC.atGoal() ) {
+      System.err.println("atGoal=true");
+      _isFinished = true;
     }
-    
+    else if (CommonLogic.isInRange(measurement, _distance,  (.25)) ){
+      System.err.println("isInRange=true");
+      _isFinished = true;
+    }  
   }
 
 
@@ -135,7 +127,7 @@ public class Auto_DriveByGyro extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    System.err.println("Auto_DriveByGyro.isFinished()");
+    System.err.println("Auto_DriveByGyro.isFinished()= " + _isFinished);
     return _isFinished;
   }
 

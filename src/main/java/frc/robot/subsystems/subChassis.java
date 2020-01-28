@@ -129,7 +129,7 @@ public class subChassis extends Subsystem {
   }
 
   public double revs2Inches(double Revs){
-    return (Revs / gearBoxRatio / wheelCircumference);
+    return (Revs / gearBoxRatio * wheelCircumference);
   }
 
   public void stop() {
