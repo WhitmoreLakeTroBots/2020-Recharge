@@ -12,7 +12,7 @@
 package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.cmdLimeAdjust;
+import frc.robot.commands.cmdTurnByLimeLight;
 
 
 /**
@@ -64,7 +64,7 @@ public class OI {
         joyStickDrive = new Joystick(0);
         limeFollow = new JoystickButton(joyStickDrive, 3);
        
-        limeFollow.whenPressed(new cmdLimeAdjust());
+        limeFollow.whenPressed(new cmdTurnByLimeLight());
         
 
 

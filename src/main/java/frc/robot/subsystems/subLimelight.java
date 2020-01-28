@@ -23,23 +23,35 @@ public class subLimelight extends Subsystem {
     public static NetworkTableEntry ltcm = null;
     public static NetworkTableEntry ltlm = null;
     public static NetworkTableEntry ltp = null;
+    public static NetworkTable highTable = null;
 
 
-    private NetworkTable highTable = NetworkTableInstance.getDefault().getTable("limelight");
-
+    //private NetworkTable highTable = NetworkTableInstance.getDefault().getTable("limelight");
+    public subLimelight() {
+    inst = NetworkTableInstance.getDefault();
+    highTable = inst.getTable("limelight-high");
+    ltx = highTable.getEntry("tx");
+    lty = highTable.getEntry("ty");
+    lta = highTable.getEntry("ta");
+    ltv = highTable.getEntry("tv");
+    lts = highTable.getEntry("ts");
+    ltl = highTable.getEntry("tl");
+    ltcm = highTable.getEntry("camMode");
+    ltlm = highTable.getEntry("ledMode");
+    ltp = highTable.getEntry("pipeline");
+    }
+    /*
     public subLimelight() {
         highTable.getEntry("camMode").setNumber(CAM_MODE.VISION_PROCESSING.val);
 
     }
-
+*/
     public double getTX() {
-        NetworkTableEntry tx = highTable.getEntry("tx");
-        return tx.getDouble(0);
+        return ltx.getDouble(0);
     }
 
     public double getTY() {
-        NetworkTableEntry ty = highTable.getEntry("ty");
-        return ty.getDouble(0);
+        return lty.getDouble(0);
     }
 
     //Whether the limelight has any valid targets (0 or 1)
