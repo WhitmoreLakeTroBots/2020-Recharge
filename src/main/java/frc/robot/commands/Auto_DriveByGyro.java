@@ -25,18 +25,15 @@ public class Auto_DriveByGyro extends Command {
 
   private double _distance;
   private boolean _isFinished = false;
-	//private double _startTime;
+	private double _startTime;
 	private double _requestedHeading = 0;
 	private double _distanceSignum;
-	//private double _absDistance;
-	//private double _abortTime;
-  //private double _endTime;
+	private double _absDistance;
+	private double _abortTime;
   
   private Constraints tpConstraints = new Constraints (0.0, 0.0);
   private ProfiledPIDController pPidC;
-	//private MotionProfiler mp;
-  
-
+	
 /**
  * Accepting a the motor velocities for left and right
  * sides of the robot to allow command to steer the robot using the 
@@ -67,7 +64,7 @@ public class Auto_DriveByGyro extends Command {
   _distance = dist_inches;
   _requestedHeading = heading_deg;
   tpConstraints.maxVelocity = velInches_sec;
-  tpConstraints.maxAcceleration = Settings.profileDriveAccelration;
+  tpConstraints.maxAcceleration = accel_sec_sec;
 }
 
 
@@ -75,41 +72,51 @@ public class Auto_DriveByGyro extends Command {
   @Override
   protected void initialize() {
 
-    System.err.println("Auto_DriveByGyro.initialize()");
-    // start the motion
-    
     Robot.subChassis.resetEncoder_LeftDrive();
     Robot.subChassis.resetEncoder_RightDrive();
+    _absDistance = _distance;
+    _distanceSignum = Math.signum(_distance);
+
     pPidC = new ProfiledPIDController(Chassis_teleOpMotionKs.kP, 
       Chassis_teleOpMotionKs.kI, Chassis_teleOpMotionKs.kD, 
       tpConstraints, .020);
 
-    pPidC.setTolerance(_distance * .01);
+    pPidC.setTolerance(_absDistance * .01);
 
-    pPidC.setGoal(new State(_distance, tpConstraints.maxVelocity));
-
+    pPidC.setGoal(new State(_absDistance, tpConstraints.maxVelocity));
     _isFinished = false;
-    System.err.println ("_distance=" + _distance);
+    _startTime = CommonLogic.getTime();
+    _abortTime = ((_absDistance / tpConstraints.maxVelocity) * Settings.profileEndTimeScalar);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
 
-    double measurement = Robot.subChassis.getEncoder_Inches_LR();
-    double finalThrottle = pPidC.calculate(measurement); // Settings.chassisMaxInchesPerSec;
+    double deltaTime = CommonLogic.getTime() - _startTime;
+    double measurement = Math.abs(Robot.subChassis.getEncoder_Inches_LR());
+    double finalThrottle = _distanceSignum * pPidC.calculate(measurement);
     System.err.println ("fThrottle:" + finalThrottle + " measurment" + measurement);
 
     Robot.subChassis.Drive(finalThrottle, finalThrottle);
 
+    // Check to see if we are done.... 
     if (pPidC.atGoal() ) {
+      // The pPidC says we are done
       System.err.println("atGoal=true");
       _isFinished = true;
     }
-    else if (CommonLogic.isInRange(measurement, _distance,  (.25)) ){
+
+    else if (CommonLogic.isInRange(measurement, _absDistance,  (.25)) ){
+      // Our own checks on distance traveled says we are done
       System.err.println("isInRange=true");
       _isFinished = true;
     }  
+
+    else if (deltaTime > _abortTime){
+      // abort if we are not finishing in time. (AKA we are close but not there yet.)
+      _isFinished = true;
+    }
   }
 
 
