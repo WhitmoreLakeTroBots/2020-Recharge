@@ -15,7 +15,6 @@ import frc.robot.CommonLogic;
 import frc.robot.PidConstants;
 import frc.robot.Robot;
 import frc.robot.Settings;
-//import frc.robot.motion_profile.MotionProfiler;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile.State;
@@ -46,8 +45,8 @@ public class Auto_DriveByGyro extends Command {
     requires(Robot.subChassis);
     _distance = dist_inches;
     _requestedHeading = heading_deg;
-    tpConstraints.maxVelocity = velInches_sec;
-    tpConstraints.maxAcceleration = Settings.profileDriveAccelration;
+    tpConstraints.maxVelocity = Math.abs(velInches_sec);
+    tpConstraints.maxAcceleration = Math.abs(Settings.profileDriveAccelration);
   }
 
 /**
@@ -63,8 +62,8 @@ public class Auto_DriveByGyro extends Command {
   requires(Robot.subChassis);
   _distance = dist_inches;
   _requestedHeading = heading_deg;
-  tpConstraints.maxVelocity = velInches_sec;
-  tpConstraints.maxAcceleration = accel_sec_sec;
+  tpConstraints.maxVelocity = Math.abs(velInches_sec);
+  tpConstraints.maxAcceleration = Math.abs(accel_sec_sec);
 }
 
 
@@ -74,7 +73,7 @@ public class Auto_DriveByGyro extends Command {
 
     Robot.subChassis.resetEncoder_LeftDrive();
     Robot.subChassis.resetEncoder_RightDrive();
-    _absDistance = _distance;
+    _absDistance = Math.abs(_distance);
     _distanceSignum = Math.signum(_distance);
 
     pPidC = new ProfiledPIDController(Chassis_teleOpMotionKs.kP, 
@@ -82,11 +81,11 @@ public class Auto_DriveByGyro extends Command {
       tpConstraints, .020);
 
     pPidC.setTolerance(Settings.profileEndTol);
-
+    
     pPidC.setGoal(new State(_absDistance, tpConstraints.maxVelocity));
     _isFinished = false;
     _startTime = CommonLogic.getTime();
-    _abortTime = ((_absDistance / tpConstraints.maxVelocity) * Settings.profileEndTimeScalar);
+    _abortTime = (_absDistance / tpConstraints.maxVelocity) * Settings.profileEndTimeScalar;
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -96,9 +95,11 @@ public class Auto_DriveByGyro extends Command {
     double deltaTime = CommonLogic.getTime() - _startTime;
     double measurement = Math.abs(Robot.subChassis.getEncoder_Inches_LR());
     double finalThrottle = _distanceSignum * pPidC.calculate(measurement);
+    double trunRate = 0 ; //calcTurnRate();
     System.err.println ("fThrottle:" + finalThrottle + " measurment" + measurement);
 
-    Robot.subChassis.Drive(finalThrottle, finalThrottle);
+    // drive finalThrottle speed and add/subtract turnRate to steer.
+    Robot.subChassis.Drive(finalThrottle - trunRate, finalThrottle + trunRate);
 
     // Check to see if we are done.... 
     if (pPidC.atGoal() ) {
@@ -115,19 +116,17 @@ public class Auto_DriveByGyro extends Command {
 
     else if (deltaTime > _abortTime){
       // abort if we are not finishing in time. (AKA we are close but not there yet.)
-      _isFinished = true;
+      System.err.println("exceeded abort time. " + _abortTime + " " +deltaTime);
+      //_isFinished = true;
     }
   }
 
-
-  protected double calcTurnRate(double currentHeading) {
+  protected double calcTurnRate() {
     
     double turnRate = CommonLogic.calcTurnRate(
-        Robot.subGyro.deltaHeading(Robot.subGyro.getNormaliziedNavxAngle(), _requestedHeading),
+        Robot.subGyro.deltaHeading(_requestedHeading),
         Robot.subChassis.driveStraightGyroKp);
-    
-        // turn rate must be expressed as RPMs
-    return (turnRate * PidConstants.Chassis_teleOpMotionKs.maxRPM);
+        return (turnRate);
     
 	}
 

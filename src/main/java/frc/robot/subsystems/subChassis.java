@@ -1,15 +1,11 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.CommonLogic;
-import frc.robot.PidConstants.Chassis_teleOpMotionKs;
 import frc.robot.Settings;
 import frc.robot.commands.cmdTeleDrive;
 import frc.robot.hardware.wlSpark;
@@ -26,7 +22,8 @@ public class subChassis extends Subsystem {
   public final double driveStraightGyroKp = 0.05;
   public final double wheelDiameter = 6.0;
   public final double wheelCircumference = wheelDiameter * Math.PI;
-  public final double gearBoxRatio = 8.45;
+  //public final double gearBoxRatio = 8.45;
+  public final double gearBoxRatio = 7.31;
   public final double trackWidth = 24.0;
   public final double trackRadius = trackWidth / 2;
 
@@ -67,10 +64,8 @@ public class subChassis extends Subsystem {
  * @param  stick joyStick that currently has control of the wheels
  */
   public void Drive(Joystick stick) {
-
     double joyX = CommonLogic.joyDeadBand(stick.getX(), joyDriveDeadband);
     double joyY = CommonLogic.joyDeadBand(-stick.getY(), joyDriveDeadband);
-
     Drive ((joyY + joyX) , (joyY - joyX) );
   }
 
@@ -81,9 +76,7 @@ public class subChassis extends Subsystem {
  * @param  rightRPM -- percentage of max RPM for the motors
  */
   public void Drive (double powerLeft, double powerRight) {
-    //System.err.println("Encoder count: "+ leftDrive.getPosition() + "   " + rightDrive.getPosition());
-    //System.err.println("Velocity     : "+ leftDrive.getVelocity() + "   " + rightDrive.getVelocity());
-
+  
     setPower_RightDrive(powerRight);
     setPower_LeftDrive(powerLeft);
   }
@@ -147,7 +140,5 @@ public class subChassis extends Subsystem {
   public void periodic() {
 
   }
-
-
 
 }

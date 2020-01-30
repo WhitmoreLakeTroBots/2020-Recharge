@@ -115,4 +115,10 @@ public class subGyro extends Subsystem {
 
     return returnValue;
   }
+
+  
+  public double deltaHeading(double targetHeading) {
+
+    return deltaHeading (getNormaliziedNavxAngle(), targetHeading);
+  }
 }

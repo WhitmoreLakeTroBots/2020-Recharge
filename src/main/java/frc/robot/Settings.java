@@ -38,7 +38,7 @@ public class Settings {
   public static final double profileAnglarAccelration = 10;
   public static final double profileInitVelocity = 0.0;
   public static final double profileMovementThreshold = 0.75;
-  public static final double profileEndTimeScalar = 1.3;
+  public static final double profileEndTimeScalar = 1.6;
   public static final double profileEndTol = .25; 
 
 
