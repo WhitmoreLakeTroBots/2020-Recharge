@@ -44,6 +44,7 @@ public class Robot extends TimedRobot {
   public static subControlPannel subControlPannel;
   public static subGyro subGyro;
   public static subLimelight subLimelight;
+  
 
  
   
@@ -64,6 +65,7 @@ public class Robot extends TimedRobot {
     subControlPannel = new subControlPannel();
     subGyro = new subGyro();
     subLimelight = new subLimelight();
+
 
     
 

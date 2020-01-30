@@ -17,6 +17,7 @@ public class Settings {
   public static final int CANID_subChassisRightFollower = 3;
   public static final int CANID_subChassisLeftMaster = 7;
   public static final int CANID_subChassisLeftFollower = 4;
+  public static final int CANID_subLauncherFlyWheel = 8;
 
   public static final int REV_NEO_CurrentLimitStalledAmps = 27;
   public static final int REV_NEO_CurrentLimitFreeAmps = 27;
