@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.CommonLogic;
+import frc.robot.OI;
 import frc.robot.PidConstants;
 import frc.robot.Robot;
 import frc.robot.Settings;
@@ -109,10 +110,11 @@ public class cmdTurnByLimeLight extends Command {
 
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
+
   @Override
   protected void interrupted() {
-    end();
+    if(Robot.oi.joyDrive().getY() > 0.0){
+      end();
+    }
   }
 }
