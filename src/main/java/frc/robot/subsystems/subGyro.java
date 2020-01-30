@@ -4,9 +4,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
 
-// import frc.robot.CommonLogic;
-// import frc.robot.Settings;
-
 public class subGyro extends Subsystem {
 
   private AHRS navx;
@@ -25,6 +22,24 @@ public class subGyro extends Subsystem {
   @Override
   public void periodic() {
 
+  }
+
+  public void invertNavx () {
+    if (navxOffset == 0.0) {
+      navxOffset = 180.0;
+    }
+    else {
+      navxOffset = 0;
+    }
+  }
+
+  public void invertNavx (boolean value) {
+    if (value) {
+      navxOffset = 180.0;
+    }
+    else {
+      navxOffset = 0.0;
+    }
   }
 
   public double getNavxAngleRaw() {
@@ -116,7 +131,7 @@ public class subGyro extends Subsystem {
     return returnValue;
   }
 
-  
+
   public double deltaHeading(double targetHeading) {
 
     return deltaHeading (getNormaliziedNavxAngle(), targetHeading);
