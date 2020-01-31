@@ -131,7 +131,7 @@ public class Auto_DriveByGyro extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    System.err.println("Auto_DriveByGyro.isFinished()= " + _isFinished);
+    //System.err.println("Auto_DriveByGyro.isFinished()= " + _isFinished);
     return _isFinished;
   }
 

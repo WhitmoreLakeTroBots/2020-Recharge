@@ -84,7 +84,7 @@ public class Robot extends TimedRobot {
     //chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
     //chooser.setDefaultOption("Auto ", new autoGroupShoot());
 
-    chooser.addOption("Auto Drive By Gyro", new Auto_DriveByGyro(36, 72, 0));
+    chooser.addOption("Auto Drive By Gyro", new Auto_DriveByGyro(-144, 72, 0));
     chooser.addOption("Auto Turn By Gyro", new Auto_TurnByGyro(90, 24));
     //autonomousCommand = new Auto_DriveByGyro(36, 60, 0);
     //chooser.setDefaultOption("Drive By Gyro", autonomousCommand);
