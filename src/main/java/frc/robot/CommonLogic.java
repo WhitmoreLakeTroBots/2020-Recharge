@@ -65,4 +65,23 @@ public class CommonLogic {
     return (Math.toRadians(degrees) * radius);
   }
 
+  public static double calcProfileAbortTime (double dist_inch,
+                                double vel_inch_sec, double accel_inch_sec_sec){
+
+    double time2_accel = (vel_inch_sec / accel_inch_sec_sec);
+    double dist2_accel = (.5 * accel_inch_sec_sec * time2_accel * time2_accel);
+    double retValue = 0;
+    // Is this a triangle or trappazoid profile
+    if ((dist2_accel * 2) > dist_inch) {
+      // it is triangle and we never reach curise speed;
+      // this happens with short move distances and high speeds with low accel
+      retValue = (time2_accel * 2 * Settings.profileEndTimeScalar);
+    }
+    else {
+      // it is trapazoid and we do cruise for a while
+      double inchAtCruise = dist_inch - (2 * dist2_accel);
+      retValue = ((2 * time2_accel) + inchAtCruise) * Settings.profileEndTimeScalar;
+    }
+    return retValue;
+  }
 }
