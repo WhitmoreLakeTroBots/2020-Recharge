@@ -80,7 +80,8 @@ public class CommonLogic {
     else {
       // it is trapazoid and we do cruise for a while
       double inchAtCruise = dist_inch - (2 * dist2_accel);
-      retValue = ((2 * time2_accel) + inchAtCruise) * Settings.profileEndTimeScalar;
+      double timeAtCruise = inchAtCruise / vel_inch_sec;
+      retValue = ((2 * time2_accel) + timeAtCruise) * Settings.profileEndTimeScalar;
     }
     return retValue;
   }
