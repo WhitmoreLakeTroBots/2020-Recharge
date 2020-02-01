@@ -36,6 +36,7 @@ public class Settings {
   public static final double profileAdditionLoopNumber = 50;
   public static final String profileLogFileExtension = ".txt";
   public static final double profileDriveAccelration = 75; // inches/sec/sec
+  public static final double profileTurnAcceleration = 50;
   public static final double profileAnglarAccelration = 10;
   public static final double profileInitVelocity = 0.0;
   public static final double profileMovementThreshold = 0.75;

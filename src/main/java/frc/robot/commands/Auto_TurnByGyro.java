@@ -40,7 +40,7 @@ public class Auto_TurnByGyro extends Command {
     requires(Robot.subChassis);
     _degrees = deg;
     tpConstraints.maxVelocity = Math.abs(velInch_sec);
-    tpConstraints.maxAcceleration = Math.abs(Settings.profileDriveAccelration);
+    tpConstraints.maxAcceleration = Math.abs(Settings.profileTurnAcceleration);
   }
 
   /**
