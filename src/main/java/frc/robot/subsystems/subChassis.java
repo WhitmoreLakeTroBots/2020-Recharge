@@ -92,11 +92,17 @@ public class subChassis extends Subsystem {
     return leftDrive.getPosition();
   }
 
+  public double getEncoderPosLeft_Inches() {
+    return revs2Inches(getEncoderPosLeft());
+  }
   public double getEncoderPosRight() {
     // get the right side of the robot position
     return rightDrive.getPosition();
   }
 
+  public double getEncoderPosRight_Inches() {
+    return revs2Inches(getEncoderPosRight());
+  }
   public void resetEncoder_LeftDrive() {
     leftDrive.resetEncoder();
   }
