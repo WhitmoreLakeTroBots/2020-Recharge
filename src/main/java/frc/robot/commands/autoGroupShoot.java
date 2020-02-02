@@ -14,6 +14,7 @@ public class autoGroupShoot extends CommandGroup {
    * Add your docs here.
    */
   public autoGroupShoot() {
+    addSequential(new cmdLauncher());
     addSequential(new Auto_DriveByGyro(72, 24, 0));
     
     // e.g. addSequential(new Command1());

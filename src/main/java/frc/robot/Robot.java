@@ -18,6 +18,7 @@ import frc.robot.subsystems.subChassis;
 import frc.robot.subsystems.subClimb;
 import frc.robot.subsystems.subControlPannel;
 import frc.robot.subsystems.subGyro;
+import frc.robot.subsystems.subHopper;
 import frc.robot.subsystems.subIntake;
 import frc.robot.subsystems.subLauncher;
 import frc.robot.subsystems.subLimelight;
@@ -44,6 +45,7 @@ public class Robot extends TimedRobot {
   public static subControlPannel subControlPannel;
   public static subGyro subGyro;
   public static subLimelight subLimelight;
+  public static subHopper subHopper;
   
 
  
@@ -65,6 +67,7 @@ public class Robot extends TimedRobot {
     subControlPannel = new subControlPannel();
     subGyro = new subGyro();
     subLimelight = new subLimelight();
+    subHopper = new subHopper();
 
 
     
