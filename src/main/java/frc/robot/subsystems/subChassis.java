@@ -9,6 +9,8 @@ import frc.robot.CommonLogic;
 import frc.robot.Settings;
 import frc.robot.commands.cmdTeleDrive;
 import frc.robot.hardware.wlSpark;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 /**
  *
@@ -51,11 +53,14 @@ public class subChassis extends Subsystem {
   private void setPower_LeftDrive(double pwrPercent) {
     double power = CommonLogic.CapMotorPower(pwrPercent * Settings.Chassis_powerLeftScaler, -1, 1);
     leftDrive.set(power);
+    SmartDashboard.putNumber("OutputLeft", power);
+    SmartDashboard.putNumber("VelocityLeft", leftDrive.getVelocity());
   }
 
   private void setPower_RightDrive(double pwrPercent) {
     double power = CommonLogic.CapMotorPower(pwrPercent  * Settings.Chassis_powerRightScaler, -1, 1);
     rightDrive.set(power);
+    
   }
 /**
  * Accepting a joystick  it will deadband and square the values
@@ -144,7 +149,16 @@ public class subChassis extends Subsystem {
 
   @Override
   public void periodic() {
-
+    
   }
+
+
+  public void UpdateSmartDashboard(){
+    SmartDashboard.putNumber("OutputRight", rightDrive.get());
+    SmartDashboard.putNumber("VelocityRight", rightDrive.getVelocity());
+    SmartDashboard.putNumber("OutputLeft", leftDrive.get());
+    SmartDashboard.putNumber("VelocityLeft", leftDrive.getVelocity());
+  }
+
 
 }
