@@ -34,33 +34,58 @@ public double encodercount(){
 }
 
 public void hopperStart(){
-  hopperSpark.set(Settings.hopperMotorSpeed);
-  if(CommonLogic.isInRange(hopperSpark.getPosition(), Settings.hopperStartPos, 2)){
+  if(hopperSpark.getPosition() > Settings.hopperStartPos){
+    hopperSpark.set(Settings.hopperMotorSpeed);
+  }
+  else if(hopperSpark .getPosition() < Settings.hopperStartPos){
+    hopperSpark.set(-Settings.hopperMotorSpeed);
+  }
+  else if(CommonLogic.isInRange(hopperSpark.getPosition(), Settings.hopperStartPos, 2)){
     hopperSpark.set(0);
   }
 }
 
 public void hopperIntake(){
-  hopperSpark.set(Settings.hopperMotorSpeed);
-  if(CommonLogic.isInRange(hopperSpark.getPosition(), Settings.hopperIntakePos, 2)){
+  if(hopperSpark.getPosition() > Settings.hopperIntakePos){
+    hopperSpark.set(Settings.hopperMotorSpeed);
+  }
+  else if(hopperSpark .getPosition() < Settings.hopperIntakePos){
+    hopperSpark.set(-Settings.hopperMotorSpeed);
+  }
+  else if(CommonLogic.isInRange(hopperSpark.getPosition(), Settings.hopperIntakePos, 2)){
     hopperSpark.set(0);
   }
 }
 public void hopperLauncher(){
-  hopperSpark.set(Settings.hopperMotorSpeed);
-  if(CommonLogic.isInRange(hopperSpark.getPosition(), Settings.hopperLauncherPos, 2)){
+  if(hopperSpark.getPosition() > Settings.hopperLauncherPos){
+    hopperSpark.set(Settings.hopperMotorSpeed);
+  }
+  else if(hopperSpark .getPosition() < Settings.hopperLauncherPos){
+    hopperSpark.set(-Settings.hopperMotorSpeed);
+  }
+  else if(CommonLogic.isInRange(hopperSpark.getPosition(), Settings.hopperLauncherPos, 2)){
     hopperSpark.set(0);
   }
 }
 public void hopperDump(){
-  hopperSpark.set(Settings.hopperMotorSpeed);
-  if(CommonLogic.isInRange(hopperSpark.getPosition(), Settings.hopperDumpPos, 2)){
+  if(hopperSpark.getPosition() > Settings.hopperDumpPos){
+    hopperSpark.set(Settings.hopperMotorSpeed);
+  }
+  else if(hopperSpark .getPosition() < Settings.hopperDumpPos){
+    hopperSpark.set(-Settings.hopperMotorSpeed);
+  }
+  else if(CommonLogic.isInRange(hopperSpark.getPosition(), Settings.hopperDumpPos, 2)){
     hopperSpark.set(0);
   }
 }
 public void hopperStright(){
-  hopperSpark.set(Settings.hopperMotorSpeed);
-  if(CommonLogic.isInRange(hopperSpark.getPosition(), Settings.hopperStartPos, 2)){
+  if(hopperSpark.getPosition() > Settings.hopperStrightPos){
+    hopperSpark.set(Settings.hopperMotorSpeed);
+  }
+  else if(hopperSpark .getPosition() < Settings.hopperStrightPos){
+    hopperSpark.set(-Settings.hopperMotorSpeed);
+  }
+  else if(CommonLogic.isInRange(hopperSpark.getPosition(), Settings.hopperStrightPos, 2)){
     hopperSpark.set(0);
   }
 }
