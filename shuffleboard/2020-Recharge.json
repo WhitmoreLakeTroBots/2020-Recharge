@@ -13,7 +13,7 @@
           "7,0": {
             "size": [
               2,
-              4
+              3
             ],
             "content": {
               "_type": "List Layout",
@@ -60,74 +60,34 @@
           },
           "0,0": {
             "size": [
-              5,
+              3,
               2
             ],
             "content": {
               "_type": "Graph",
               "_source0": "network_table:///SmartDashboard/SetPoint",
               "_source1": "network_table:///SmartDashboard/Process Variable",
-              "_source2": "network_table:///SmartDashboard/Chassis/VelocityLeft",
-              "_source3": "network_table:///SmartDashboard/Chassis/OutputLeft",
+              "_source2": "network_table:///SmartDashboard/Chassis/OutputLeft",
+              "_source3": "network_table:///SmartDashboard/Chassis/VelocityLeft",
               "_title": "VelocityLeft",
-              "Graph/Visible time": 10.0
+              "Graph/Visible time": 10.0,
+              "Visible data/SmartDashboard/Chassis/OutputLeft": true,
+              "Visible data/SmartDashboard/Chassis/VelocityLeft": true
             }
           },
-          "0,2": {
+          "3,0": {
             "size": [
-              5,
+              3,
               2
             ],
             "content": {
               "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Chassis/VelocityRight",
-              "_source1": "network_table:///SmartDashboard/Chassis/OutputRight",
+              "_source0": "network_table:///SmartDashboard/Chassis/OutputRight",
+              "_source1": "network_table:///SmartDashboard/Chassis/VelocityRight",
               "_title": "VelocityRight",
-              "Graph/Visible time": 10.0
-            }
-          },
-          "6,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Auto mode",
-              "_title": "Auto mode Old"
-            }
-          },
-          "6,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/limelight-high_Stream",
-              "_title": "limelight-high_Stream"
-            }
-          },
-          "6,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/limelight-high_PipelineName",
-              "_title": "limelight-high_PipelineName"
-            }
-          },
-          "6,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/limelight-high_Interface",
-              "_title": "limelight-high_Interface"
+              "Graph/Visible time": 10.0,
+              "Visible data/SmartDashboard/Chassis/OutputRight": true,
+              "Visible data/SmartDashboard/Chassis/VelocityRight": true
             }
           }
         }
@@ -135,7 +95,7 @@
     },
     {
       "title": "GamePlay",
-      "autoPopulate": false,
+      "autoPopulate": true,
       "autoPopulatePrefix": "",
       "widgetPane": {
         "gridSize": 128.0,
@@ -145,7 +105,7 @@
         "tiles": {
           "3,0": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -155,12 +115,32 @@
           },
           "3,1": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
               "_type": "Text View",
               "_title": "limelight-high_Stream"
+            }
+          },
+          "3,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_title": "limelight-high_PipelineName"
+            }
+          },
+          "3,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_title": "limelight-high_Interface"
             }
           }
         }
