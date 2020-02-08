@@ -17,7 +17,9 @@ import frc.robot.commands.cmdHopperCarry;
 import frc.robot.commands.cmdHopperDump;
 import frc.robot.commands.cmdHopperHome;
 import frc.robot.commands.cmdHopperIntake;
+import frc.robot.commands.cmdHopperIntakeMotor;
 import frc.robot.commands.cmdHopperLauncher;
+import frc.robot.commands.cmdHopperOuttakeMotor;
 import frc.robot.commands.cmdIntake;
 import frc.robot.commands.cmdIntakeRev;
 import frc.robot.commands.cmdLauncher;
@@ -38,6 +40,8 @@ public class OI {
     private JoystickButton flywheelButton;
     private JoystickButton cancelFLyWheel;
     private JoystickButton intake;
+    private JoystickButton hopperIntakeMotor;
+    private JoystickButton hopperOutakeMotor;
     private JoystickButton outtake;
     private JoystickButton encoderHopper;
     private JoystickButton hopperHome;
@@ -53,17 +57,19 @@ public class OI {
         joyStickArt2 = new Joystick(2);
         joyArt = new Joystick(1);
         joyDrive = new Joystick(0);
-        limeFollow = new JoystickButton(joyDrive, 30);
+        limeFollow = new JoystickButton(joyDrive, 3);
         flywheelButton = new JoystickButton(joyDrive, 6);
         cancelFLyWheel = new JoystickButton(joyDrive, 7);
-        intake = new JoystickButton(joyDrive, 10);
-        outtake = new JoystickButton(joyDrive, 20);
-        encoderHopper = new JoystickButton(joyDrive, 10);
-        hopperHome = new JoystickButton(joyDrive, 1);
-        hopperCarry = new JoystickButton(joyDrive, 2);
-        hopperIntake = new JoystickButton(joyDrive, 3);
-        hopperDump = new JoystickButton(joyDrive, 4);
-        hopperLauncher = new JoystickButton(joyDrive, 5);
+        intake = new JoystickButton(joyDrive, 1);
+        outtake = new JoystickButton(joyDrive, 2);
+        hopperIntakeMotor = new JoystickButton(joyDrive, 4);
+        hopperOutakeMotor = new JoystickButton(joyDrive, 5);
+        encoderHopper = new JoystickButton(joyDrive, 12);
+        hopperHome = new JoystickButton(joyArt, 1);
+        hopperCarry = new JoystickButton(joyArt, 2);
+        hopperIntake = new JoystickButton(joyArt, 3);
+        hopperDump = new JoystickButton(joyArt, 4);
+        hopperLauncher = new JoystickButton(joyArt, 5);
 
         limeFollow.whenPressed(new cmdTurnByLimeLight());
         flywheelButton.whenPressed(new cmdLauncher());
@@ -76,6 +82,8 @@ public class OI {
         hopperCarry.whenPressed(new cmdHopperCarry());
         hopperHome.whenPressed(new cmdHopperHome());
         hopperLauncher.whenPressed(new cmdHopperLauncher());
+        hopperIntakeMotor.whileHeld(new cmdHopperIntakeMotor());
+        hopperOutakeMotor.whileHeld(new cmdHopperOuttakeMotor());
         // SmartDashboard Buttons
         // SmartDashboard.putData("Autonomous Command", new Auto_DriveByGyro(120,44,0));
         // SmartDashboard.putData("doEverything", new doEverything());

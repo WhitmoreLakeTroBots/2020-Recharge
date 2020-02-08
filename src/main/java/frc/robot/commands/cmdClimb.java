@@ -9,24 +9,22 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.subHopperIntake;
 
-public class swapabletestcmd extends Command {
-  public swapabletestcmd() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+public class cmdClimb extends Command {
+  public cmdClimb() {
+    requires(Robot.subClimb);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.subClimb.getEncoderCount();
-    System.err.println("encoder tics " + Robot.subClimb.climbMotor.getPosition());
+    Robot.subClimb.Climb(Robot.oi.joyArt2());
   }
 
   // Make this return true when this Command no longer needs to run execute()
