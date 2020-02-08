@@ -20,6 +20,5 @@ public final class PidConstants {
     public final static ControlType ctrlType = ControlType.kVelocity;
   }
 
-
 }
 
