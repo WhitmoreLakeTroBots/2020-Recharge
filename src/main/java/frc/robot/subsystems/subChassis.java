@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class subChassis extends Subsystem {
 
-  private static wlSpark leftDrive;
-  private static wlSpark rightDrive;
+  public static wlSpark leftDrive;
+  public static wlSpark rightDrive;
 
   public final double joyDriveDeadband = 0.06;
   public final double driveStraightGyroKp = 0.05;
@@ -151,14 +151,5 @@ public class subChassis extends Subsystem {
   public void periodic() {
     
   }
-
-
-  public void UpdateSmartDashboard(){
-    SmartDashboard.putNumber("OutputRight", rightDrive.get());
-    SmartDashboard.putNumber("VelocityRight", rightDrive.getVelocity());
-    SmartDashboard.putNumber("OutputLeft", leftDrive.get());
-    SmartDashboard.putNumber("VelocityLeft", leftDrive.getVelocity());
-  }
-
 
 }

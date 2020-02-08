@@ -1,0 +1,176 @@
+{
+  "tabPane": [
+    {
+      "title": "Chassis",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "Chassis/",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "7,0": {
+            "size": [
+              2,
+              4
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "PID Control",
+              "Layout/Label position": "LEFT",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/P Gain",
+                  "_title": "P Gain"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/I Gain",
+                  "_title": "I Gain"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/D Gain",
+                  "_title": "D Gain"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/I Zone",
+                  "_title": "I Zone"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Feed Forward",
+                  "_title": "Feed Forward"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Min Output",
+                  "_title": "Min Output"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Max Output",
+                  "_title": "Max Output"
+                }
+              ]
+            }
+          },
+          "0,0": {
+            "size": [
+              5,
+              2
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/SetPoint",
+              "_source1": "network_table:///SmartDashboard/Process Variable",
+              "_source2": "network_table:///SmartDashboard/Chassis/VelocityLeft",
+              "_source3": "network_table:///SmartDashboard/Chassis/OutputLeft",
+              "_title": "VelocityLeft",
+              "Graph/Visible time": 10.0
+            }
+          },
+          "0,2": {
+            "size": [
+              5,
+              2
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/Chassis/VelocityRight",
+              "_source1": "network_table:///SmartDashboard/Chassis/OutputRight",
+              "_title": "VelocityRight",
+              "Graph/Visible time": 10.0
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Auto mode",
+              "_title": "Auto mode Old"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight-high_Stream",
+              "_title": "limelight-high_Stream"
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight-high_PipelineName",
+              "_title": "limelight-high_PipelineName"
+            }
+          },
+          "6,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight-high_Interface",
+              "_title": "limelight-high_Interface"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "GamePlay",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_title": "Auto Mode"
+            }
+          },
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_title": "limelight-high_Stream"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "windowGeometry": {
+    "x": -8.0,
+    "y": -8.0,
+    "width": 1382.0,
+    "height": 744.0
+  }
+}
