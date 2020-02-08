@@ -99,7 +99,8 @@ public class Robot extends TimedRobot {
   }
 
   /**
-   * This function is called when the disabled button is hit. You can use it to
+   * This function is called when the disabled button i
+   * s hit. You can use it to
    * reset subsystems before shutting down.
    */
   @Override
@@ -110,6 +111,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
+    UpdateSmartDashboard();
   }
 
   @Override
