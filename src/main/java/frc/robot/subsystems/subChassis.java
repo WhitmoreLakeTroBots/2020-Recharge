@@ -68,6 +68,8 @@ public class subChassis extends Subsystem {
     double joyY = CommonLogic.joyDeadBand(-stick.getY(), joyDriveDeadband);
     Drive ((joyY + joyX) , (joyY - joyX) );
   }
+ 
+  
 
 /**
  * Accepting a percenage of the motor velocities for left and right
@@ -121,6 +123,10 @@ public class subChassis extends Subsystem {
     return (inches / wheelCircumference * gearBoxRatio);
     // 72 / 6 / Math.P * 8.45 = 32.2766224
   }
+  public void winMatch(){
+
+  }
+
 
   public double inches_sec2RPM(double inches_sec) {
     // converts inches/sec to Revs/minute
@@ -130,7 +136,7 @@ public class subChassis extends Subsystem {
   public double revs2Inches(double Revs){
     return (Revs / gearBoxRatio * wheelCircumference);
   }
-
+  
   public void stop() {
     leftDrive.set(0);
     rightDrive.set(0);
@@ -146,5 +152,6 @@ public class subChassis extends Subsystem {
   public void periodic() {
 
   }
+  
 
 }

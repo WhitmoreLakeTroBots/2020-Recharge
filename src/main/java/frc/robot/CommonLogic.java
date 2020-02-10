@@ -27,6 +27,8 @@ public class CommonLogic {
     return retValue;
   }
 
+
+
   public static final double joyDeadBand(double joy, double deadband) {
 
     double retValue = joy;

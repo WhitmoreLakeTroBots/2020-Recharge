@@ -14,9 +14,9 @@ public class Settings {
 
   // CANIDs
   public static final int CANID_subChassisRightMaster = 2;
-  public static final int CANID_subChassisRightFollower = 3;
+  public static final int CANID_subChassisRightFollower = 1;
   public static final int CANID_subChassisLeftMaster = 7;
-  public static final int CANID_subChassisLeftFollower = 4;
+  public static final int CANID_subChassisLeftFollower = 3;
   public static final int CANID_subLauncherFlyWheel = 8;
   public static final int CANID_subIntakeIntake = 9;
   public static final int CANID_subHopperMotor = 10;
