@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class subChassis extends Subsystem {
 
-  public static wlSpark leftDrive;
-  public static wlSpark rightDrive;
+  //public static wlSpark leftDrive;
+  //public static wlSpark rightDrive;
 
   public final double joyDriveDeadband = 0.06;
   public final double driveStraightGyroKp = 0.05;
@@ -31,40 +31,39 @@ public class subChassis extends Subsystem {
 
   public subChassis() {
 
-    leftDrive = new wlSpark(Settings.CANID_subChassisLeftMaster, MotorType.kBrushless);
-    rightDrive = new wlSpark(Settings.CANID_subChassisRightMaster, MotorType.kBrushless);
+    //leftDrive = new wlSpark(Settings.CANID_subChassisLeftMaster, MotorType.kBrushless);
+    //rightDrive = new wlSpark(Settings.CANID_subChassisRightMaster, MotorType.kBrushless);
     // reset factory defaults and make them persist power cycles
-    leftDrive.restoreFactoryDefaults(true);
-    rightDrive.restoreFactoryDefaults(true);
+    //leftDrive.restoreFactoryDefaults(true);
+    //rightDrive.restoreFactoryDefaults(true);
 
-    leftDrive.setIdleMode(IdleMode.kBrake);
-    rightDrive.setIdleMode(IdleMode.kBrake);
-    leftDrive.setInverted(false);
-    rightDrive.setInverted(true);
+    //leftDrive.setIdleMode(IdleMode.kBrake);
+    //rightDrive.setIdleMode(IdleMode.kBrake);
+    //leftDrive.setInverted(false);
+    //rightDrive.setInverted(true);
 
-    leftDrive.setSmartCurrentLimit (Settings.REV_NEO_CurrentLimitStalledAmps);
-    rightDrive.setSmartCurrentLimit (Settings.REV_NEO_CurrentLimitStalledAmps);
+    //leftDrive.setSmartCurrentLimit (Settings.REV_NEO_CurrentLimitStalledAmps);
+    //rightDrive.setSmartCurrentLimit (Settings.REV_NEO_CurrentLimitStalledAmps);
 
     // burn in the values so they stay during a brown out.
-    rightDrive.burnFlash();
-    leftDrive.burnFlash();
+    //rightDrive.burnFlash();
+    //leftDrive.burnFlash();
 
   }
   private void setPower_LeftDrive(double pwrPercent) {
     double power = CommonLogic.CapMotorPower(pwrPercent * Settings.Chassis_powerLeftScaler, -1, 1);
-    leftDrive.set(power);
-    SmartDashboard.putNumber("OutputLeft", power);
-    SmartDashboard.putNumber("VelocityLeft", leftDrive.getVelocity());
+    //leftDrive.set(power);
+
   }
 
   private void setPower_RightDrive(double pwrPercent) {
     double power = CommonLogic.CapMotorPower(pwrPercent  * Settings.Chassis_powerRightScaler, -1, 1);
-    rightDrive.set(power);
-    
+    //rightDrive.set(power);
+
   }
 /**
  * Accepting a joystick  it will deadband and square the values
- * and pass them off to the the auton method to be used to control the 
+ * and pass them off to the the auton method to be used to control the
  * chassis wheel motors
  * @param  stick joyStick that currently has control of the wheels
  */
@@ -81,12 +80,12 @@ public class subChassis extends Subsystem {
  * @param  rightRPM -- percentage of max RPM for the motors
  */
   public void Drive (double powerLeft, double powerRight) {
-  
+
     setPower_RightDrive(powerRight);
     setPower_LeftDrive(powerLeft);
   }
 
- 
+
   public double getEncoderPos_LR() {
     // average the 2 encoders to get the real robot position
     return ((getEncoderPosRight() + getEncoderPosLeft()) / 2);
@@ -94,7 +93,7 @@ public class subChassis extends Subsystem {
 
   public double getEncoderPosLeft() {
     // get the left side of the robot position
-    return leftDrive.getPosition();
+    return 0.0; //leftDrive.getPosition();
   }
 
   public double getEncoderPosLeft_Inches() {
@@ -102,18 +101,18 @@ public class subChassis extends Subsystem {
   }
   public double getEncoderPosRight() {
     // get the right side of the robot position
-    return rightDrive.getPosition();
+    return 0.0; //rightDrive.getPosition();
   }
 
   public double getEncoderPosRight_Inches() {
     return revs2Inches(getEncoderPosRight());
   }
   public void resetEncoder_LeftDrive() {
-    leftDrive.resetEncoder();
+    //leftDrive.resetEncoder();
   }
 
   public void resetEncoder_RightDrive() {
-    rightDrive.resetEncoder();
+    //rightDrive.resetEncoder();
   }
 
   public double getEncoder_Inches_LR () {
@@ -137,8 +136,8 @@ public class subChassis extends Subsystem {
   }
 
   public void stop() {
-    leftDrive.set(0);
-    rightDrive.set(0);
+    //leftDrive.set(0);
+    //rightDrive.set(0);
   }
 
   @Override
@@ -149,7 +148,7 @@ public class subChassis extends Subsystem {
 
   @Override
   public void periodic() {
-    
+
   }
 
 }
