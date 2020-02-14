@@ -143,7 +143,7 @@ public class subChassis extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new cmdTeleDrive());
+    //setDefaultCommand(new cmdTeleDrive());
 
   }
 
