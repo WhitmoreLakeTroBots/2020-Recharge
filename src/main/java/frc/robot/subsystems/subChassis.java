@@ -17,6 +17,8 @@ public class subChassis extends Subsystem {
 
   private static wlSpark leftDrive;
   private static wlSpark rightDrive;
+  private static wlSpark leftFollower;
+  private static wlSpark rightFollower;
 
   public final double joyDriveDeadband = 0.06;
   public final double driveStraightGyroKp = 0.05;
@@ -31,9 +33,16 @@ public class subChassis extends Subsystem {
 
     leftDrive = new wlSpark(Settings.CANID_subChassisLeftMaster, MotorType.kBrushless);
     rightDrive = new wlSpark(Settings.CANID_subChassisRightMaster, MotorType.kBrushless);
+    leftFollower = new wlSpark(Settings.CANID_subChassisLeftFollower, MotorType.kBrushless);
+    rightFollower = new wlSpark(Settings.CANID_subChassisRightFollower, MotorType.kBrushless);
     // reset factory defaults and make them persist power cycles
     leftDrive.restoreFactoryDefaults(true);
     rightDrive.restoreFactoryDefaults(true);
+    leftFollower.restoreFactoryDefaults(true);
+    rightFollower.restoreFactoryDefaults(true);
+
+    leftFollower.follow(leftDrive);
+    rightFollower.follow(rightDrive);
 
     leftDrive.setIdleMode(IdleMode.kBrake);
     rightDrive.setIdleMode(IdleMode.kBrake);
