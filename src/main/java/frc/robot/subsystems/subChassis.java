@@ -41,13 +41,15 @@ public class subChassis extends Subsystem {
     leftFollower.restoreFactoryDefaults(true);
     rightFollower.restoreFactoryDefaults(true);
 
-    leftFollower.follow(leftDrive);
-    rightFollower.follow(rightDrive);
+    //leftFollower.follow(leftDrive);
+    //rightFollower.follow(rightDrive);
 
     leftDrive.setIdleMode(IdleMode.kBrake);
     rightDrive.setIdleMode(IdleMode.kBrake);
-    leftDrive.setInverted(false);
-    rightDrive.setInverted(true);
+    leftFollower.setIdleMode(IdleMode.kBrake);
+    rightFollower.setIdleMode(IdleMode.kBrake);
+    leftDrive.setInverted(true);
+    rightDrive.setInverted(false);
 
     leftDrive.setSmartCurrentLimit (Settings.REV_NEO_CurrentLimitStalledAmps);
     rightDrive.setSmartCurrentLimit (Settings.REV_NEO_CurrentLimitStalledAmps);
@@ -60,11 +62,13 @@ public class subChassis extends Subsystem {
   private void setPower_LeftDrive(double pwrPercent) {
     double power = CommonLogic.CapMotorPower(pwrPercent * Settings.Chassis_powerLeftScaler, -1, 1);
     leftDrive.set(power);
+    leftFollower.set(-power);
   }
 
   private void setPower_RightDrive(double pwrPercent) {
     double power = CommonLogic.CapMotorPower(pwrPercent  * Settings.Chassis_powerRightScaler, -1, 1);
     rightDrive.set(power);
+    rightFollower.set(power);
   }
 /**
  * Accepting a joystick  it will deadband and square the values
@@ -75,7 +79,7 @@ public class subChassis extends Subsystem {
   public void Drive(Joystick stick) {
     double joyX = CommonLogic.joyDeadBand(stick.getX(), joyDriveDeadband);
     double joyY = CommonLogic.joyDeadBand(-stick.getY(), joyDriveDeadband);
-    Drive ((joyY + joyX) , (joyY - joyX) );
+    Drive ((joyY - joyX) , (joyY + joyX) );
   }
  
   
