@@ -17,8 +17,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class subChassis extends Subsystem {
 
-  public static wlSpark leftDrive;
-  public static wlSpark rightDrive;
+  private static wlSpark leftDrive;
+  private static wlSpark rightDrive;
+  private static wlSpark leftFollower;
+  private static wlSpark rightFollower;
 
   public final double joyDriveDeadband = 0.06;
   public final double driveStraightGyroKp = 0.05;
@@ -33,9 +35,16 @@ public class subChassis extends Subsystem {
 
     leftDrive = new wlSpark(Settings.CANID_subChassisLeftMaster, MotorType.kBrushless);
     rightDrive = new wlSpark(Settings.CANID_subChassisRightMaster, MotorType.kBrushless);
+    leftFollower = new wlSpark(Settings.CANID_subChassisLeftFollower, MotorType.kBrushless);
+    rightFollower = new wlSpark(Settings.CANID_subChassisRightFollower, MotorType.kBrushless);
     // reset factory defaults and make them persist power cycles
     leftDrive.restoreFactoryDefaults(true);
     rightDrive.restoreFactoryDefaults(true);
+    leftFollower.restoreFactoryDefaults(true);
+    rightFollower.restoreFactoryDefaults(true);
+
+    leftFollower.follow(leftDrive);
+    rightFollower.follow(rightDrive);
 
     leftDrive.setIdleMode(IdleMode.kBrake);
     rightDrive.setIdleMode(IdleMode.kBrake);
@@ -73,6 +82,8 @@ public class subChassis extends Subsystem {
     double joyY = CommonLogic.joyDeadBand(-stick.getY(), joyDriveDeadband);
     Drive ((joyY + joyX) , (joyY - joyX) );
   }
+ 
+  
 
 /**
  * Accepting a percenage of the motor velocities for left and right
@@ -126,6 +137,10 @@ public class subChassis extends Subsystem {
     return (inches / wheelCircumference * gearBoxRatio);
     // 72 / 6 / Math.P * 8.45 = 32.2766224
   }
+  public void winMatch(){
+
+  }
+
 
   public double inches_sec2RPM(double inches_sec) {
     // converts inches/sec to Revs/minute
@@ -135,7 +150,7 @@ public class subChassis extends Subsystem {
   public double revs2Inches(double Revs){
     return (Revs / gearBoxRatio * wheelCircumference);
   }
-
+  
   public void stop() {
     leftDrive.set(0);
     rightDrive.set(0);
@@ -151,5 +166,6 @@ public class subChassis extends Subsystem {
   public void periodic() {
     
   }
+  
 
 }
