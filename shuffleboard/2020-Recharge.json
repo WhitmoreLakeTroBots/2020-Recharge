@@ -71,6 +71,9 @@
               "_source3": "network_table:///SmartDashboard/Chassis/VelocityLeft",
               "_title": "VelocityLeft",
               "Graph/Visible time": 10.0,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0,
               "Visible data/SmartDashboard/Chassis/OutputLeft": true,
               "Visible data/SmartDashboard/Chassis/VelocityLeft": true
             }
@@ -86,6 +89,9 @@
               "_source1": "network_table:///SmartDashboard/Chassis/VelocityRight",
               "_title": "VelocityRight",
               "Graph/Visible time": 10.0,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0,
               "Visible data/SmartDashboard/Chassis/OutputRight": true,
               "Visible data/SmartDashboard/Chassis/VelocityRight": true
             }

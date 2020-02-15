@@ -28,7 +28,7 @@ public class cmdHopperHome extends Command {
   protected void execute() {
     Robot.subHopper.hopperStart();
     _isFinished = CommonLogic.isInRange(Robot.subHopper.encodercount(), Settings.hopperStartPos, 2);
-
+    System.err.println("working hopper start");
 
   }
 

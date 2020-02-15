@@ -150,16 +150,16 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    //UpdateSmartDashboard();
+    UpdateSmartDashboard();
   }
 
   public void UpdateSmartDashboard () {
     //System.err.println ("Updating smartDashboard");
     
-    //SmartDashboard.putNumber("Chassis/OutputRight", subChassis.rightDrive.get());
-    //SmartDashboard.putNumber("Chassis/VelocityRight", subChassis.rightDrive.getVelocity());
-    //SmartDashboard.putNumber("Chassis/OutputLeft", subChassis.leftDrive.get());
-    //SmartDashboard.putNumber("Chassis/VelocityLeft", subChassis.leftDrive.getVelocity());
+    SmartDashboard.putNumber("Chassis/OutputRight", subChassis.rightDrive.get());
+    SmartDashboard.putNumber("Chassis/VelocityRight", subChassis.rightDrive.getVelocity());
+    SmartDashboard.putNumber("Chassis/OutputLeft", subChassis.leftDrive.get());
+    SmartDashboard.putNumber("Chassis/VelocityLeft", subChassis.leftDrive.getVelocity());
 
     //SmartDashboard.putNumber("Chassis/OutputRight", 1.0);
     //SmartDashboard.putNumber("Chassis/VelocityRight", 2.0);

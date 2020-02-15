@@ -25,6 +25,7 @@ public class cmdClimb extends Command {
   @Override
   protected void execute() {
     Robot.subClimb.Climb(Robot.oi.joyArt2());
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()
