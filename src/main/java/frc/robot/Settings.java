@@ -23,6 +23,7 @@ public class Settings {
   public static final int CANID_subHopperIntakeMotor = 11;
   public static final int CANID_subClimbMotor = 12;
   public static final int CANID_subClimbMotorInv = 14;
+  public static final int CANID_subClimbExtendMotor = 20;
 
   public static final int REV_NEO_CurrentLimitStalledAmps = 27;
   public static final int REV_NEO_CurrentLimitFreeAmps = 27;
