@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -25,6 +26,7 @@ public class subHopper extends Subsystem {
 public subHopper(){
   hopperSpark = new wlSpark(Settings.CANID_subHopperMotor, MotorType.kBrushless);
   hopperSpark.resetEncoder();
+  hopperSpark.setIdleMode(IdleMode.kBrake);
 
 
 }
@@ -88,6 +90,17 @@ public void hopperStright(){
     hopperSpark.set(-Settings.hopperMotorSpeed);
   }
   else if(CommonLogic.isInRange(hopperSpark.getPosition(), Settings.hopperStrightPos, 1)){
+    hopperSpark.set(0);
+  }
+}
+public void hopperFeeder(){
+  if(hopperSpark.getPosition() > Settings.hopperFeederPos){
+    hopperSpark.set(Settings.hopperMotorSpeed);
+  }
+  else if(hopperSpark .getPosition() < Settings.hopperFeederPos){
+    hopperSpark.set(-Settings.hopperMotorSpeed);
+  }
+  else if(CommonLogic.isInRange(hopperSpark.getPosition(), Settings.hopperFeederPos, 1)){
     hopperSpark.set(0);
   }
 }

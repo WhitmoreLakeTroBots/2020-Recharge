@@ -36,6 +36,8 @@ public class subIntake extends Subsystem {
 
     public subIntake() {
         intakeMotor = new wlSpark(Settings.CANID_subIntakeIntake, MotorType.kBrushless);
+        intakeMotor.setSmartCurrentLimit (Settings.REV_NEO_CurrentLimitStalledAmps);
+
     }
 
     public void intake(){

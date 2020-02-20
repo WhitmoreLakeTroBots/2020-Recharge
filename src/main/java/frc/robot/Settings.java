@@ -24,6 +24,7 @@ public class Settings {
   public static final int CANID_subClimbMotor = 12;
   public static final int CANID_subClimbMotorInv = 14;
   public static final int CANID_subClimbExtendMotor = 20;
+  public static final int CANID_subClimbHelpMotor = 22;
 
   public static final int REV_NEO_CurrentLimitStalledAmps = 27;
   public static final int REV_NEO_CurrentLimitFreeAmps = 27;
@@ -40,6 +41,7 @@ public class Settings {
   public static final double hopperLauncherPos = -34.4528;
   public static final double hopperDumpPos = -73.547931;
   public static final double hopperStrightPos = -60.595611;
+  public static final double hopperFeederPos = -42.928140;
   public static final double hopperMotorSpeed = -0.3;
 
 

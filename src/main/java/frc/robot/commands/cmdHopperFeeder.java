@@ -7,33 +7,29 @@
 
 package frc.robot.commands;
 
-import java.util.concurrent.DelayQueue;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.CommonLogic;
 import frc.robot.Robot;
-import frc.robot.subsystems.subClimb;
+import frc.robot.Settings;
 
-public class cmdExtendClimb extends Command {
-private boolean _isFinished = false;
-  public cmdExtendClimb() {
-    // Use requires() here to declare subsystem dependencies
-    requires(Robot.subClimb);
+public class cmdHopperFeeder extends Command {
+  private boolean _isFinished;
+  public cmdHopperFeeder() {
+    requires(Robot.subHopper);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.subClimb.releasEncoder.reset();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.subClimb.extendClimb();
-    _isFinished = CommonLogic.isInRange(Robot.subClimb.releasEncoder.getDistance(), -140, 40);
-    System.err.println("ENCODER COUNT" + Robot.subClimb.releasEncoder.getDistance());
-    
+    Robot.subHopper.hopperFeeder();
+    _isFinished = CommonLogic.isInRange(Robot.subHopper.encodercount(), Settings.hopperFeederPos, 2);
+    System.err.println("working hopper Feeder");
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -45,8 +41,7 @@ private boolean _isFinished = false;
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.subClimb.stopExtend();
-    System.err.println("CLIMB IS EXTENDED");
+    Robot.subHopper.hopperStop();
   }
 
   // Called when another command which requires one or more of the same

@@ -14,13 +14,20 @@ public class autoGroupHopper extends CommandGroup {
    * Add your docs here.
    */
   public autoGroupHopper() {
+    addParallel(new cmdHopperDump());
+    addSequential(new Auto_DriveByGyro(14, 22, 0));
+    
+
+
+
+
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
     // these will run in order.
 
     // To run multiple commands at the same time,
-    // use addParallel()
+    // use addParallel() 
     // e.g. addParallel(new Command1());
     // addSequential(new Command2());
     // Command1 and Command2 will run in parallel.

@@ -7,31 +7,27 @@
 
 package frc.robot.commands;
 
-import java.util.concurrent.DelayQueue;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.CommonLogic;
 import frc.robot.Robot;
-import frc.robot.subsystems.subClimb;
 
-public class cmdExtendClimb extends Command {
-private boolean _isFinished = false;
-  public cmdExtendClimb() {
-    // Use requires() here to declare subsystem dependencies
+public class cmdLockClimb extends Command {
+  private boolean _isFinished;
+  public cmdLockClimb() {
     requires(Robot.subClimb);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.subClimb.releasEncoder.reset();
+    //Robot.subClimb.releasEncoder.reset();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.subClimb.extendClimb();
-    _isFinished = CommonLogic.isInRange(Robot.subClimb.releasEncoder.getDistance(), -140, 40);
+    Robot.subClimb.lockClimb();
+    _isFinished = CommonLogic.isInRange(Robot.subClimb.releasEncoder.getDistance(), 40, 30);
     System.err.println("ENCODER COUNT" + Robot.subClimb.releasEncoder.getDistance());
     
   }
@@ -46,7 +42,7 @@ private boolean _isFinished = false;
   @Override
   protected void end() {
     Robot.subClimb.stopExtend();
-    System.err.println("CLIMB IS EXTENDED");
+    System.err.println("CLIMB IS LOCKED");
   }
 
   // Called when another command which requires one or more of the same

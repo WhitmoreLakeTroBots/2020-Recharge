@@ -12,8 +12,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -32,15 +34,22 @@ public class subClimb extends Subsystem {
 
     public wlSpark climbMotor;
     private wlSpark climbMotorInv;
-    //private TalonSRX r;
+    private TalonSRX r;
+    private TalonSRX helpClimbMotor;
+    public Encoder releasEncoder;
     
     private double joyDriveDeadband = 0.09;
 
     public subClimb() {
         climbMotor = new wlSpark(Settings.CANID_subClimbMotor, MotorType.kBrushless);
         climbMotorInv = new wlSpark(Settings.CANID_subClimbMotorInv, MotorType.kBrushless);
-        //r = new TalonSRX(Settings.CANID_subClimbExtendMotor);
-    }
+        climbMotorInv.setIdleMode(IdleMode.kBrake);
+        climbMotor.setIdleMode(IdleMode.kBrake);
+        r = new TalonSRX(Settings.CANID_subClimbExtendMotor);
+        releasEncoder = new Encoder(0,1);
+        helpClimbMotor = new TalonSRX(Settings.CANID_subClimbHelpMotor);
+        
+        }
 
     public void getEncoderCount() {
         climbMotor.getEncoder();
@@ -58,10 +67,13 @@ public class subClimb extends Subsystem {
         setPower_LeftDrive(powerLeft);
     }
     public void extendClimb(){
-        //r.set(ControlMode.PercentOutput, .5);
+        r.set(ControlMode.PercentOutput, -1);
     }
     public void stopExtend(){
-       // r.set(ControlMode.Velocity, 0);
+        r.set(ControlMode.Velocity, 0);
+    }
+    public void lockClimb(){
+        r.set(ControlMode.PercentOutput, .7);
     }
     /**
      * Accepting a percenage of the motor velocities for left and right sides of the

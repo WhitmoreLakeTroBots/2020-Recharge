@@ -45,7 +45,7 @@ private static final double launcherMaxRPM = 2850;
         flywheelPIDC = flyWheelMotor.getPIDController();
         flyWheelMotor.restoreFactoryDefaults();
     kP = 7e-5;
-    kI = 9e-8;
+    kI = 3e-7;
     kD = 0;
     kIz = 0;
     kFF = 0;
