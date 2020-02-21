@@ -20,6 +20,7 @@ import frc.robot.commands.cmdHopperHome;
 import frc.robot.commands.cmdHopperIntake;
 import frc.robot.commands.cmdHopperIntakeMotor;
 import frc.robot.commands.cmdHopperLauncher;
+import frc.robot.commands.cmdHopperOuttakeAuto;
 import frc.robot.commands.cmdHopperOuttakeMotor;
 import frc.robot.commands.cmdIntake;
 import frc.robot.commands.cmdIntakeRev;
@@ -95,7 +96,7 @@ public class OI {
         hopperHome.whenPressed(new cmdHopperHome());
         hopperLauncher.whenPressed(new cmdHopperLauncher());
         hopperIntakeMotor.whileHeld(new cmdHopperIntakeMotor());
-        hopperOutakeMotor.whileHeld(new cmdHopperOuttakeMotor());
+        hopperOutakeMotor.whileHeld(new cmdHopperOuttakeAuto());
         extendclimb.whenPressed(new cmdExtendClimb());
         lockClimb.whenPressed(new cmdLockClimb());
         hopperFeeder.whenPressed(new cmdHopperFeeder());

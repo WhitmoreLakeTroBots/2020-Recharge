@@ -12,7 +12,7 @@ import frc.robot.Robot;
 
 public class cmdHopperOuttakeMotor extends Command {
   public cmdHopperOuttakeMotor() {
-    requires(Robot.subHopper);
+    requires(Robot.subHopperIntake);
   }
 
   // Called just before this Command runs the first time
