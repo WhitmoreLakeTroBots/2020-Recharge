@@ -22,6 +22,10 @@ public class autoGroupHopper extends CommandGroup {
 
 
     // Add Commands here:
+    addParallel(new cmdHopperDump());
+    addSequential(new Auto_DriveByGyro(100, 24, 0));
+    
+    addSequential(new cmdHopperOuttakeMotor());
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
     // these will run in order.
