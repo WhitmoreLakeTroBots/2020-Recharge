@@ -27,6 +27,7 @@ public class cmdHopperDump extends Command {
   @Override
   protected void execute() {
     Robot.subHopper.hopperDump();
+    System.err.println("ENCODER TIC" + Robot.subHopper.hopperSpark.getPosition());
     _isFinished = CommonLogic.isInRange(Robot.subHopper.encodercount(), Settings.hopperDumpPos, 2);
 
   }

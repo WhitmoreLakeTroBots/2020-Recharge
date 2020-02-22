@@ -14,19 +14,20 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.cmdCancelFlyWheel;
 import frc.robot.commands.cmdExtendClimb;
+import frc.robot.commands.cmdGroupHopperOuttake;
 import frc.robot.commands.cmdHopperCarry;
 import frc.robot.commands.cmdHopperDump;
 import frc.robot.commands.cmdHopperHome;
 import frc.robot.commands.cmdHopperIntake;
 import frc.robot.commands.cmdHopperIntakeMotor;
 import frc.robot.commands.cmdHopperLauncher;
-import frc.robot.commands.cmdHopperOuttakeAuto;
 import frc.robot.commands.cmdHopperOuttakeMotor;
 import frc.robot.commands.cmdIntake;
 import frc.robot.commands.cmdIntakeRev;
 import frc.robot.commands.cmdLauncher;
 import frc.robot.commands.cmdLockClimb;
 import frc.robot.commands.cmdTurnByLimeLight;
+import frc.robot.commands.cmdTurnByLimeLightPid;
 import frc.robot.commands.swapabletestcmd;
 import frc.robot.commands.cmdHopperFeeder;
 
@@ -66,8 +67,8 @@ public class OI {
         joyArt = new Joystick(1);
         joyDrive = new Joystick(0);
         limeFollow = new JoystickButton(joyDrive, 3);
-        flywheelButton = new JoystickButton(joyArt, 11);
-        cancelFLyWheel = new JoystickButton(joyArt, 12);
+        flywheelButton = new JoystickButton(joyDrive, 11);
+        cancelFLyWheel = new JoystickButton(joyDrive, 12);
         
         intake = new JoystickButton(joyDrive, 2);
         outtake = new JoystickButton(joyDrive, 1);
@@ -90,13 +91,13 @@ public class OI {
         intake.whileHeld(new cmdIntake());
         outtake.whileHeld(new cmdIntakeRev());
         encoderHopper.whenPressed(new swapabletestcmd());
-        hopperDump.whenPressed(new cmdHopperDump());
+        hopperDump.whenPressed(new cmdGroupHopperOuttake());
         hopperIntake.whenPressed(new cmdHopperIntake());
         hopperCarry.whenPressed(new cmdHopperCarry());
         hopperHome.whenPressed(new cmdHopperHome());
         hopperLauncher.whenPressed(new cmdHopperLauncher());
         hopperIntakeMotor.whileHeld(new cmdHopperIntakeMotor());
-        hopperOutakeMotor.whileHeld(new cmdHopperOuttakeAuto());
+        hopperOutakeMotor.whileHeld(new cmdHopperOuttakeMotor());
         extendclimb.whenPressed(new cmdExtendClimb());
         lockClimb.whenPressed(new cmdLockClimb());
         hopperFeeder.whenPressed(new cmdHopperFeeder());
