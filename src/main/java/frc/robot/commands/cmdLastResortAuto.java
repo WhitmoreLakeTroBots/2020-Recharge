@@ -9,26 +9,25 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class autoGroupHopper extends CommandGroup {
+public class cmdLastResortAuto extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public autoGroupHopper() {
-
-    
+  public cmdLastResortAuto() {
+    addSequential(new Auto_DriveByGyro(100, 45, 0));
     addParallel(new cmdHopperDump());
-    addSequential(new Auto_DriveByGyro(100, 38, 0));
-    addSequential(new cmdDelay(1));
-    addSequential(new cmdGroupHopperOuttake());
-    addSequential(new Auto_DriveByGyro(-120, 55, 0));
+    addSequential(new Auto_TurnByGyro(90, 24));
+    addSequential(new Auto_DriveByGyro(36, 30, 0));
+    addSequential(new Auto_TurnByGyro(-90, 24));
+    addSequential(new cmdHopperOuttakeMotor(), 2);
+    addSequential(new Auto_TurnByGyro(135, 30));
+    addSequential(new Auto_DriveByGyro(130, 50, 0));
     
-    //addSequential(new cmdHopperOuttakeMotor());
-    // e.g. addSequential(new Command1());
-    // addSequential(new Command2());
-    // these will run in order.
+
+
 
     // To run multiple commands at the same time,
-    // use addParallel() 
+    // use addParallel()
     // e.g. addParallel(new Command1());
     // addSequential(new Command2());
     // Command1 and Command2 will run in parallel.
