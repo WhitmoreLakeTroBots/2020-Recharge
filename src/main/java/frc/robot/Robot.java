@@ -170,7 +170,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Chassis/VelocityLeft", subChassis.leftDrive.getVelocity());
     SmartDashboard.putNumber("launcher vel", subLauncher.flyWheelMotor.getVelocity());
     SmartDashboard.putNumber("Launcher Velocity", subLauncher.launcherMaxRPM);
-    SmartDashboard.setDefaultNumber("Launcher Velocity", 2850);
+    //SmartDashboard.setDefaultNumber("Launcher Velocity", 2850);
 
     //SmartDashboard.putNumber("Chassis/OutputRight", 1.0);
     //SmartDashboard.putNumber("Chassis/VelocityRight", 2.0);
