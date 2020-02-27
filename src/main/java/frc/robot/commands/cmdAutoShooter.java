@@ -10,7 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class cmdAutoShooter extends CommandGroup {
-  double delaysec = 1;
+  double delaysec = 0.5;
   /**
    * Add your docs here.
    */
@@ -20,16 +20,14 @@ public class cmdAutoShooter extends CommandGroup {
     addSequential(new cmdStopIntake(), delaysec);
     addSequential(new cmdHopperOuttakeMotor(), delaysec);
     addSequential(new cmdStopIntake(), delaysec);
-    //addSequential(new cmdDelay(delaysec));
     addSequential(new cmdHopperOuttakeMotor(), delaysec);
     addSequential(new cmdStopIntake(), delaysec);
-
-    //addSequential(new cmdDelay(delaysec));
+    addSequential(new cmdHopperIntake());
+    addParallel(new cmdHopperIntakeMotor(), 1);
+    addSequential(new cmdIntakeRev(), 1);
+    addSequential(new cmdHopperLauncher());
     addSequential(new cmdHopperOuttakeMotor(), delaysec);
     addSequential(new cmdStopIntake(), delaysec);
-
-    //addSequential(new cmdDelay(delaysec));
-    
 
 
 
