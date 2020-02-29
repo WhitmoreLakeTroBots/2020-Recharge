@@ -14,9 +14,9 @@ public class cmdGroupHopperOuttake extends CommandGroup {
    * Add your docs here.
    */
   public cmdGroupHopperOuttake() {
-    addParallel(new cmdHopperIntakeMotor(), 2);
+    addParallel(new cmdHopperIntakeMotor(), .5);
     addSequential(new cmdHopperDump());
-    addSequential(new cmdHopperIntakeMotor(), 2);
+    addSequential(new cmdHopperIntakeMotor(), .5);
     addSequential(new cmdDelay(3));
     addSequential(new cmdHopperOuttakeMotor(), 2);
 

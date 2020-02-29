@@ -83,7 +83,7 @@ public class cmdTurnByLimeLight extends Command {
     double finalThrottle = throttlePos + pidVal;
 
 
-    Robot.subChassis.Drive(-finalThrottle * _turnSignum  * 2, finalThrottle * _turnSignum * 2);;
+    Robot.subChassis.Drive(-finalThrottle * _turnSignum  * 2.2, finalThrottle * _turnSignum * 2.2);;
     
     if (deltaTime > _endTime) {
 			_isFinished = true;
