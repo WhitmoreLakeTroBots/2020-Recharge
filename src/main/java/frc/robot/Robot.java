@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Auto_DriveByGyro;
 import frc.robot.commands.Auto_TurnByGyro;
 import frc.robot.commands.autoGroupHopper;
+import frc.robot.commands.autoGroupHopperTurn;
 import frc.robot.commands.autoGroupShoot;
 import frc.robot.commands.cmdGroupHopperOuttake;
 import frc.robot.commands.cmdLastResortAuto;
@@ -98,6 +99,8 @@ public class Robot extends TimedRobot {
     chooser.addOption("Auto Turn By Gyro", new Auto_TurnByGyro(90, 15));
     chooser.setDefaultOption("Auto Drive Off Line", new Auto_DriveByGyro(24, 24, 0));
     chooser.addOption("Auto Group Hopper", new autoGroupHopper());
+    chooser.addOption("Auto Group Hopper Turn", new autoGroupHopperTurn());
+
     chooser.addOption("Auto Group Shoot", new autoGroupShoot());
     chooser.addOption("Auto Group Push", new autoGroupShoot());
     chooser.addOption("Auto hoppertest", new cmdGroupHopperOuttake());

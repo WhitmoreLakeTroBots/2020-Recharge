@@ -42,7 +42,7 @@ public class Settings {
   public static final double hopperDumpPos = -73.547931;
   public static final double hopperStrightPos = -60.595611;
   public static final double hopperFeederPos = -42.928140;
-  public static final double hopperMotorSpeed = -0.35;
+  public static final double hopperMotorSpeed = -0.38;
 
 
 

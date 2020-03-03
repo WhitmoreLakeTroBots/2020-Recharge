@@ -65,7 +65,7 @@ public double allowedErr = 0;
     flywheelPIDC.setFF(kFF);
     flywheelPIDC.setOutputRange(kMinOutput, kMaxOutput);
 
-    if(Robot.subLimelight.getTY() > 1.0) {
+  /*  if(Robot.subLimelight.getTY() > 1.0) {
         lv = 2850;
     }
     else if(Robot.subLimelight.getTY() < 2.0 ){
@@ -75,11 +75,11 @@ public double allowedErr = 0;
         lv = 2850;
     }
     
-    
+    */
 
     }
     public void runFlyWheel(){
-        flywheelPIDC.setReference(lv, ControlType.kVelocity);
+        flywheelPIDC.setReference(2705, ControlType.kVelocity);
         System.err.println("RUNNING");
         //flyWheelMotor.set(.75);
     }
