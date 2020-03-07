@@ -26,8 +26,8 @@ public class subChassis extends Subsystem {
   public final double driveStraightGyroKp = 0.05;
   public final double wheelDiameter = 6.0;
   public final double wheelCircumference = wheelDiameter * Math.PI;
-  //public final double gearBoxRatio = 8.45;
-  public final double gearBoxRatio = 7.31;
+  public final double gearBoxRatio = 8.45;
+  //public final double gearBoxRatio = 7.31;
   public final double trackWidth = 24.0;
   public final double trackRadius = trackWidth / 2;
 

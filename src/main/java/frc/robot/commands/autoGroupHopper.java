@@ -17,7 +17,7 @@ public class autoGroupHopper extends CommandGroup {
 
     
     addParallel(new cmdHopperDump());
-    addSequential(new Auto_DriveByGyro(105, 40, 0));
+    addSequential(new Auto_DriveByGyro(100, 40, 0));
     addSequential(new cmdDelay(1));
     addSequential(new cmdGroupHopperOuttake());
     addSequential(new cmdHopperOuttakeMotor(), 2);

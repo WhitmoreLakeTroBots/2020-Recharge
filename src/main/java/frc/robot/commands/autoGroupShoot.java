@@ -17,8 +17,8 @@ public class autoGroupShoot extends CommandGroup {
     addParallel(new cmdLauncher(), 10);
     addSequential(new cmdAutoShooter());
     addSequential(new cmdCancelFlyWheel(), 1);
-    addSequential(new Auto_TurnByGyro(-30, 30));
-    addSequential(new Auto_DriveByGyro(150, 45, 0));
+    addSequential(new Auto_TurnByGyro(150, 18));
+    addSequential(new Auto_DriveByGyro(132, 45, 0));
 
 
     //addSequential(new Auto_DriveByGyro(-50, 36, 0));
