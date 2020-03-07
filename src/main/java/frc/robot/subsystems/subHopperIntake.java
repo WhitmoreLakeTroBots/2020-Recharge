@@ -21,7 +21,7 @@ import frc.robot.hardware.wlSpark;
  */
 public class subHopperIntake extends Subsystem {
   public static wlSpark hopperIntakeMotor;
-  public static TalonSRX actuatorMotor;
+  private static TalonSRX actuatorMotor;
 
 public subHopperIntake(){
   hopperIntakeMotor = new wlSpark(Settings.CANID_subHopperIntakeMotor, MotorType.kBrushless);
@@ -38,6 +38,10 @@ public void hopperOuttake(){
 }
 public void hopperStopper(){
   hopperIntakeMotor.set(0);
+  actuatorMotor.set(ControlMode.PercentOutput, 0);
+}
+public void runActuator(){
+  actuatorMotor.set(ControlMode.PercentOutput, 0.75);
 }
 
   @Override

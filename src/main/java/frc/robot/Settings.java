@@ -27,8 +27,8 @@ public class Settings {
   public static final int CANID_subClimbHelpMotor = 22;
   public static final int CANID_subHopperIntakeAct = 24;
 
-  public static final int REV_NEO_CurrentLimitStalledAmps = 27;
-  public static final int REV_NEO_CurrentLimitFreeAmps = 27;
+  public static final int REV_NEO_CurrentLimitStalledAmps = 35;
+  public static final int REV_NEO_CurrentLimitFreeAmps = 30;
 
   // chassis constants
   public static final double chassisDriveStraightGyroKp = 0.05;

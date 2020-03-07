@@ -97,7 +97,10 @@ public class Robot extends TimedRobot {
 
     //chooser.addOption("Auto Drive By Gyro", new Auto_DriveByGyro(36, 72, 0));
     chooser.addOption("Auto Turn By Gyro", new Auto_TurnByGyro(90, 15));
-    chooser.setDefaultOption("Auto Drive Off Line", new Auto_DriveByGyro(24, 24, 0));
+    chooser.setDefaultOption("Auto Drive Off Line", new Auto_DriveByGyro(40, 24, 0));
+    chooser.setDefaultOption("Auto Drive Off Line Rev", new Auto_DriveByGyro(-40, 24, 0));
+    chooser.setDefaultOption("Z TEST AUTO", new Auto_DriveByGyro(120, 20, 0));
+
     chooser.addOption("Auto Group Hopper", new autoGroupHopper());
     chooser.addOption("Auto Group Hopper Turn", new autoGroupHopperTurn());
 
