@@ -7,9 +7,10 @@ public class autoGroupShootAngleInvt extends CommandGroup {
    * Add your docs here.
    */
   public autoGroupShootAngleInvt() {
-    addSequential(new cmdLauncher());
+    addParallel(new cmdLauncher(), 10);
+    addSequential(new cmdAutoShooter());
     addSequential(new Auto_TurnByGyro(-45 ,10));
-    addSequential(new Auto_DriveByGyro(72, 24, 0));
+    addSequential(new Auto_DriveByGyro(40, 24, 0));
     
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

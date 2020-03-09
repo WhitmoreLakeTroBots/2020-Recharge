@@ -7,23 +7,22 @@ public class autoGroupShootTrench extends CommandGroup {
    * Add your docs here.
    */
   public autoGroupShootTrench() {
-    addParallel(new cmdLauncher(), 8);
+    addParallel(new cmdLauncher(), 10);
     addSequential(new cmdAutoShooter());
-    addSequential(new cmdCancelFlyWheel());
+    addSequential(new cmdCancelFlyWheel(), 1);
     
-    //completid shooting moving to trench
-    addSequential(new Auto_DriveByGyro(-85, 24, 0));
-    addSequential(new Auto_TurnByGyro(90, 10));
-    addSequential(new Auto_DriveByGyro(65, 24, 0));
-    addSequential(new Auto_TurnByGyro(90, 10));
+    //Drive to the trench
+    addSequential(new Auto_TurnByGyro(150, 24, 0));
+    addSequential(new Auto_DriveByGyro(100, 45, 0));
+    addSequential(new Auto_TurnByGyro(30, 24, 0));
+    
 
-    //At tranch moving to grab more balls
-    addParallel (new cmdAutoPickup());
-    addSequential (new Auto_DriveByGyro(80, 24, 0));
-    addSequential (new Auto_TurnByGyro(180, 15));
-    addSequential (new Auto_DriveByGyro(80, 24, 0));
-    addSequential (new Auto_TurnByGyro(35, 10));   
-    
+    //pickup balls on the trench
+    addParallel(new cmdHopperIntake(), 5); 
+    addParallel(new cmdIntakeRev(), 5);
+    addSequential(new Auto_DriveByGyro(116, 40, 0));
+    addSequential(new Auto_DriveByGyro(-116, 40, 0));
+
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
     // these will run in order.
