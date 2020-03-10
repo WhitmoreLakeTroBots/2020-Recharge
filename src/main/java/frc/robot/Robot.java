@@ -16,6 +16,7 @@ import frc.robot.commands.Auto_TurnByGyro;
 import frc.robot.commands.autoGroupHopper;
 import frc.robot.commands.autoGroupHopperTurn;
 import frc.robot.commands.autoGroupShoot;
+import frc.robot.commands.autoGroupShootAngle;
 import frc.robot.commands.cmdGroupHopperOuttake;
 import frc.robot.commands.cmdLastResortAuto;
 import frc.robot.subsystems.subChassis;
@@ -104,6 +105,7 @@ public class Robot extends TimedRobot {
     chooser.addOption("Auto Group Hopper", new autoGroupHopper());
     chooser.addOption("Auto Group Hopper Turn", new autoGroupHopperTurn());
 
+    chooser.addOption("Auto Group Shoot222", new autoGroupShootAngle());
     chooser.addOption("Auto Group Shoot", new autoGroupShoot());
     chooser.addOption("Auto Group Push", new autoGroupShoot());
     chooser.addOption("Auto hoppertest", new cmdGroupHopperOuttake());

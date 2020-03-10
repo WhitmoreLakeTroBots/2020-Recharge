@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.cmdCancelFlyWheel;
 import frc.robot.commands.cmdExtendClimb;
+import frc.robot.commands.cmdGroupExtendClimb;
 import frc.robot.commands.cmdGroupHopperOuttake;
 import frc.robot.commands.cmdHopperCarry;
 import frc.robot.commands.cmdHopperFeeder;
@@ -102,7 +103,7 @@ public class OI {
         hopperLauncher.whenPressed(new cmdHopperLauncher());
         hopperIntakeMotor.whileHeld(new cmdHopperIntakeMotor());
         hopperOutakeMotor.whileHeld(new cmdHopperOuttakeMotor());
-        extendclimb.whenPressed(new cmdExtendClimb());
+        extendclimb.whenPressed(new cmdGroupExtendClimb());
         lockClimb.whenPressed(new cmdLockClimb());
         hopperFeeder.whenPressed(new cmdHopperFeeder());
         limelightCamMode.whileHeld(new cmdLimeLightPipeline());

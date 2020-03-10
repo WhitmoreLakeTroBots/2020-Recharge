@@ -7,12 +7,10 @@
 
 package frc.robot.commands;
 
-import java.util.concurrent.DelayQueue;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.CommonLogic;
 import frc.robot.Robot;
-import frc.robot.subsystems.subClimb;
+import frc.robot.Settings;
 
 public class cmdExtendClimb extends Command {
 private boolean _isFinished = false;
@@ -32,6 +30,7 @@ private boolean _isFinished = false;
   protected void execute() {
     Robot.subClimb.extendClimb();
     _isFinished = CommonLogic.isInRange(Robot.subClimb.releasEncoder.getDistance(), -140, 40);
+    
     System.err.println("ENCODER COUNT" + Robot.subClimb.releasEncoder.getDistance());
     
   }
