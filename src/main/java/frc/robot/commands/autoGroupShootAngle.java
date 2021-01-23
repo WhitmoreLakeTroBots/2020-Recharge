@@ -9,8 +9,8 @@ public class autoGroupShootAngle extends CommandGroup {
   public autoGroupShootAngle() {
     addParallel(new cmdLauncher(), 10);
     addSequential(new cmdAutoShooter());
-    addSequential(new Auto_DriveByGyro(40, 24, 0));
-    addSequential(new Auto_DriveByGyro(-80, 24, 0));
+    addSequential(new Auto_DriveByGyro(80, 24, 0));
+    //addSequential(new Auto_DriveByGyro(-80, 24, 0));
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
     // these will run in order.

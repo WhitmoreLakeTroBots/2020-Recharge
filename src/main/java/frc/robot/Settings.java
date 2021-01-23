@@ -13,9 +13,9 @@ package frc.robot;
 public class Settings {
 
   // CANIDs
-  public static final int CANID_subChassisRightMaster = 2;
+  public static final int CANID_subChassisRightMaster = 2;//2
   public static final int CANID_subChassisRightFollower = 4;
-  public static final int CANID_subChassisLeftMaster = 7;
+  public static final int CANID_subChassisLeftMaster = 7;//7
   public static final int CANID_subChassisLeftFollower = 3;
   public static final int CANID_subLauncherFlyWheel = 8;
   public static final int CANID_subIntakeIntake = 9;
@@ -27,8 +27,8 @@ public class Settings {
   public static final int CANID_subClimbHelpMotor = 22;
   public static final int CANID_subHopperIntakeAct = 24;
 
-  public static final int REV_NEO_CurrentLimitStalledAmps = 35;
-  public static final int REV_NEO_CurrentLimitFreeAmps = 30;
+  public static final int REV_NEO_CurrentLimitStalledAmps = 80;
+  public static final int REV_NEO_CurrentLimitFreeAmps = 40;
 
   // chassis constants
   public static final double chassisDriveStraightGyroKp = 0.05;

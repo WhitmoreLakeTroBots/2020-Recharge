@@ -18,7 +18,7 @@ public class autoGroupShoot extends CommandGroup {
     addSequential(new cmdAutoShooter());
     addSequential(new cmdCancelFlyWheel(), 1);
     addSequential(new Auto_TurnByGyro(150, 18));
-    addSequential(new Auto_DriveByGyro(132, 45, 0));
+    addSequential(new Auto_DriveByGyro(96, 45, 0));
 
 
     //addSequential(new Auto_DriveByGyro(-50, 36, 0));
@@ -27,7 +27,7 @@ public class autoGroupShoot extends CommandGroup {
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
     // these will run in order.
-
+            
     // To run multiple commands at the same time,
     // use addParallel()
     // e.g. addParallel(new Command1());
