@@ -21,7 +21,7 @@ public class cmdAutoShooter extends CommandGroup {
     addSequential(new cmdHopperOuttakeMotor(), .3);
     addSequential(new cmdStopIntake(), 0.125);
     addSequential(new cmdHopperOuttakeMotor(), .3);
-    addSequential(new cmdStopIntake(), 0.125);
+    addSequential(new cmdStopIntake(), 0.25);
     addSequential(new cmdHopperOuttakeMotor(), .3);
     addSequential(new cmdStopIntake(), 0.125);
     //addSequential(new cmdStopIntake(), delaysec);
