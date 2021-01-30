@@ -9,14 +9,15 @@ public class autoGroupShootTrench extends CommandGroup {
     addSequential(new cmdAutoShooter());
     addSequential(new cmdCancelFlyWheel(), 1);
     //Drive to the trench
-    addSequential(new Auto_TurnByGyro(110, 10, 0));
-    addSequential(new Auto_DriveByGyro(100, 45, 0));
-    addSequential(new Auto_TurnByGyro(30, 24, 0));
+    addSequential(new Auto_TurnByGyro(120, 28, 30));
+    addSequential(new Auto_DriveByGyro(100, 50, 0));
+    addSequential(new Auto_TurnByGyro(35, 28, 30));
     //pickup balls on the trench
-    addParallel(new cmdHopperIntake(), 5); 
-    addParallel(new cmdIntakeRev(), 5);
-    addSequential(new Auto_DriveByGyro(116, 40, 0));
-    addSequential(new Auto_DriveByGyro(-116, 40, 0));
+    addParallel(new cmdHopperIntake(), 8);
+    addParallel(new cmdHopperIntakeMotor(), 8); 
+    addParallel(new cmdIntakeRev(), 10);
+    addSequential(new Auto_DriveByGyro(118, 30, 0));
+    addSequential(new Auto_DriveByGyro(-118, 34, 0));
 
   }
 }
