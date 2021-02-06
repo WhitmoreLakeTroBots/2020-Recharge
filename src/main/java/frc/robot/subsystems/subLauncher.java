@@ -46,7 +46,7 @@ public double allowedErr = 0;
         flywheelPIDC = flyWheelMotor.getPIDController();
         flyWheelMotor.restoreFactoryDefaults();
     kP = 7e-5;
-    kI = 4e-7;
+    kI = 2e-7;
     kD = 0;
     kIz = 0;
     kFF = 0;
