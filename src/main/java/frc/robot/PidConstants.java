@@ -6,8 +6,8 @@ public final class PidConstants {
 
   public static class Chassis_teleOpMotionKs {
     public final static int slot = 1;
-    public final static double kP = 8e-2;//5e-4;
-    public final static double kI = 5e-5;
+    public final static double kP = 9e-2; //8e-2;
+    public final static double kI = 8e-5;
     public final static double kD = 16e-6;
     public final static double kIz = 0;
     public final static double kFF = 0;//0.000156;

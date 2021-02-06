@@ -16,13 +16,15 @@ public class cmdAutoShooter extends CommandGroup {
    */
   public cmdAutoShooter() {
    
-    addSequential(new cmdHopperLauncher(), 3);
+    addSequential(new cmdHopperLauncher());
     addSequential(new cmdStopIntake(), delaysec);
-    addSequential(new cmdHopperOuttakeMotor(), .3);
-    addSequential(new cmdStopIntake(), 0.125);
-    addSequential(new cmdHopperOuttakeMotor(), .3);
-    addSequential(new cmdStopIntake(), 0.25);
-    addSequential(new cmdHopperOuttakeMotor(), .3);
+    addSequential(new cmdHopperOuttakeMotor(), 2);
+    //addSequential(new cmdStopIntake(), 0.2);
+    //addSequential(new cmdHopperIntakeMotor(), 0.2);
+    //addSequential(new cmdHopperOuttakeMotor(), .18);
+    //addSequential(new cmdStopIntake(), 0.8);
+    //addSequential(new cmdHopperIntakeMotor(), 0.2);
+    //addSequential(new cmdHopperOuttakeMotor(), .8);
     addSequential(new cmdStopIntake(), 0.125);
     //addSequential(new cmdStopIntake(), delaysec);
     //addSequential(new cmdHopperOuttakeMotor(), delaysec);
