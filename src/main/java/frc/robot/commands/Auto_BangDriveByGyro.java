@@ -108,10 +108,7 @@ public class Auto_BangDriveByGyro extends Command {
    if (CommonLogic.isInRange(measurement, _absDistance, Settings.profileEndTol)) {
       // Our own checks on distance traveled says we are done
       System.err.println("isInRange=true");
-      System.err.println("isInRange=true");
-      System.err.println("isInRange=true");
-      System.err.println("isInRange=true");
-      System.err.println("isInRange=true");
+      
       _isFinished = true;
     }
 /*
