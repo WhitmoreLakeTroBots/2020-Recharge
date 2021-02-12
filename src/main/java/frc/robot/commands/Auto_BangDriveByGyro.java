@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile.State;
 import frc.robot.PidConstants.Chassis_teleOpMotionKs;
 
-public class Auto_DriveByGyro extends Command {
+public class Auto_BangDriveByGyro extends Command {
 
   private double _distance;
   private boolean _isFinished = false;
@@ -28,6 +28,7 @@ public class Auto_DriveByGyro extends Command {
   private double _distanceSignum;
   private double _absDistance;
   private double _abortTime;
+  private double xThrottle;
 
   private Constraints tpConstraints = new Constraints(0.0, 0.0);
   private ProfiledPIDController pPidC;
@@ -40,12 +41,13 @@ public class Auto_DriveByGyro extends Command {
    * @param velInches_sec -- velocity in inches per sec
    * @param heading_deg   -- desired heading in degrees
    **/
-  public Auto_DriveByGyro(double dist_inches, double velInches_sec, double heading_deg) {
+  public Auto_BangDriveByGyro(double dist_inches, double throttle, double heading_deg) {
     requires(Robot.subChassis);
+    xThrottle = throttle;
     _distance = dist_inches;
     _requestedHeading = heading_deg;
-    tpConstraints.maxVelocity = Math.abs(velInches_sec);
-    tpConstraints.maxAcceleration = Math.abs(Settings.profileDriveAccelration);
+    //tpConstraints.maxVelocity = Math.abs(throttle);
+    //tpConstraints.maxAcceleration = Math.abs(Settings.profileDriveAccelration);
   }
 
   /**
@@ -58,12 +60,13 @@ public class Auto_DriveByGyro extends Command {
    * @param accel_sec_sec -- overide the accel with custom inches/sec/sec
    **/
 
-  public Auto_DriveByGyro(double dist_inches, double velInches_sec, double heading_deg, double accel_sec_sec) {
+  public Auto_BangDriveByGyro(double dist_inches, double throttle, double heading_deg, double accel_sec_sec) {
     requires(Robot.subChassis);
+    xThrottle = throttle;
     _distance = dist_inches;
     _requestedHeading = heading_deg;
-    tpConstraints.maxVelocity = Math.abs(velInches_sec);
-    tpConstraints.maxAcceleration = Math.abs(accel_sec_sec);
+   // tpConstraints.maxVelocity = Math.abs(throttle);
+   // tpConstraints.maxAcceleration = Math.abs(accel_sec_sec);
   }
 
   // Called just before this Command runs the first time
@@ -75,16 +78,16 @@ public class Auto_DriveByGyro extends Command {
     _absDistance = Math.abs(_distance);
     _distanceSignum = Math.signum(_distance);
 
-    pPidC = new ProfiledPIDController(Chassis_teleOpMotionKs.kP, Chassis_teleOpMotionKs.kI, Chassis_teleOpMotionKs.kD,
-        tpConstraints, .020);
+   // pPidC = new ProfiledPIDController(Chassis_teleOpMotionKs.kP, Chassis_teleOpMotionKs.kI, Chassis_teleOpMotionKs.kD,
+     //   tpConstraints, .020);
 
-    pPidC.setTolerance(Settings.profileEndTol);
+    //pPidC.setTolerance(Settings.profileEndTol);
 
-    pPidC.setGoal(new State(_absDistance, tpConstraints.maxVelocity));
+   // pPidC.setGoal(new State(_absDistance, tpConstraints.maxVelocity));
     _isFinished = false;
-    _startTime = CommonLogic.getTime();
-    _abortTime = CommonLogic.calcProfileAbortTime(_absDistance, tpConstraints.maxVelocity,
-        tpConstraints.maxAcceleration);
+   // _startTime = CommonLogic.getTime();
+   // _abortTime = CommonLogic.calcProfileAbortTime(_absDistance, tpConstraints.maxVelocity,
+    //    tpConstraints.maxAcceleration);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -93,7 +96,7 @@ public class Auto_DriveByGyro extends Command {
 
     double deltaTime = CommonLogic.getTime() - _startTime;
     double measurement = Math.abs(Robot.subChassis.getEncoder_Inches_LR());
-    double finalThrottle = _distanceSignum * pPidC.calculate(measurement);
+    double finalThrottle = xThrottle;
     double trunRate = calcTurnRate();
     System.err.println("fThrottle:" + finalThrottle + " measurment" + measurement);
 
@@ -101,23 +104,23 @@ public class Auto_DriveByGyro extends Command {
     Robot.subChassis.Drive(finalThrottle - trunRate, finalThrottle + trunRate);
 
     // Check to see if we are done....
-    if (pPidC.atGoal()) {
-      // The pPidC says we are done
-      System.err.println("atGoal=true");
-      _isFinished = true;
-    }
 
-    else if (CommonLogic.isInRange(measurement, _absDistance, Settings.profileEndTol)) {
+   if (CommonLogic.isInRange(measurement, _absDistance, Settings.profileEndTol)) {
       // Our own checks on distance traveled says we are done
+      System.err.println("isInRange=true");
+      System.err.println("isInRange=true");
+      System.err.println("isInRange=true");
+      System.err.println("isInRange=true");
       System.err.println("isInRange=true");
       _isFinished = true;
     }
-
+/*
     else if (deltaTime > _abortTime) {
       // abort if we are not finishing in time. (AKA we are close but not there yet.)
       System.err.println("exceeded abort time. " + _abortTime + " " + deltaTime);
       _isFinished = true;
     }
+    */
   }
 
   protected double calcTurnRate() {
