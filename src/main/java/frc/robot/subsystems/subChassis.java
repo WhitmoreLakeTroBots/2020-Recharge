@@ -22,7 +22,7 @@ public class subChassis extends Subsystem {
   public static wlSpark leftFollower;
   public static wlSpark rightFollower;
 
-  public final double joyDriveDeadband = 0.06;
+  public final double joyDriveDeadband = 0.02;
   public final double driveStraightGyroKp = 2e-3;
   public final double wheelDiameter = 6.0;
   public final double wheelCircumference = wheelDiameter * Math.PI;
