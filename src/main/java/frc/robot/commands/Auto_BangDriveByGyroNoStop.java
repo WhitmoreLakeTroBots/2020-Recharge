@@ -4,25 +4,25 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.CommonLogic;
 import frc.robot.Robot;
 
-public class Auto_BangDriveByGyro extends Command {
+public class Auto_BangDriveByGyroNoStop extends Command {
 
-  private double _distance;
+  private double _distance = 0.0;
   private boolean _isFinished = false;
-  private double _requestedHeading = 0;
-  private double _absDistance;
+  private double _requestedHeading = 0.0;
+  private double _absDistance = 0.0;
 
-  private double _throttle;
+  private double _throttle = 0.0;
   private double _absTol_inches = 6.0;
 
   /**
    * Accepting a the motor velocities for left and right sides of the robot to
    * allow command to steer the robot using the default accelleration.
    *
-   * @param dist_inches   -- distance for the robot to move
-   * @param velInches_sec -- velocity in inches per sec
-   * @param heading_deg   -- desired heading in degrees
+   * @param dist_inches -- distance for the robot to move
+   * @param throttle    -- Raw motor throttle -1 to +1
+   * @param heading_deg -- desired heading in degrees
    **/
-  public Auto_BangDriveByGyro(double dist_inches, double throttle, double heading_deg) {
+  public Auto_BangDriveByGyroNoStop(double dist_inches, double throttle, double heading_deg) {
     requires(Robot.subChassis);
     _throttle = throttle;
     _distance = dist_inches;
@@ -33,13 +33,12 @@ public class Auto_BangDriveByGyro extends Command {
    * Accepting a the motor velocities for left and right sides of the robot to
    * allow command to steer the robot using the default accelleration.
    *
-   * @param dist_inches   -- distance for the robot to move
-   * @param velInches_sec -- velocity in inches per sec
-   * @param heading_deg   -- desired heading in degrees
-   * @param tol_inches    -- tolerance in inches
+   * @param dist_inches -- distance for the robot to move
+   * @param throttle    -- Raw motor throttle -1 to +1
+   * @param heading_deg -- desired heading in degrees
+   * @param tol_inches  -- tolerance of distance in inches
    **/
-
-  public Auto_BangDriveByGyro(double dist_inches, double throttle, double heading_deg, double tol_inches) {
+  public Auto_BangDriveByGyroNoStop(double dist_inches, double throttle, double heading_deg, double tol_inches) {
     requires(Robot.subChassis);
     _throttle = throttle;
     _distance = dist_inches;
@@ -77,7 +76,6 @@ public class Auto_BangDriveByGyro extends Command {
   }
 
   protected double calcTurnRate() {
-
     double turnRate = CommonLogic.calcTurnRate(Robot.subGyro.deltaHeading(_requestedHeading),
         Robot.subChassis.driveStraightGyroKp);
     return (turnRate);
@@ -93,7 +91,6 @@ public class Auto_BangDriveByGyro extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.subChassis.stop();
     _isFinished = true;
   }
 

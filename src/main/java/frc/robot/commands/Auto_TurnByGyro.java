@@ -22,13 +22,14 @@ public class Auto_TurnByGyro extends Command {
   private double _gyroOffset;
   private double _distance;
   private boolean _isFinished = false;
-	private double _startTime;
-	private double _absDistance;
-	private double _abortTime;
-  
+  private double _startTime;
+  private double _absDistance;
+  private double _abortTime;
+
   private double _turnSignum;
   private Constraints tpConstraints = new Constraints(0.0, 0.0);
   private ProfiledPIDController pPidC;
+
   /**
    * Accepting a the motor velocities for left and right sides of the robot to
    * allow command to steer the robot using the default accelleration.
@@ -37,7 +38,7 @@ public class Auto_TurnByGyro extends Command {
    * @param velInches_sec -- velocity in inches per sec
    * @param heading_deg   -- desired heading in degrees
    **/
-  public Auto_TurnByGyro(double deg, double velInch_sec){
+  public Auto_TurnByGyro(double deg, double velInch_sec) {
     requires(Robot.subChassis);
     _degrees = deg;
     tpConstraints.maxVelocity = Math.abs(velInch_sec);
@@ -48,7 +49,8 @@ public class Auto_TurnByGyro extends Command {
    * Accepting the motor velocities for left and right sides of the robot to allow
    * command to steer the robot
    *
-   * @param deg           -- Number of degress to turn  + is righthand turn - is lefthand turn
+   * @param deg           -- Number of degress to turn + is righthand turn - is
+   *                      lefthand turn
    * @param velInches_sec -- velocity in inches per sec
    * @param accel_sec_sec -- overide the accel with custom inches/sec/sec
    **/
@@ -58,7 +60,7 @@ public class Auto_TurnByGyro extends Command {
     tpConstraints.maxAcceleration = Math.abs(accel_inch_sec_sec);
     // Use requires() here to declare subsystem dependencies
     requires(Robot.subChassis);
-    }
+  }
 
   // Called just before this Command runs the first time
   @Override
@@ -67,12 +69,11 @@ public class Auto_TurnByGyro extends Command {
     _turnSignum = Math.signum(_degrees);
     Robot.subChassis.resetEncoder_LeftDrive();
     Robot.subChassis.resetEncoder_RightDrive();
-    _distance = CommonLogic.calcArcLength (_degrees, Robot.subChassis.trackRadius) ;
+    _distance = CommonLogic.calcArcLength(_degrees, Robot.subChassis.trackRadius);
     _absDistance = Math.abs(_distance);
     pPidC = new ProfiledPIDController(Chassis_teleOpMotionKs.kP, Chassis_teleOpMotionKs.kI, Chassis_teleOpMotionKs.kD,
         tpConstraints, .020);
 
-    
     pPidC.setTolerance(Settings.profileEndTol);
 
     pPidC.setGoal(new State(_absDistance, tpConstraints.maxVelocity));
@@ -85,14 +86,13 @@ public class Auto_TurnByGyro extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-   //double encoderVal = Robot.subChassis.getEncoderAvgDistInch();
+    // double encoderVal = Robot.subChassis.getEncoderAvgDistInch();
     double deltaTime = CommonLogic.getTime() - _startTime;
-    
-    
-    double turnAngle = Robot.subGyro.getNavxAngleRaw() - _gyroOffset;                      
-    double measurement = Math.abs (CommonLogic.calcArcLength(turnAngle, Robot.subChassis.trackRadius));                      
-    //measurement = (Math.abs(Robot.subChassis.getEncoderPosLeft_Inches()) + 
-    //               Math.abs(Robot.subChassis.getEncoderPosRight_Inches())) / 2;
+
+    double turnAngle = Robot.subGyro.getNavxAngleRaw() - _gyroOffset;
+    double measurement = Math.abs(CommonLogic.calcArcLength(turnAngle, Robot.subChassis.trackRadius));
+    // measurement = (Math.abs(Robot.subChassis.getEncoderPosLeft_Inches()) +
+    // Math.abs(Robot.subChassis.getEncoderPosRight_Inches())) / 2;
 
     double finalThrottle = _turnSignum * pPidC.calculate(measurement);
     System.err.println("fThr:" + finalThrottle + " mea:" + measurement + " turnAngle:" + turnAngle);
@@ -118,13 +118,13 @@ public class Auto_TurnByGyro extends Command {
       System.err.println("exceeded abort time. " + _abortTime + " " + deltaTime);
       _isFinished = true;
     }
-    
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    //System.err.println("Auto_DriveByGyro.isFinished()= " + _isFinished);
+    // System.err.println("Auto_DriveByGyro.isFinished()= " + _isFinished);
     return _isFinished;
   }
 

@@ -47,11 +47,9 @@ public class subChassis extends Subsystem {
 
     //leftFollower.follow(leftDrive);
     //rightFollower.follow(rightDrive);
-
-    leftDrive.setIdleMode(IdleMode.kBrake);
-    rightDrive.setIdleMode(IdleMode.kBrake);
-    leftFollower.setIdleMode(IdleMode.kBrake);
-    rightFollower.setIdleMode(IdleMode.kBrake);
+    
+    setBrakeModeOn();
+    
     leftDrive.setInverted(true);
     rightDrive.setInverted(false);
 
@@ -63,6 +61,22 @@ public class subChassis extends Subsystem {
     leftDrive.burnFlash();
 
   }
+
+  public void setBrakeModeOn (){
+    setBrakeMode(IdleMode.kBrake);
+  }
+
+  public void setBrakeModeOff() {
+    setBrakeMode(IdleMode.kCoast);
+  }
+
+  public void setBrakeMode (IdleMode newMode){
+    leftDrive.setIdleMode(newMode);
+    rightDrive.setIdleMode(newMode);
+    leftFollower.setIdleMode(newMode);
+    rightFollower.setIdleMode(newMode);
+  }
+
   private void setPower_LeftDrive(double pwrPercent) {
     double power = CommonLogic.CapMotorPower(pwrPercent * Settings.Chassis_powerLeftScaler, -1, 1);
     leftDrive.set(power);
