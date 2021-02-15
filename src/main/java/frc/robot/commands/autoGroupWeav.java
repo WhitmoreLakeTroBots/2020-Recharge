@@ -9,10 +9,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class autoGroupWeav extends CommandGroup {
   /** Add your docs here. */
   public autoGroupWeav() {
-    addSequential(new Auto_DriveByGyro(10, 18, 0));
-    addSequential(new Auto_DriveByGyro(65 ,80 ,-70));
-    addSequential(new Auto_DriveByGyro(148, 80, 10));
-    //addSequential(new Auto_DriveByGyro(60, velInches_sec, heading_deg));
+    addSequential(new Auto_DriveByGyro(8, 18, 0));
+    addSequential(new Auto_DriveByGyro(65 ,60 ,-80));
+    addSequential(new Auto_DriveByGyro(160, 80, 0));
+   // addSequential(new Auto_DriveByGyro(100, 50, +120));
+    
   
   }
 }
