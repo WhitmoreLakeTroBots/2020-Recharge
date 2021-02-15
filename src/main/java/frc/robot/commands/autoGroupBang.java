@@ -38,7 +38,7 @@ public class autoGroupBang extends CommandGroup {
     addSequential(new Auto_BangTurnByGyro(speedSlow, speedBrake, 0));
 
     // Drive fast and stright to the other end of the field
-    addSequential(new Auto_BangDriveByGyro(148, speedFast, 10));
+    addSequential(new Auto_BangDriveByGyro(148, speedFast, 0));
 
     // Stop NOW to advoid disaster
     addSequential(new Auto_BangStop());

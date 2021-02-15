@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class autoGroupBangNoStop extends CommandGroup {
@@ -15,6 +17,9 @@ public class autoGroupBangNoStop extends CommandGroup {
 
     // set a speed just fast enough to not be coasting
     double speedBrake = -0.01;
+
+    // set to coast mode between segments
+    addSequential(new Auto_SetBrakeMode(IdleMode.kBrake));
 
     // Drive straight to pull out of the start box
     addSequential(new Auto_BangDriveByGyroNoStop(10, speedSlow, 0));
@@ -29,9 +34,13 @@ public class autoGroupBangNoStop extends CommandGroup {
     addSequential(new Auto_BangTurnByGyroNoStop(speedSlow, speedBrake, 0));
 
     // Drive fast and stright to the other end of the field
-    addSequential(new Auto_BangDriveByGyroNoStop(148, speedFast, 10));
+    addSequential(new Auto_BangDriveByGyroNoStop(148, speedFast, 0));
 
     // Stop NOW to advoid disaster
     addSequential(new Auto_BangStop());
+
+    // turn On Brakes
+    addSequential(new Auto_SetBrakeMode(IdleMode.kBrake));
+
   }
 }

@@ -62,14 +62,17 @@ public class subChassis extends Subsystem {
 
   }
 
+  // set the brake mode to brakes ON
   public void setBrakeModeOn (){
     setBrakeMode(IdleMode.kBrake);
   }
 
+  // set the brake mode to brakes OFF
   public void setBrakeModeOff() {
     setBrakeMode(IdleMode.kCoast);
   }
 
+  // set the brake mode to your choice new mode
   public void setBrakeMode (IdleMode newMode){
     leftDrive.setIdleMode(newMode);
     rightDrive.setIdleMode(newMode);
