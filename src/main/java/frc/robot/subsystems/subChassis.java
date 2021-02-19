@@ -172,6 +172,7 @@ public class subChassis extends Subsystem {
   }
   
   public void stop() {
+    setBrakeMode(IdleMode.kBrake);
     leftDrive.set(0);
     rightDrive.set(0);
   }

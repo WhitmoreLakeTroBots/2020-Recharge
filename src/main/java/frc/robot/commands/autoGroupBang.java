@@ -50,7 +50,8 @@ public class autoGroupBang extends CommandGroup {
     addSequential(new Auto_BangTurnByGyro(0.09, .35, -90));;
     addSequential(new Auto_BangTurnByGyro(0.09, .35, 180));
     addSequential(new Auto_BangTurnByGyro(0.09, .35, 90));
-    addSequential(new Auto_BangTurnByGyro(0.35, .09, -180));
+    addSequential(new Auto_SetNavX_Invert(true));
+    addSequential(new Auto_BangTurnByGyro(0.35, .09, 0));
 
     // Stop NOW to advoid disaster
     addSequential(new Auto_BangStop());

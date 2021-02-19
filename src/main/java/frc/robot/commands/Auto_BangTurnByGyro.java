@@ -41,7 +41,7 @@ public class Auto_BangTurnByGyro extends Command {
     requires(Robot.subGyro);
     _leftThrottle = leftThrottle;
     _rightThrottle = rightThrottle;
-    _requestedHeading = heading_deg;
+    _requestedHeading = Robot.subGyro.gyroNormalize(heading_deg);
     _headingTol = headingTol;
   }
 
