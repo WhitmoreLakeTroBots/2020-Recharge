@@ -16,8 +16,8 @@ public class autoGroupBang extends CommandGroup {
    */
   public autoGroupBang() {
     double speedSlow = 0.2;
-    double speedMed = 0.2;
-    double speedFast = 0.2;
+    double speedMed = 0.4;
+    double speedFast = 0.7;
     
     // set a speed just fast enough to not be coasting
     double speedBrake = -0.01;
@@ -26,19 +26,31 @@ public class autoGroupBang extends CommandGroup {
     addSequential(new Auto_SetBrakeMode(IdleMode.kCoast));
 
     // Drive straight to pull out of the start box
-    addSequential(new Auto_BangDriveByGyro(10, speedSlow, 0));
+    addSequential(new Auto_BangDriveByGyro(18, speedSlow, 0, 3));
 
     // Swing turn to the left
-    addSequential(new Auto_BangTurnByGyro(speedBrake, speedSlow, -70));
+    addSequential(new Auto_BangTurnByGyro(.35, 0.09, -70));
 
     // Drive forward
-    addSequential(new Auto_BangDriveByGyro(65, speedMed, -70));
+    addSequential(new Auto_BangDriveByGyro(18, speedMed, -70));
 
     // Swing turn to the right back to heading of 0
-    addSequential(new Auto_BangTurnByGyro(speedSlow, speedBrake, 0));
+    addSequential(new Auto_BangTurnByGyro(0.09, .35, 0));
 
     // Drive fast and stright to the other end of the field
-    addSequential(new Auto_BangDriveByGyro(148, speedFast, 0));
+    addSequential(new Auto_BangDriveByGyro(105, speedFast, 0));
+
+    // Turn before full loop
+
+    addSequential(new Auto_BangTurnByGyro(speedBrake, speedMed, 55));
+
+    //loop
+    addSequential(new Auto_BangTurnByGyro(.35, .09, 90));
+    addSequential(new Auto_BangTurnByGyro(0.09, .35, 0));
+    addSequential(new Auto_BangTurnByGyro(0.09, .35, -90));;
+    addSequential(new Auto_BangTurnByGyro(0.09, .35, 180));
+    addSequential(new Auto_BangTurnByGyro(0.09, .35, 90));
+    addSequential(new Auto_BangTurnByGyro(0.35, .09, -180));
 
     // Stop NOW to advoid disaster
     addSequential(new Auto_BangStop());

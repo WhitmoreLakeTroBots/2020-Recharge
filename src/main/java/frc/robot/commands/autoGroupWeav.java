@@ -12,7 +12,7 @@ public class autoGroupWeav extends CommandGroup {
     addSequential(new Auto_DriveByGyro(8, 18, 0));
     addSequential(new Auto_DriveByGyro(65 ,60 ,-80));
     addSequential(new Auto_DriveByGyro(160, 80, 0));
-   // addSequential(new Auto_DriveByGyro(100, 50, +120));
+    addSequential(new Auto_DriveByGyro(100, 50, +120));
     
   
   }
