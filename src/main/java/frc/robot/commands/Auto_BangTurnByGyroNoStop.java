@@ -7,7 +7,7 @@ public class Auto_BangTurnByGyroNoStop extends Command {
 
   private boolean _isFinished = false;
   private double _requestedHeading = 0.0;
-  private double _headingTol = 5.0;
+  private double _headingTol = 8.0;
   private double _leftThrottle = 0.0;
   private double _rightThrottle = 0.0;
 
@@ -24,7 +24,7 @@ public class Auto_BangTurnByGyroNoStop extends Command {
     requires(Robot.subGyro);
     _leftThrottle = leftThrottle;
     _rightThrottle = rightThrottle;
-    _requestedHeading = heading_deg;
+    _requestedHeading = Robot.subGyro.gyroNormalize(heading_deg);
   }
 
   /**
@@ -41,7 +41,7 @@ public class Auto_BangTurnByGyroNoStop extends Command {
     requires(Robot.subGyro);
     _leftThrottle = leftThrottle;
     _rightThrottle = rightThrottle;
-    _requestedHeading = heading_deg;
+    _requestedHeading = Robot.subGyro.gyroNormalize(heading_deg);
     _headingTol = headingTol;
   }
 

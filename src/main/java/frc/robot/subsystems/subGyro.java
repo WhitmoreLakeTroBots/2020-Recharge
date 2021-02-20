@@ -97,8 +97,8 @@ public class subGyro extends Subsystem {
       }
     }
     // mixed values -tol to + tol This happens at 0 degrees
-    else if ((signumUpperTol > 0) && (signumLowerTol < 0)) {
-      if ((Math.abs(normalCurr) <= Math.abs(lowerTol)) && (Math.abs(normalCurr) <= Math.abs(upperTol))) {
+    else if ((signumUpperTol > 0) && (signumLowerTol < 0)) {                   //
+      if ((Math.abs(normalCurr) <= Math.abs(lowerTol)) && (normalCurr <= upperTol)) {
         retValue = true;
       }
     }

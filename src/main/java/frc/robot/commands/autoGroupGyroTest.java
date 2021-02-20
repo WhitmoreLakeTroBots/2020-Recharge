@@ -27,9 +27,11 @@ public class autoGroupGyroTest extends CommandGroup {
 
     // Drive straight to pull out of the start box
     addSequential(new Auto_TestGyro());
+    System.err.println("Running test");
 
     // Stop NOW to advoid disaster
     addSequential(new Auto_BangStop());
+    System.err.println("Stopping Test");
     
     // turn On Brakes
     addSequential(new Auto_SetBrakeMode(IdleMode.kBrake));

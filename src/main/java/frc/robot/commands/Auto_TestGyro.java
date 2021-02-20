@@ -30,10 +30,10 @@ public class Auto_TestGyro extends Command {
     _inTol = Robot.subGyro.gyroInTol(_currHeading, _currHeading, 2);
     double currTime = CommonLogic.getTime();
    
-    if ((currTime - _startTime) > 1000) {
+    //if ((currTime - _startTime) > 1000) {
       System.err.printf("Heading=%4.1f, InTol=%B\n", _currHeading, _inTol);
-      _startTime = currTime;
-    }
+      //_startTime = currTime;
+    //}
   }
 
   // Make this return true when this Command no longer needs to run execute()

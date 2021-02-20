@@ -32,27 +32,31 @@ public class autoGroupBang extends CommandGroup {
     addSequential(new Auto_BangTurnByGyro(.35, 0.09, -70));
 
     // Drive forward
-    addSequential(new Auto_BangDriveByGyro(18, speedMed, -70));
+    addSequential(new Auto_BangDriveByGyro(12, speedMed, -70));
 
     // Swing turn to the right back to heading of 0
     addSequential(new Auto_BangTurnByGyro(0.09, .35, 0));
 
     // Drive fast and stright to the other end of the field
-    addSequential(new Auto_BangDriveByGyro(105, speedFast, 0));
+    addSequential(new Auto_BangDriveByGyro(98, speedFast, 0));
 
     // Turn before full loop
 
-    addSequential(new Auto_BangTurnByGyro(speedBrake, speedMed, 55));
+    addSequential(new Auto_BangTurnByGyro(speedBrake, speedMed, 70));
+    addSequential(new Auto_BangDriveByGyro(18, speedMed, 90));
 
     //loop
-    addSequential(new Auto_BangTurnByGyro(.35, .09, 90));
-    addSequential(new Auto_BangTurnByGyro(0.09, .35, 0));
-    addSequential(new Auto_BangTurnByGyro(0.09, .35, -90));;
-    addSequential(new Auto_BangTurnByGyro(0.09, .35, 180));
-    addSequential(new Auto_BangTurnByGyro(0.09, .35, 90));
-    addSequential(new Auto_SetNavX_Invert(true));
+   
     addSequential(new Auto_BangTurnByGyro(0.35, .09, 0));
-
+    addSequential(new Auto_BangTurnByGyro(0.35, .09, -90));;
+    addSequential(new Auto_BangTurnByGyro(0.35, .09, 180));
+    addSequential(new Auto_BangTurnByGyro(.35, .09, 90));
+    //addSequential(new Auto_SetNavX_Invert(true));
+    addSequential(new Auto_BangTurnByGyro(0.09, .35, 180));
+    addSequential(new Auto_BangDriveByGyro(95, speedFast, 180));
+    addSequential(new Auto_BangTurnByGyro(0.09, .35, -90));
+    addSequential(new Auto_BangTurnByGyro(0.35, .09, 180));
+    
     // Stop NOW to advoid disaster
     addSequential(new Auto_BangStop());
     

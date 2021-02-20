@@ -16,6 +16,7 @@ import frc.robot.commands.Auto_TurnByGyro;
 import frc.robot.commands.autoGroupBang;
 import frc.robot.commands.autoGroupBangSix;
 import frc.robot.commands.autoGroupCirclePractice;
+import frc.robot.commands.autoGroupGyroTest;
 import frc.robot.commands.autoGroupHopper;
 import frc.robot.commands.autoGroupHopperTurn;
 import frc.robot.commands.autoGroupShoot;
@@ -114,6 +115,7 @@ public class Robot extends TimedRobot {
     chooser.addOption("Auto Group Hopper Turn", new autoGroupHopperTurn());
     chooser.addOption("Auto Bang", new autoGroupBang());
     chooser.addOption("Initial D", new autoGroupCirclePractice());
+    chooser.addOption("Gyro Test", new autoGroupGyroTest());
 
     chooser.addOption("Auto Group Stright", new autoGroupShootAngle());
     chooser.addOption("BANG BANG", new autoGroupBangSix());
