@@ -28,7 +28,7 @@ public class autoGroupBang extends CommandGroup {
     addSequential(new Auto_SetBrakeMode(IdleMode.kCoast));
 
     // Drive straight to pull out of the start box
-    addSequential(new Auto_BangDriveByGyro(18, speedSlow, 0, 3));
+    addSequential(new Auto_BangDriveByGyro(8, speedSlow, 0, 3));
 
     // Swing turn to the left
     addSequential(new Auto_BangTurnByGyro(outsidek, insidek, -70));
@@ -53,7 +53,6 @@ public class autoGroupBang extends CommandGroup {
     addSequential(new Auto_BangTurnByGyro(outsidek, insidek, -90));;
     addSequential(new Auto_BangTurnByGyro(outsidek, insidek, 180));
     addSequential(new Auto_BangTurnByGyro(outsidek, insidek, 90));
-    //addSequential(new Auto_SetNavX_Invert(true));
     addSequential(new Auto_BangTurnByGyro(insidek, outsidek, 180));
     addSequential(new Auto_BangDriveByGyro(95, speedFast, 180));
     addSequential(new Auto_BangTurnByGyro(insidek, outsidek, -90));

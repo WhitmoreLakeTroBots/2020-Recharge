@@ -7,7 +7,7 @@ public class Auto_BangTurnByGyro extends Command {
 
   private boolean _isFinished = false;
   private double _requestedHeading = 0.0;
-  private double _headingTol = 8.0;
+  private double _headingTol = 5.0;
   private double _leftThrottle = 0.0;
   private double _rightThrottle = 0.0;
 

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Auto_DriveByGyro;
 import frc.robot.commands.Auto_TurnByGyro;
 import frc.robot.commands.autoGroupBang;
+import frc.robot.commands.autoGroupBangBarrel;
 import frc.robot.commands.autoGroupBangSix;
 import frc.robot.commands.autoGroupCirclePractice;
 import frc.robot.commands.autoGroupGyroTest;
@@ -113,7 +114,8 @@ public class Robot extends TimedRobot {
 
     chooser.addOption("Auto Group Hopper", new autoGroupHopper());
     chooser.addOption("Auto Group Hopper Turn", new autoGroupHopperTurn());
-    chooser.addOption("Auto Bang", new autoGroupBang());
+    chooser.addOption("Auto Slalom Path", new autoGroupBang());
+    chooser.addOption("Auto Barrel Run", new autoGroupBangBarrel());
     chooser.addOption("Initial D", new autoGroupCirclePractice());
     chooser.addOption("Gyro Test", new autoGroupGyroTest());
 
