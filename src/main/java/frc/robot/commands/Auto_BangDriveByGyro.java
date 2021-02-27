@@ -78,9 +78,14 @@ public class Auto_BangDriveByGyro extends Command {
 
   protected double calcTurnRate() {
 
-    double turnRate = CommonLogic.calcTurnRate(Robot.subGyro.deltaHeading(_requestedHeading),
+    double commandedTurnRate = Robot.subGyro.deltaHeading(_requestedHeading) * 3.5e-3;
+    return commandedTurnRate; // IS ALWAYS POSITIVE!
+
+
+  /*  double turnRate = CommonLogic.calcTurnRate(Robot.subGyro.deltaHeading(_requestedHeading),
         Robot.subChassis.driveStraightGyroKp);
     return (turnRate);
+*/ 
   }
 
   // Make this return true when this Command no longer needs to run execute()
