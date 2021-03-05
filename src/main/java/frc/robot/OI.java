@@ -79,7 +79,7 @@ public class OI {
         limelightCamMode = new JoystickButton(joyDrive, 5);
         
         intake = new JoystickButton(joyDrive, 2);
-        outtake = new JoystickButton(joyDrive, 1);
+        outtake = new JoystickButton(joyArt, 9);
         hopperIntakeMotor = new JoystickButton(joyArt, 1);
         hopperOutakeMotor = new JoystickButton(joyArt, 2);
         encoderHopper = new JoystickButton(joyDrive, 9);
