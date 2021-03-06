@@ -98,7 +98,7 @@ public class subChassis extends Subsystem {
  * @param  stick joyStick that currently has control of the wheels
  */
   public void Drive(Joystick stick) {
-    double joyX = CommonLogic.joyDeadBand(stick.getX(), joyDriveDeadband);
+    double joyX = (CommonLogic.joyDeadBand(stick.getX(), joyDriveDeadband) * 1.05);
     double joyY = CommonLogic.joyDeadBand(-stick.getY(), joyDriveDeadband);
     Drive ((joyY - joyX) , (joyY + joyX) );
   }

@@ -18,10 +18,10 @@ public class autoGroupBounce extends CommandGroup {
   public autoGroupBounce() {
     addSequential(new Auto_SetBrakeMode(IdleMode.kCoast));
     //bump 1
-    addSequential(new Auto_BangDriveByGyro(16, speedMed, 0));
+    addSequential(new Auto_BangDriveByGyro(12, speedMed, 0));
     addSequential(new Auto_BangTurnByGyro(outsidek, insidek, -90));
     addSequential(new Auto_BangDriveByGyro(10, speedMed, -85));
-    addSequential(new Auto_BangDriveByGyro(-96, -speedMed, -100));
+    addSequential(new Auto_BangDriveByGyro(-100, -speedMed, -100));
     //turn to next trench
     //addSequential(new Auto_BangTurnByGyro(-insidek, -outsidek, 180));
     addSequential(new Auto_BangTurnByGyro(-insidek/1.5, -outsidek/1.5, 180));
@@ -32,16 +32,18 @@ public class autoGroupBounce extends CommandGroup {
     
     //addSequential(new Auto_BangStop(), .5);
     //addSequential(new Auto_SetBrakeMode(IdleMode.kCoast));
-    addSequential(new Auto_BangDriveByGyro(72, speedMed, 90));
+    addSequential(new Auto_BangDriveByGyro(76, speedMed, 90));
     
     //turn to final hit
     addSequential(new Auto_BangTurnByGyro(outsidek, insidek, 0));
-    addSequential(new Auto_BangDriveByGyro(18, speedMed, 0));
-    addSequential(new Auto_BangTurnByGyro(outsidek, insidek, -60));
+    addSequential(new Auto_BangDriveByGyro(16, speedMed, 0));
+    addSequential(new Auto_BangTurnByGyro(outsidek, insidek, -82));
     
     //final bump
-    addSequential(new Auto_BangDriveByGyro(80, speedMed, 90));
-    addSequential(new Auto_BangTurnByGyro(-insidek, -outsidek, 180));
+    addSequential(new Auto_BangDriveByGyro(64, speedMed, 90));
+    addSequential(new Auto_BangDriveByGyro(30 ,-speedMed, 90));
+    addSequential(new Auto_BangTurnByGyro(-insidek/1.35, -outsidek/ 1.35, 180));
+    addSequential(new Auto_BangDriveByGyro(16, -speedMed, 180));
     //addSequential(new Auto_BangDriveByGyro(12, -speedMed, 155));
     addSequential(new Auto_BangStop());
     addSequential(new Auto_SetBrakeMode(IdleMode.kBrake));
