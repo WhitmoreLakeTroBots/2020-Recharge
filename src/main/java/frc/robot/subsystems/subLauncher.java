@@ -47,7 +47,7 @@ public double allowedErr = 0;
         flyWheelMotor.restoreFactoryDefaults();
     kP = 7e-5;
     kI = 3e-7;
-    kD = 0;
+    kD = 3e-7;
     kIz = 0;
     kFF = 0;
     kMaxOutput = 1;
@@ -91,7 +91,7 @@ public double allowedErr = 0;
         //flyWheelMotor.set(.75);
     }
     public void runFlyWheelFaster(){
-        flywheelPIDC.setReference(lv + 800, ControlType.kVelocity);
+        flywheelPIDC.setReference(2750 - 160, ControlType.kVelocity);
         System.err.println("RUNNING");
         //flyWheelMotor.set(.75);
     }
