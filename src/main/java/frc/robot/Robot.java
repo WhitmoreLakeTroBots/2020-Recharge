@@ -37,7 +37,8 @@ import frc.robot.subsystems.subHopperIntake;
 import frc.robot.subsystems.subIntake;
 import frc.robot.subsystems.subLauncher;
 import frc.robot.subsystems.subLimelight;
-import frc.robot.commands.autoGroupMove6Ft; 
+import frc.robot.commands.autoGroupMove6Ft;
+import frc.robot.commands.autoGroupRedBall; 
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -120,6 +121,7 @@ public class Robot extends TimedRobot {
     chooser.addOption("Auto Bounce Run", new autoGroupBounce());
     chooser.addOption("Initial D", new autoGroupCirclePractice());
     chooser.addOption("Gyro Test", new autoGroupGyroTest());
+    chooser.addOption("Redb A lls", new autoGroupRedBall());
 
     chooser.addOption("Auto Group Stright", new autoGroupShootAngle());
     chooser.addOption("BANG BANG", new autoGroupBangSix());
