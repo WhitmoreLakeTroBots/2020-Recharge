@@ -24,6 +24,18 @@ public class subLimelight extends Subsystem {
     public static NetworkTableEntry ltlm = null;
     public static NetworkTableEntry ltp = null;
     public static NetworkTable highTable = null;
+    public static NetworkTableInstance inst2 = null;
+    //public static NetworkTable highTable = null;
+    public static NetworkTableEntry ltx2 = null;
+    public static NetworkTableEntry lty2 = null;
+    public static NetworkTableEntry lta2 = null;
+    public static NetworkTableEntry ltv2 = null;
+    public static NetworkTableEntry lts2 = null;
+    public static NetworkTableEntry ltl2 = null;
+    public static NetworkTableEntry ltcm2 = null;
+    public static NetworkTableEntry ltlm2 = null;
+    public static NetworkTableEntry ltp2 = null;
+    public static NetworkTable highTable2 = null;
 
 
     //private NetworkTable highTable = NetworkTableInstance.getDefault().getTable("limelight");
@@ -39,7 +51,19 @@ public class subLimelight extends Subsystem {
     ltcm = highTable.getEntry("camMode");
     ltlm = highTable.getEntry("ledMode");
     ltp = highTable.getEntry("pipeline");
-    }
+    
+    inst = NetworkTableInstance.getDefault();
+    highTable2 = inst.getTable("limelight-low");
+    ltx2 = highTable.getEntry("tx");
+    lty2 = highTable.getEntry("ty");
+    lta2 = highTable.getEntry("ta");
+    ltv2 = highTable.getEntry("tv");
+    lts2 = highTable.getEntry("ts");
+    ltl2 = highTable.getEntry("tl");
+    ltcm2 = highTable.getEntry("camMode");
+    ltlm2= highTable.getEntry("ledMode");
+    ltp2 = highTable.getEntry("pipeline");
+}
     /*
     public subLimelight() {
         highTable.getEntry("camMode").setNumber(CAM_MODE.VISION_PROCESSING.val);
@@ -48,6 +72,9 @@ public class subLimelight extends Subsystem {
 */
     public double getTX() {
         return ltx.getDouble(0);
+    }
+    public double getTX2(){
+        return ltx2.getDouble(0);
     }
 
     public double getTY() {

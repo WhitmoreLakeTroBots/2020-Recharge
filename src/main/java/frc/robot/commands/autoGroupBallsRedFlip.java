@@ -12,7 +12,7 @@ public class autoGroupBallsRedFlip extends CommandGroup {
   /** Add your docs here. */
   double speedSlow = 0.3;
   double speedMed = 0.6;
-  double speedFast = 0.8;
+  double speedFast = 0.85;
   double insidek = .13;
   double outsidek = .5;
   public autoGroupBallsRedFlip() {
@@ -23,10 +23,10 @@ public class autoGroupBallsRedFlip extends CommandGroup {
     addSequential(new Auto_BangDriveByGyro(36, speedMed, 0));
     addSequential(new Auto_BangTurnByGyro(insidek, outsidek, 18));
     addSequential(new Auto_BangDriveByGyro(58, speedMed, 12));
-    addSequential(new Auto_BangTurnByGyro(outsidek+.2, -insidek, -69));
-    addSequential(new Auto_BangDriveByGyro(92, speedMed, -65));
+    addSequential(new Auto_BangTurnByGyro(outsidek+.2, -insidek, -72));
+    addSequential(new Auto_BangDriveByGyro(92, speedMed, -69));
     addSequential(new Auto_BangTurnByGyro(-insidek, outsidek, 10));
-    addSequential(new Auto_BangDriveByGyro(150, speedFast, 1));
+    addSequential(new Auto_BangDriveByGyro(150, speedFast, 4));
     addSequential(new Auto_BangStop());
     
   }

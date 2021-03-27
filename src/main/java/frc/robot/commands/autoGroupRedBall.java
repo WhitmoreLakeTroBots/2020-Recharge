@@ -15,8 +15,8 @@ public class autoGroupRedBall extends CommandGroup {
   double speedSlow = 0.3;
   double speedMed = 0.6;
   double speedFast = 0.8;
-  double insidek = .13;
-  double outsidek = .5;
+  double insidek = -.13;
+  double outsidek = .5+.06;
   public autoGroupRedBall() {
     addSequential(new Auto_SetBrakeMode(IdleMode.kCoast));
 /*
@@ -24,16 +24,17 @@ public class autoGroupRedBall extends CommandGroup {
             WE ARE SET UP ON AN ANGLE! NOTE THAT ZERO IS ABOUT 24 degrees 
 */
     addParallel(new cmdHopperIntake());
-    addParallel(new cmdIntakeRev(), 7);
-    addParallel(new cmdHopperIntakeMotor(), 7);
-    addSequential(new Auto_BangDriveByGyro(66, speedSlow, 0));
-    addSequential(new Auto_BangTurnByGyro(insidek, outsidek, 90));
-    addSequential(new Auto_BangDriveByGyro(62, speedSlow, 90));
-    addSequential(new Auto_BangTurnByGyro(.3, -.3, -21));
-    addSequential(new Auto_BangDriveByGyro(96, speedSlow, -21));
-    addSequential(new Auto_BangTurnByGyro(-.3, .3, 24));
-    addSequential(new Auto_BangDriveByGyro(90, speedMed, 38));
-    addSequential(new Auto_BangDriveByGyro(50, speedMed, 18));
+    addParallel(new cmdIntakeRev(), 5.5);
+    addParallel(new cmdHopperIntakeMotor(), 5.7);
+    addSequential(new Auto_BangDriveByGyro(40, speedMed, 0));
+    addSequential(new Auto_BangTurnByGyro(insidek, outsidek, 68));
+    addSequential(new Auto_BangDriveByGyro(56, speedMed, 58));
+    addSequential(new Auto_BangTurnByGyro(.5, -.4, -10));
+    addSequential(new Auto_BangDriveByGyro(90, speedMed, -10));
+    addSequential(new Auto_BangTurnByGyro(-.4, .5, 24));
+    addSequential(new Auto_BangDriveByGyro(90, speedFast, 44));
+    addSequential(new Auto_BangDriveByGyro(18, speedFast, 22));
+    addSequential(new Auto_BangStop());
     
 
 

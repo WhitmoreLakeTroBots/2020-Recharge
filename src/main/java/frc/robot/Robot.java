@@ -27,6 +27,7 @@ import frc.robot.commands.autoGroupShootAngle;
 import frc.robot.commands.autoGroupShootAngleInvt;
 import frc.robot.commands.autoGroupShootTrench;
 import frc.robot.commands.autoGroupWeav;
+import frc.robot.commands.autoGroupdecideballrun;
 import frc.robot.commands.cmdGroupHopperOuttake;
 import frc.robot.commands.cmdLastResortAuto;
 import frc.robot.subsystems.subChassis;
@@ -124,6 +125,7 @@ public class Robot extends TimedRobot {
     chooser.addOption("Gyro Test", new autoGroupGyroTest());
     chooser.addOption("Redb A lls", new autoGroupRedBall());
     chooser.addOption("Red Balls Flip", new autoGroupBallsRedFlip());
+    chooser.addOption("auto decider", new autoGroupdecideballrun());
 
     chooser.addOption("Auto Group Stright", new autoGroupShootAngle());
     chooser.addOption("BANG BANG", new autoGroupBangSix());
