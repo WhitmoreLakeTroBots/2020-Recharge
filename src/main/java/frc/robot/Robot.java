@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Auto_DriveByGyro;
 import frc.robot.commands.Auto_TurnByGyro;
+import frc.robot.commands.autoGroupBallsRedFlip;
 import frc.robot.commands.autoGroupBang;
 import frc.robot.commands.autoGroupBangBarrel;
 import frc.robot.commands.autoGroupBangSix;
@@ -122,6 +123,7 @@ public class Robot extends TimedRobot {
     chooser.addOption("Initial D", new autoGroupCirclePractice());
     chooser.addOption("Gyro Test", new autoGroupGyroTest());
     chooser.addOption("Redb A lls", new autoGroupRedBall());
+    chooser.addOption("Red Balls Flip", new autoGroupBallsRedFlip());
 
     chooser.addOption("Auto Group Stright", new autoGroupShootAngle());
     chooser.addOption("BANG BANG", new autoGroupBangSix());
