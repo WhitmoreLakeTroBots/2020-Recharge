@@ -4,17 +4,25 @@
 
 package frc.robot.commands;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
+import frc.robot.Settings;
 
 public class autoGroupdecideballrun extends CommandGroup {
+  double speedSlow = 0.3;
+  double speedMed = 0.6;
+  double speedFast = 0.8;
+  double insidek = -.13;
+  double outsidek = .5;
   /** Add your docs here. */
   public autoGroupdecideballrun() {
-   if(Robot.subLimelight.getTX2() != 0){
-     addSequential(new autoGroupRedBall());
-   }else {
-     addSequential(new Auto_BangTurnByGyro(-.3, .3, 90));
-     addSequential(new Auto_BangTurnByGyro(.3, -.3, 0));
-   }
+    if(Robot.subLimelight.getLTV2() != 0.00){
+        addSequential(new autoGroupRedBall());
+      }else{
+        addSequential(new autoGroupBlueBallsB());
+      }
+ 
   }
 }

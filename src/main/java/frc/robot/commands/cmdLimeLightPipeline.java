@@ -11,7 +11,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.subLimelight;
 
+
 public class cmdLimeLightPipeline extends Command {
+  private boolean _isfinished = false;
+
   public cmdLimeLightPipeline() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -27,12 +30,14 @@ public class cmdLimeLightPipeline extends Command {
   @Override
   protected void execute() {
     Robot.subLimelight.setPipeline(1);
+    _isfinished = true;
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return _isfinished;
   }
 
   // Called once after isFinished returns true

@@ -62,4 +62,8 @@ public class Settings {
   public static final double profileEndTimeScalar = 1.3;
   public static final double profileEndTol = .25; 
 
+  //Limelight
+
+  public static int powerCount = 0;
+
 }

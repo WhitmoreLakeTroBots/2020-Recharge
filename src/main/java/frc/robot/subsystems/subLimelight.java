@@ -35,7 +35,7 @@ public class subLimelight extends Subsystem {
     public static NetworkTableEntry ltcm2 = null;
     public static NetworkTableEntry ltlm2 = null;
     public static NetworkTableEntry ltp2 = null;
-    public static NetworkTable highTable2 = null;
+    public static NetworkTable lowTable = null;
 
 
     //private NetworkTable highTable = NetworkTableInstance.getDefault().getTable("limelight");
@@ -52,17 +52,17 @@ public class subLimelight extends Subsystem {
     ltlm = highTable.getEntry("ledMode");
     ltp = highTable.getEntry("pipeline");
     
-    inst = NetworkTableInstance.getDefault();
-    highTable2 = inst.getTable("limelight-low");
-    ltx2 = highTable.getEntry("tx");
-    lty2 = highTable.getEntry("ty");
-    lta2 = highTable.getEntry("ta");
-    ltv2 = highTable.getEntry("tv");
-    lts2 = highTable.getEntry("ts");
-    ltl2 = highTable.getEntry("tl");
-    ltcm2 = highTable.getEntry("camMode");
-    ltlm2= highTable.getEntry("ledMode");
-    ltp2 = highTable.getEntry("pipeline");
+    inst2 = NetworkTableInstance.getDefault();
+    lowTable = inst2.getTable("limelight-low");
+    ltx2 = lowTable.getEntry("tx");
+    lty2 = lowTable.getEntry("ty");
+    lta2 = lowTable.getEntry("ta");
+    ltv2 = lowTable.getEntry("tv");
+    lts2 = lowTable.getEntry("ts");
+    ltl2 = lowTable.getEntry("tl");
+    ltcm2 = lowTable.getEntry("camMode");
+    ltlm2= lowTable.getEntry("ledMode");
+    ltp2 = lowTable.getEntry("pipeline");
 }
     /*
     public subLimelight() {
@@ -81,6 +81,13 @@ public class subLimelight extends Subsystem {
         return lty.getDouble(0);
     }
 
+    public double getLTA2(){
+        return lta2.getDouble(0);
+    }
+    public double getLTV2(){
+        return ltv2.getDouble(0);
+    }
+
     //Whether the limelight has any valid targets (0 or 1)
     public boolean hasTarget() {
         NetworkTableEntry tv = highTable.getEntry("tv");
@@ -97,6 +104,9 @@ public class subLimelight extends Subsystem {
 
     public void setPipeline(int pipeline) {
         highTable.getEntry("pipeline").setNumber(pipeline);
+    }
+    public void setPipelinelow(int pipeline){
+        lowTable.getEntry("pipeline").setNumber(pipeline);
     }
 
     public enum LED_MODE {

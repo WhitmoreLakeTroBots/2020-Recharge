@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.subLauncher;
@@ -18,6 +20,7 @@ public class cmdLauncher extends Command {
 
   @Override
   protected void initialize() {
+    Robot.subLauncher.flyWheelMotor.setIdleMode(IdleMode.kCoast);
   }
 
   @Override
