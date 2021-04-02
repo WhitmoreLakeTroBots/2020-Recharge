@@ -91,9 +91,12 @@ public double allowedErr = 0;
         //flyWheelMotor.set(.75);
     }
     public void runFlyWheelFaster(){
-        flywheelPIDC.setReference(2750 - 160, ControlType.kVelocity);
+        flywheelPIDC.setReference(3250, ControlType.kVelocity);
         System.err.println("RUNNING");
         //flyWheelMotor.set(.75);
+    }
+    public void runFlyWheelSpeedThree(){
+        flywheelPIDC.setReference(2590, ControlType.kVelocity);
     }
     public void stopWheel(){
         flyWheelMotor.set(0);
