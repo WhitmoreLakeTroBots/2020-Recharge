@@ -18,7 +18,8 @@ public class autoGroupdecideballrun extends CommandGroup {
   double outsidek = .5;
   /** Add your docs here. */
   public autoGroupdecideballrun() {
-    if(Robot.subLimelight.getLTV2() != 0.00){
+    addSequential(new cmdSetLowLimelightProfile());;
+    if(Robot.subLimelight.getLTV2() != 0.00 ){
         addSequential(new autoGroupRedBall());
       }else{
         addSequential(new autoGroupBlueBallsB());

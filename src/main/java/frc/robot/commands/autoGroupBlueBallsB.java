@@ -25,15 +25,15 @@ public class autoGroupBlueBallsB extends CommandGroup {
     addParallel(new cmdIntakeRev(), 6.5);
     addParallel(new cmdHopperIntakeMotor(), 6.7);
     addSequential(new Auto_BangDriveByGyro(68, speedFast, 0));
-    addSequential(new Auto_BangTurnByGyro(insidek, outsidek, 68));
-    addSequential(new Auto_BangDriveByGyro(74, speedMed, 66 ));
+    addSequential(new Auto_BangTurnByGyro(insidek, outsidek, 70));
+    addSequential(new Auto_BangDriveByGyro(74, speedMed, 68 ));
     addSequential(new Auto_BangTurnByGyro(.5, -.4, -12));
     addSequential(new Auto_BangDriveByGyro(95, speedMed, -8));
     addSequential(new Auto_BangTurnByGyro(-.4, .5, 64));
-    addSequential(new Auto_BangDriveByGyro(86, speedMed, 64));
+    addSequential(new Auto_BangDriveByGyro(86, speedMed, 69));
     addSequential(new Auto_BangStop());
-    addSequential(new Auto_BangTurnByGyro(-.8, -.02, 179));
-    addSequential(new Auto_BangDriveByGyro(20, speedMed, 179));
+    addSequential(new Auto_BangTurnByGyro(-.8, -.02, 160));
+    addSequential(new Auto_BangDriveByGyro(38, -speedMed, 120));
 
 
   }

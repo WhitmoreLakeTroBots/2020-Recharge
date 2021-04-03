@@ -125,8 +125,8 @@ public class Robot extends TimedRobot {
     chooser.addOption("Auto Bounce Run", new autoGroupBounce());
     chooser.addOption("Initial D", new autoGroupCirclePractice());
     chooser.addOption("Gyro Test", new autoGroupGyroTest());
-    chooser.addOption("Redb A lls", new autoGroupRedBall());
-    chooser.addOption("Red Balls Flip", new autoGroupBallsRedFlip());
+    chooser.addOption("Red B alls", new autoGroupRedBall());
+    chooser.addOption("Red Balls  A Path", new autoGroupBallsRedFlip());
     chooser.addOption("auto decider", new autoGroupdecideballrun());
 
     chooser.addOption("Auto Group Stright", new autoGroupShootAngle());

@@ -20,13 +20,13 @@ public class autoGroupBallsRedFlip extends CommandGroup {
     addParallel(new cmdHopperIntake());
     addParallel(new cmdIntakeRev(), 4);
     addParallel(new cmdHopperIntakeMotor(), 4);
-    addSequential(new Auto_BangDriveByGyro(36, speedMed, 0));
+    addSequential(new Auto_BangDriveByGyro(26, speedMed, 0));
     addSequential(new Auto_BangTurnByGyro(insidek, outsidek, 18));
-    addSequential(new Auto_BangDriveByGyro(58, speedMed, 12));
-    addSequential(new Auto_BangTurnByGyro(outsidek+.2, -insidek, -72));
-    addSequential(new Auto_BangDriveByGyro(92, speedMed, -69));
+    addSequential(new Auto_BangDriveByGyro(59, speedMed, 12));
+    addSequential(new Auto_BangTurnByGyro(outsidek+.2, -(insidek + .13), -64));
+    addSequential(new Auto_BangDriveByGyro(92, speedMed, -67));
     addSequential(new Auto_BangTurnByGyro(-insidek, outsidek, 10));
-    addSequential(new Auto_BangDriveByGyro(150, speedFast, 4));
+    addSequential(new Auto_BangDriveByGyro(150, speedFast+.12, 10));
     addSequential(new Auto_BangStop());
     
   }

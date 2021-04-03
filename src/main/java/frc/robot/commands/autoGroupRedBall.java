@@ -24,16 +24,16 @@ public class autoGroupRedBall extends CommandGroup {
             WE ARE SET UP ON AN ANGLE! NOTE THAT ZERO IS ABOUT 24 degrees 
 */
     addParallel(new cmdHopperIntake());
-    addParallel(new cmdIntakeRev(), 5.5);
-    addParallel(new cmdHopperIntakeMotor(), 5.7);
+    addParallel(new cmdIntakeRev(), 4.5);
+    addParallel(new cmdHopperIntakeMotor(), 4.5);
     addSequential(new Auto_BangDriveByGyro(40, speedMed, 0));
-    addSequential(new Auto_BangTurnByGyro(insidek, outsidek, 68));
+    addSequential(new Auto_BangTurnByGyro(insidek, outsidek, 62));
     addSequential(new Auto_BangDriveByGyro(56, speedMed, 58));
     addSequential(new Auto_BangTurnByGyro(.5, -.4, -10));
     addSequential(new Auto_BangDriveByGyro(90, speedMed, -10));
     addSequential(new Auto_BangTurnByGyro(-.4, .5, 24));
-    addSequential(new Auto_BangDriveByGyro(90, speedFast, 44));
-    addSequential(new Auto_BangDriveByGyro(18, speedFast, 22));
+    addSequential(new Auto_BangDriveByGyro(90, speedFast + .1, 44));
+    addSequential(new Auto_BangDriveByGyro(18, speedFast + .1, 22));
     addSequential(new Auto_BangStop());
     
 
