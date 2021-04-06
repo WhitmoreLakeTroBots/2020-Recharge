@@ -17,7 +17,7 @@ public class autoGroupBang extends CommandGroup {
   public autoGroupBang() {
     double speedSlow = 0.4;
     double speedMed = 0.5;
-    double speedFast = 0.88;
+    double speedFast = 0.90;
     double insidek = .13-.06;
     double outsidek = .5+.2;
     
@@ -35,7 +35,7 @@ public class autoGroupBang extends CommandGroup {
     addSequential(new Auto_BangDriveByGyro(8, speedSlow, -55, 2));
 
     // Drive forward0
-    addSequential(new Auto_BangDriveByGyro(12, speedMed, -55));
+    addSequential(new Auto_BangDriveByGyro(18, speedMed, -55));
 
     // Swing turn to the right back to heading of -25
     addSequential(new Auto_BangTurnByGyro(insidek, outsidek, -25));
@@ -51,13 +51,15 @@ public class autoGroupBang extends CommandGroup {
     //loop
    
     addSequential(new Auto_BangTurnByGyro(outsidek, insidek, 0));
-    addSequential(new Auto_BangTurnByGyro(outsidek, insidek, -90));;
+    addSequential(new Auto_BangTurnByGyro(outsidek, insidek, -90));
+    addSequential(new Auto_BangDriveByGyro(16, speedMed, -90));
     addSequential(new Auto_BangTurnByGyro(outsidek, insidek, 180));
     addSequential(new Auto_BangTurnByGyro(outsidek, insidek, 90));
-    addSequential(new Auto_BangTurnByGyro(insidek, outsidek, 180));
-    addSequential(new Auto_BangDriveByGyro(95, speedFast, 180));
-    addSequential(new Auto_BangTurnByGyro(insidek, outsidek, -90));
-    addSequential(new Auto_BangTurnByGyro(outsidek, insidek, 180));
+    addSequential(new Auto_BangTurnByGyro(insidek, outsidek, 160));
+    addSequential(new Auto_BangDriveByGyro(120, speedFast, 152));
+    addSequential(new Auto_BangTurnByGyro(-(insidek-.2), outsidek+.11, -110));
+    addSequential(new Auto_BangDriveByGyro(30, speedFast+.6, -122));
+    //addSequential(new Auto_BangTurnByGyro((outsidek+.12), -(insidek+.24), 160));
     
     // Stop NOW to advoid disaster
     addSequential(new Auto_BangStop());
